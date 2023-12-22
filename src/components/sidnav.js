@@ -25,7 +25,7 @@ const SideNav = () => {
       </Link>
 
       <Link
-        href="/"
+        href="/account/vids"
         className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10 relative"
       >
         {isHomeActive ? (
@@ -43,7 +43,7 @@ const SideNav = () => {
         {/* <span className='h-2 w-2 rounded-full bg-sky-500 absolute top-3 right-[16px] md:right-[100px]'></span> */}
       </Link>
       <Link
-        href="/explore"
+        href="/account/search"
         className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10"
       >
         {isExploreActive ? (
@@ -65,7 +65,7 @@ const SideNav = () => {
         </span>
       </Link>
       <Link
-        href="/notifications"
+        href="/account/uploads"
         className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10"
       >
         {isNotificationsActive ? (
@@ -82,7 +82,7 @@ const SideNav = () => {
         </span>
       </Link>
       <Link
-        href="/messages"
+        href="/account/profile"
         className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10"
       >
         {isMessagesActive ? (

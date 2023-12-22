@@ -13,17 +13,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-      
+      <AuthContextProvider>
       <MaxWidthWrapper>
     
           <div className="flex">
             <SideNav />
-            <main className="flex-1"><AuthContextProvider>{children}</AuthContextProvider></main>
+            <main className="flex-1">{children}</main>
           </div>
     
         </MaxWidthWrapper>
         <BottomNav/>
-        
+        </AuthContextProvider>
         </body>
     </html>
   )

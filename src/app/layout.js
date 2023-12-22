@@ -15,12 +15,12 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
       
       <MaxWidthWrapper>
-    <AuthContextProvider>
+    
           <div className="flex">
             <SideNav />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1"><AuthContextProvider>{children}</AuthContextProvider></main>
           </div>
-    </AuthContextProvider>
+    
         </MaxWidthWrapper>
         <BottomNav/>
         

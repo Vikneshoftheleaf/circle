@@ -1,9 +1,13 @@
 "use client"
 import { useState, useEffect, useRef } from "react"
+import { useAuthContext } from "@/context/authcontext"
 import BackBtn from "@/components/backBtn"
 import Image from "next/image"
 import { createPost } from "@/functions/functions"
+import { useRouter } from "next/navigation"
 export default function Upload() {
+    const router = useRouter();
+    const {user} = useAuthContext();
     const [image, setImage] = useState(null);
     const fileInputRef = useRef(null);
     const [title, settitle] = useState(null)
@@ -30,7 +34,7 @@ export default function Upload() {
                     </div>
                     <div className="flex gap-4 mx-5">
                         <div>
-                            <Image src={URL.createObjectURL(image)} height={100} width={100} alt="uploaded Image" />
+                            <Image src={URL.createObjectURL(image)} height={350} width={350} alt="uploaded Image" />
                         </div>
                         <div>
                             <textarea name="desc" id="" cols="30" rows="5" className="resize-none focus:outline-none" placeholder="Write Something" onChange={(e)=>settitle(e.target.value)}></textarea>
@@ -43,7 +47,7 @@ export default function Upload() {
                     </div>
 
                     <div className="m-5">
-                        <button className="w-full py-2 bg-red-500 text-xl text-semibold text-slate-100 rounded-sm" onClick={()=>createPost(image,title,tags)}>Post</button>
+                        <button className="w-full py-2 bg-red-500 text-xl text-semibold text-slate-100 rounded-sm" onClick={()=>{createPost(image,title,tags,user.uid);router.push('/account/vids')}}>Post</button>
                     </div>
                 </div>
 

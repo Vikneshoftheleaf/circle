@@ -3,11 +3,9 @@ import { auth, db, storage } from "@/firebase";
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 const provider = new GoogleAuthProvider();
-import { doc, setDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
-function createUser(user) {
-
-}
 export function googleSignup() {
   signInWithPopup(auth, provider)
     .then((result) => {
@@ -129,17 +127,33 @@ export function logOut() {
 }
 
 
-export function createPost(image,title,tags)
-{
+export function createPost(image, title, tags, uid) {
+  const metadata = {
+    contentType: 'image/jpeg',
+  };
   const storageRef = ref(storage, `posts/${image.name}`);
 
-// 'file' comes from the Blob or File API
-uploadBytes(storageRef,auth, image).then((snapshot) => {
- 
-  console.log('Uploaded a blob or file!');
-});
+  // 'file' comes from the Blob or File API
+  uploadBytes(storageRef, image, metadata).then(() => {
 
-getDownloadURL(ref(storage, `posts/${image.name}`))
-.then((url) => {console.log(url)})
+    getDownloadURL(ref(storage, `posts/${image.name}`))
+      .then(async(url) => {
+        const docRef = await addDoc(collection(db, "posts"), {
+          postPicURL: url,
+          title: title,
+          tags: tags,
+          owner: uid,
+          likes:0
+
+        });
+        console.log("post id", docRef.id)
+      })
+
+  });
+
+
+
+
+
 
 }

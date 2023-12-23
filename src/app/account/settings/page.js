@@ -1,6 +1,7 @@
 'use client'
 import { useAuthContext } from "@/context/authcontext"
 import { Icon } from "@iconify/react"
+import { logOut } from "@/functions/functions";
 export default function Setting() {
     const {user} = useAuthContext();
     return (

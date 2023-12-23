@@ -4,6 +4,7 @@ export const metadata = {
   title: 'Circle',
   description: "The Friend's Network",
 }
+import NavBar from '@/components/navbar'
 import SideNav from '@/components/sidnav'
 import BottomNav from '@/components/bottom-nav'
 import MaxWidthWrapper from '@/components/maxwithwrapper'
@@ -13,9 +14,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+
         <AuthContextProvider>
+          <NavBar/>
             <main>{children}</main>
         <BottomNav />
+
         </AuthContextProvider>
       </body>
     </html>

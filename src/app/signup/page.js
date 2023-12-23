@@ -1,5 +1,5 @@
 "use client";
-import { googleSignin, emailSignup } from "@/functions/functions";
+import { googleSignup, emailSignup } from "@/functions/functions";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
@@ -33,7 +33,7 @@ export default function Login() {
                         <hr className="h-[2px] bg-zinc-200  w-full rounded-full" />
                     </div>
                     
-                    <button className="px-4 py-2 border-2 flex items-center justify-center gap-4 rounded-md" onClick={() => googleSignin()}>
+                    <button className="px-4 py-2 border-2 flex items-center justify-center gap-4 rounded-md" onClick={() => googleSignup()}>
                         <Icon icon="devicon:google" />
                         <h1>Continue with Google</h1>
                     </button>

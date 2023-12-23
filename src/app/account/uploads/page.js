@@ -1,22 +1,55 @@
 "use client"
-import { Icon } from "@iconify/react"
+import { useState, useEffect, useRef } from "react"
 import BackBtn from "@/components/backBtn"
+import Image from "next/image"
+import { createPost } from "@/functions/functions"
 export default function Upload() {
-    return (
-        <div>
-            <div className="flex justify-start gap-2 items-center p-2">
-                <BackBtn/>
-            </div>
-            <div className="flex flex-col gap-2 p-2">
-                <h1 className="font-semibold">Title</h1>
-                <input autoFocus className="border-b-2 border-zinc-400 focus:outline-none p-2" type="text" name="title" id="title" />
-                <h1 className="font-semibold">Video URL</h1>
-                <input className="border-b-2 border-zinc-400 focus:outline-none p-2" type="url" name="url" id="url" />
-                <h1 className="font-semibold">Description</h1>
-                <textarea className="border-b-2 border-zinc-400 focus:outline-none p-2 resize-none" name="desc" id="desc" cols="20" rows="5"></textarea>
-                <button className="flex justify-center gap-2 items-center bg-red-500 text-slate-50 py-2 rounded-sm"><h1>Publish</h1><Icon icon="material-symbols:send-outline" /></button>
-            </div>
+    const [image, setImage] = useState(null);
+    const fileInputRef = useRef(null);
+    const [title, settitle] = useState(null)
+    const [tags, settags] = useState(null)
+    const handleImageChange = (e) => {
+        const selectedImage = e.target.files[0];
+        setImage(selectedImage);
+    };
 
-        </div>
+    const isEffectTriggered = useRef(false);
+    useEffect(() => {
+        // Trigger the file input click event only once
+        if (!isEffectTriggered.current) {
+            fileInputRef.current.click();
+            isEffectTriggered.current = true;
+        }
+    }, []);
+    return (
+        <>
+            {(!image) ? <input type="file" accept="image/*" ref={fileInputRef} className="hidden" onChange={(e) => handleImageChange(e)} /> :
+                <div>
+                    <div className="flex justify-between items-center gap-2 items-center p-2">
+                        <BackBtn />
+                    </div>
+                    <div className="flex gap-4 mx-5">
+                        <div>
+                            <Image src={URL.createObjectURL(image)} height={100} width={100} alt="uploaded Image" />
+                        </div>
+                        <div>
+                            <textarea name="desc" id="" cols="30" rows="5" className="resize-none focus:outline-none" placeholder="Write Something" onChange={(e)=>settitle(e.target.value)}></textarea>
+                        </div>
+
+                    </div>
+                    <div className="flex flex-col gap-2 mx-5">
+                        <h1>Tags</h1>
+                        <input type="text" name="tags" id="" placeholder="#Tags" className="focus:outline-none p-2" onChange={(e)=>settags(e.target.value)}/>
+                    </div>
+
+                    <div className="m-5">
+                        <button className="w-full py-2 bg-red-500 text-xl text-semibold text-slate-100 rounded-sm" onClick={()=>createPost(image,title,tags)}>Post</button>
+                    </div>
+                </div>
+
+            }
+
+
+        </>
     )
 }

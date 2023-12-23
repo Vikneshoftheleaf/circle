@@ -1,3 +1,4 @@
+"use client"
 import { auth } from "@/firebase";
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut  } from "firebase/auth";
 const provider = new GoogleAuthProvider();
@@ -10,7 +11,8 @@ export function googleSignin() {
             // The signed-in user info.
             const user = result.user;
             // IdP data available using getAdditionalUserInfo(result)
-            console.log(user)
+            console.log("signned in with google!")
+
             // ...
         }).catch((error) => {
             // Handle Errors here.
@@ -44,7 +46,7 @@ export function emailLogin(e, email, password) {
 
 export function emailSignup(e, email, password)
 {
-    e.preventDefault()
+    e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed up 

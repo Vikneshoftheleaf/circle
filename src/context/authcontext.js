@@ -10,6 +10,7 @@ export const useAuthContext = () => useContext(AuthContext);
 export const AuthContextProvider = ({
     children,
 }) => {
+    const router = useRouter()
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -17,6 +18,7 @@ export const AuthContextProvider = ({
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
+                router.push('/account/profile')
             } else {
                 setUser(null);
             }
@@ -26,7 +28,6 @@ export const AuthContextProvider = ({
         return () => unsubscribe();
     }, []);
 
-    const router = useRouter()
 
     useEffect(() => {
         if (user == null) router.push("/")

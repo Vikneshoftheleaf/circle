@@ -1,12 +1,11 @@
 "use client"
 import { Icon } from "@iconify/react"
+import BackBtn from "@/components/backBtn"
 export default function Upload() {
     return (
         <div>
             <div className="flex justify-start gap-2 items-center p-2">
-                <button onClick={() => history.back()}>
-                    <Icon icon="ep:back" />
-                </button>
+                <BackBtn/>
             </div>
             <div className="flex flex-col gap-2 p-2">
                 <h1 className="font-semibold">Title</h1>

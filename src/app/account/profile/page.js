@@ -1,9 +1,9 @@
 "use client"
-import { logOut } from "@/functions/functions";
 import { Icon } from "@iconify/react";
 import { useAuthContext } from "@/context/authcontext";
 import Link from "next/link";
 import Image from "next/image";
+import BackBtn from "@/components/backBtn";
 export default function Profile() {
     const { user } = useAuthContext();
     return (
@@ -11,15 +11,16 @@ export default function Profile() {
             <div className="flex flex-col gap-4">
 
                 <div className="flex justify-between items-center p-2">
-                    <button onClick={() => history.back()}><Icon icon="ep:back" /></button>
-                    <h1>{user.displayName}</h1>
-                    <Link href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" /></Link>
+                    <BackBtn />
+                    <h1>{(user.displayName) ? user.displayName : user.email}</h1>
+                    <Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" /></Link>
                 </div>
 
                 <div className="flex flex-col gap-4 ">
 
                     <div className="flex justify-center items-center ">
-                        <Image className="rounded-full" src={user.photoURL} height={100} width={100} alt="User"></Image>
+                        {user.photoURL ? <Image className="rounded-full" src={user.photoURL} height={100} width={100} alt="User"></Image>
+                            : 'U'}
                     </div>
 
                     <div className="text-center">
@@ -49,7 +50,7 @@ export default function Profile() {
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi nobis incidunt obcaecati fugiat, et blanditiis!</p>
                     </div>
 
-                    
+
                 </div>
 
 

@@ -2,18 +2,17 @@
 import { useAuthContext } from "@/context/authcontext"
 import { Icon } from "@iconify/react"
 import { logOut } from "@/functions/functions";
+import BackBtn from "@/components/backBtn";
 export default function Setting() {
     const {user} = useAuthContext();
     return (
         <div>
             <div className="flex justify-start gap-2 items-center p-2">
-                <button onClick={() => history.back()}>
-                    <Icon icon="ep:back" />
-                </button>
+                <BackBtn/>
             </div>
 
             <div className="flex flex-col gap-2">
-                <div className="flex flex-col gap-4 p-2">
+                <div className="flex flex-col gap-4 p-5 text-xl">
                     <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:share" />Invite Friends</h1>
                     <h1 className="flex gap-2 items-center"><Icon icon="ph:user-bold" />Account</h1>
                     <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:help-outline" />Help</h1>

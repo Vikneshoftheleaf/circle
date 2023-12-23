@@ -1,10 +1,11 @@
 "use client";
 import Vids from "@/components/vids";
+import NavBar from "@/components/navbar";
 export default function Videos() {
     
     return(
-        <div className="lg:w-[480px] lg:h-[740px] sm:h-full sm:w-screen bg-red-100 snap-mandatory snay-y snap-center">
-            <Vids/>
-        </div>
+        <>
+        <NavBar/>
+        </>
     )
 }

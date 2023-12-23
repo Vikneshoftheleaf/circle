@@ -3,17 +3,14 @@ import { googleSignin, emailSignup } from "@/functions/functions";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import BackBtn from "@/components/backBtn";
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
 
     return (
         <>
-        <div className="p-4 text-2xl">
-        <button onClick={() => history.back()}>
-                    <Icon icon="ep:back" />
-                </button>
-        </div>
+        <BackBtn/>
             <div className="m-10 flex flex-col pt-10 justify-center items-center h-full gap-4">
                 <div className="lg:w-1/4 flex flex-col gap-4">
                     <div className="flex flex-col gap-4 text-center">

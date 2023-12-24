@@ -1,37 +1,32 @@
 "use client";
 import Vids from "@/components/vids";
 import NavBar from "@/components/navbar";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, getDoc, onSnapshot, orderBy, QuerySnapshot, doc } from "firebase/firestore";
 import { db } from "@/firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Posts from "@/components/posts";
 
+
 export default function Videos() {
-    /*const q = query(collection(db, "posts"), where("title", "==", "naruto"));
-    const [postData, setPostData] = useState(null)
-    const getdata = async () => {
-        const querySnapshot = await getDocs(collection(db, 'posts'));
 
-        querySnapshot.forEach((doc) => {
-            setPostData(...postData,doc.data())
-        });
+    const [posts, setPosts] = useState([])
+    useEffect(()=>{
+        const cref = collection(db,'posts')
+        const q = query(cref, orderBy("title","desc"));
+        const unsubscribe = onSnapshot(q,(QuerySnapshot)=>{
+            setPosts(QuerySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()})))
+        })
+        return unsubscribe;
 
-    }
+    },[])
 
-    getdata();
-
-    return (
-        <div>
-            <Posts data={postData[0]} />
-        </div>
-    )*/
     return(
-
-        <>
         <div>
-            <NavBar/>
+         <NavBar/>  
+        <div className="my-20">
+            {posts.map(post=><Posts data={post}/>)}
+        </div>
         </div>
         
-        </>
     )
 }

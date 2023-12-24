@@ -4,8 +4,22 @@ import { useAuthContext } from "@/context/authcontext";
 import Link from "next/link";
 import Image from "next/image";
 import BackBtn from "@/components/backBtn";
+import { useEffect, useState } from "react";
+import { doc, getDoc, collection, query, where,onSnapshot, QuerySnapshot } from "firebase/firestore";
+import { db,auth } from "@/firebase";
 export default function Profile() {
+    const [uData, setuData] = useState({})
     const { user } = useAuthContext();
+    useEffect(() => {
+        async function gudata(){
+        const uref = doc(db,'user', user.uid)
+        const docsnap = await getDoc(uref);
+        const data = docsnap.data();
+        uData.concat(data)
+        console.log(uData)
+        }
+        return gudata;
+    }, [])
     return (
         <>
             <div className="flex flex-col gap-4">
@@ -29,16 +43,16 @@ export default function Profile() {
 
                     <div className="flex justify-center items-center gap-6">
                         <div className="flex flex-col justify-center items-center text-center">
-                            <h1>100K</h1>
+                            <h1>0</h1>
                             <h1>Following</h1>
                         </div>
                         <div className="flex flex-col justify-center items-center text-center">
-                            <h1>1M</h1>
+                            <h1>0</h1>
                             <h1>Followers</h1>
                         </div>
                         <div className="flex flex-col justify-center items-center text-center">
-                            <h1>899K</h1>
-                            <h1>Likes</h1>
+                            <h1>0</h1>
+                            <h1>Posts</h1>
                         </div>
                     </div>
 

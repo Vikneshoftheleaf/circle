@@ -47,7 +47,7 @@ export default function Upload() {
                     </div>
 
                     <div className="m-5">
-                        <button className="w-full py-2 bg-red-500 text-xl text-semibold text-slate-100 rounded-sm" onClick={()=>{createPost(image,title,tags,user.uid);router.push('/account/vids')}}>Post</button>
+                        <button className="w-full py-2 bg-red-500 text-xl text-semibold text-slate-100 rounded-sm" onClick={()=>{createPost(image,title,tags,user.uid, user.displayName, user.photoURL);router.push('/account/vids')}}>Post</button>
                     </div>
                 </div>
 

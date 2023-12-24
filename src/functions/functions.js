@@ -5,6 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 const provider = new GoogleAuthProvider();
 import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/authcontext";
 
 export function googleSignup() {
   signInWithPopup(auth, provider)
@@ -127,7 +128,7 @@ export function logOut() {
 }
 
 
-export function createPost(image, title, tags, uid) {
+export function createPost(image, title, tags, uid, displayName, photoURL) {
   const metadata = {
     contentType: 'image/jpeg',
   };
@@ -142,9 +143,11 @@ export function createPost(image, title, tags, uid) {
           postPicURL: url,
           title: title,
           tags: tags,
-          owner: uid,
-          likes:0
-
+          author: uid,
+          likes:0,
+          authorName:displayName,
+          authorImg:photoURL
+          
         });
         console.log("post id", docRef.id)
       })

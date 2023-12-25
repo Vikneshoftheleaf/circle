@@ -10,23 +10,35 @@ import Posts from "@/components/posts";
 export default function Videos() {
 
     const [posts, setPosts] = useState([])
-    useEffect(()=>{
-        const cref = collection(db,'posts')
-        const q = query(cref, orderBy("title","desc"));
-        const unsubscribe = onSnapshot(q,(QuerySnapshot)=>{
-            setPosts(QuerySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()})))
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const cref = collection(db, 'posts')
+        const q = query(cref, orderBy("title", "desc"));
+        const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+            setPosts(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+
         })
         return unsubscribe;
+    }, [])
 
-    },[])
+    useEffect(() => {
+        if (posts) {
+            setLoading(false)
+        }
+    }, [posts])
 
-    return(
+    return (
         <div>
-         <NavBar/>  
-        <div className="my-20">
-            {posts.map(post=><Posts key={post.id} data={post}/>)}
+            <NavBar />
+            <div className="my-20">
+                {posts.map((post) => {
+                    <Posts key={post.id} data={post}/>
+                    
+                })}
+            </div>
         </div>
-        </div>
-        
+
     )
+
 }

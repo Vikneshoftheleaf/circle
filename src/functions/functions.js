@@ -3,7 +3,7 @@ import { auth, db, storage } from "@/firebase";
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 const provider = new GoogleAuthProvider();
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/context/authcontext";
 
@@ -132,35 +132,3 @@ export function logOut() {
 }
 
 
-export function createPost(image, title, tags, uid, displayName, photoURL) {
-  const metadata = {
-    contentType: 'image/jpeg',
-  };
-  const storageRef = ref(storage, `posts/${image.name}`);
-
-  // 'file' comes from the Blob or File API
-  uploadBytes(storageRef, image, metadata).then(() => {
-
-    getDownloadURL(ref(storage, `posts/${image.name}`))
-      .then(async(url) => {
-        const docRef = await addDoc(collection(db, "posts"), {
-          postPicURL: url,
-          title: title,
-          tags: tags,
-          author: uid,
-          likes:0,
-          authorName:displayName,
-          authorImg:photoURL
-          
-        });
-        console.log("post id", docRef.id)
-      })
-
-  });
-
-
-
-
-
-
-}

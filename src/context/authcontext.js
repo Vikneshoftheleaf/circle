@@ -13,6 +13,7 @@ export const AuthContextProvider = ({
 }) => {
     const router = useRouter()
     const [user, setUser] = useState(null);
+    const [profile,setProfile]=useState(null);
     const [loading, setLoading] = useState(true);
 
 
@@ -24,11 +25,10 @@ export const AuthContextProvider = ({
             } else {
                 setUser(null);
             }
-            setLoading(false);
+            setLoading(false)
         });
-
         return () => unsubscribe();
-    }, []);
+    });
 
 
 
@@ -36,22 +36,30 @@ export const AuthContextProvider = ({
         if (user == null) router.push("/")
     }, [user])
 
-    useEffect(()=>{
-        if(user)
-        {
-            if(user.username == null)
-            {
-                router.push('/account/create')
 
-            }
-            else{
-                router.push('/account/profile')
-            }
+    useEffect(()=>{
+        if(user){
+            const unsub = onSnapshot(doc(db, "user", user.uid), (doc) => {
+                const newData = doc.data()
+                setProfile(newData)
+            });
+            return unsub;        
         }
     },[user])
 
+    useEffect(()=>{
+        if(profile){
+            if(profile.userName != null)
+            {
+                router.push('/account/profile')
+            }
+            else{
+                router.push('/account/create')
+            }
+        }
+    },[profile])
     return (
-        <AuthContext.Provider value={{ user }}>
+        <AuthContext.Provider value={{ user, profile }}>
             {loading ? <div>Loading...</div> : children}
         </AuthContext.Provider>
     );

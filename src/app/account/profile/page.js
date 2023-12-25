@@ -111,7 +111,7 @@ else{
                 </div>
   
 
-                <div className="grid grid-cols-3 gap-1">
+                <div className="grid grid-cols-3 gap-1 p-4">
                     {userPosts.map(upost => 
                         <UserPosts key={upost.id} data={upost}/>
                     )}

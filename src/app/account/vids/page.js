@@ -28,17 +28,18 @@ export default function Videos() {
         }
     }, [posts])
 
+if(loading){
+return(<><h1>Users Posts...</h1></>)
+}
+else{
     return (
         <div>
             <NavBar />
             <div className="my-20">
-                {posts.map((post) => {
-                    <Posts key={post.id} data={post}/>
-                    
-                })}
+                {posts.map(post => <Posts key={post.id} data={post}/>)}
             </div>
         </div>
 
     )
-
+}
 }

@@ -18,6 +18,8 @@ export function googleSignup() {
       const [displayName] = user.email.split('@')
       setDoc(doc(db, "user", user.uid), {
         uid: user.uid,
+        userName:null,
+        descrip:null,
         displayName: user.displayName ? user.displayName : displayName[0],
         email: user.email,
         photoURL: user.photoURL ? user.photoURL : null,
@@ -94,6 +96,8 @@ export function emailSignup(e, email, password) {
       const [displayName] = user.email.split('@')
       setDoc(doc(db, "user", user.uid), {
         uid: user.uid,
+        userName:null,
+        descrip:null,
         displayName: user.displayName ? user.displayName : displayName[0],
         email: user.email,
         photoURL: user.photoURL ? user.photoURL : null,

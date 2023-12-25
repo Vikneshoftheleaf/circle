@@ -24,7 +24,7 @@ export default function Videos() {
         <div>
          <NavBar/>  
         <div className="my-20">
-            {posts.map(post=><Posts data={post}/>)}
+            {posts.map(post=><Posts key={post.id} data={post}/>)}
         </div>
         </div>
         

@@ -4,7 +4,7 @@ export default function Posts({ data }) {
 
 
     return (
-        <div key={data.id} className="p-4 flex flex-col gap-4 ">
+        <div className="p-4 flex flex-col gap-4 ">
             <div className="flex items-center gap-4">
                 {data.authorImg?<Image className="h-[35px] w-[35px] object-cover rounded-full" src={data.authorImg} height={50} width={50} alt="userImage"></Image>:null}
                 <h1>{data.authorName}</h1>

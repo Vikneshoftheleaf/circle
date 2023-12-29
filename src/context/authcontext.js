@@ -49,13 +49,11 @@ export const AuthContextProvider = ({
 
     useEffect(()=>{
         if(profile){
-            if(profile.userName != null)
+            if(profile.userName == null)
             {
-                router.push('/account/profile')
-            }
-            else{
                 router.push('/account/create')
             }
+            
         }
     },[profile])
     return (

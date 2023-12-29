@@ -12,7 +12,7 @@ export default function Login() {
     return (
         <>
             <BackBtn/>
-            <div className="m-10 flex flex-col pt-10 justify-center items-center h-full gap-4">
+            <div className="m-10 flex flex-col pt-5 justify-center items-center h-full gap-4">
                 <div className="lg:w-1/4 flex flex-col gap-4">
                     <div className="flex flex-col gap-4 text-center">
                         <h1 className="text-4xl font-bold">Welcome Back to Circle!</h1>

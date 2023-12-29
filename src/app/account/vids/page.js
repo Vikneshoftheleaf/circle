@@ -6,8 +6,9 @@ import { db } from "@/firebase";
 import { useEffect, useState } from "react";
 import Posts from "@/components/posts";
 
-
+import { useAuthContext } from "@/context/authcontext";
 export default function Videos() {
+    const {profile} = useAuthContext();
 
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true);
@@ -36,7 +37,7 @@ else{
         <div>
             <NavBar />
             <div className="my-20">
-                {posts.map(post => <Posts key={post.id} data={post}/>)}
+                {posts.map(post => <Posts key={post.id} data={post} profile={profile}/>)}
             </div>
         </div>
 

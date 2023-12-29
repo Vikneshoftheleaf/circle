@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-
+import { useAuthContext } from '@/context/authcontext';
 import Link from 'next/link';
 
 import useNavigation from '@/hooks/use-navigation';
@@ -15,8 +15,11 @@ const SideNav = () => {
     isMessagesActive,
   } = useNavigation();
 
+  const {user} = useAuthContext();
+  if(user)
+  {
   return (
-    <div className="flex-col space-y-4 items-center py-8 hidden sm:flex border-r border-zinc-700 h-full  w-[120px] md:w-[250px] md:items-start fixed">
+    <div className="sm:hidden flex-col space-y-4 items-center py-8 hidden sm:flex border-r border-zinc-700 h-full  w-[120px] md:w-[250px] md:items-start fixed">
       <Link
         href="/"
         className="flex flex-row space-x-1 items-center hover:bg-white/10 p-4 rounded-full duration-200"
@@ -29,14 +32,13 @@ const SideNav = () => {
         className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10 relative"
       >
         {isHomeActive ? (
-          <Icon icon="mingcute:home-5-fill" width="38" height="38" />
+          <Icon icon="mingcute:home-5-fill" width="32" height="32" />
         ) : (
-          <Icon icon="mingcute:home-5-line" width="38" height="38" />
+          <Icon icon="mingcute:home-5-line" width="32" height="32" />
         )}
         <span
-          className={`text-2xl pt-2 hidden md:flex ${
-            isHomeActive ? 'font-bold' : ''
-          }`}
+          className={`text-2xl pt-2 hidden md:flex ${isHomeActive ? 'font-bold' : ''
+            }`}
         >
           Home
         </span>
@@ -57,9 +59,8 @@ const SideNav = () => {
           <Icon icon="uil:search" width="38" height="38" />
         )}
         <span
-          className={`text-2xl pt-2 hidden md:flex ${
-            isExploreActive ? 'font-bold' : ''
-          }`}
+          className={`text-2xl pt-2 hidden md:flex ${isExploreActive ? 'font-bold' : ''
+            }`}
         >
           Explore
         </span>
@@ -68,38 +69,34 @@ const SideNav = () => {
         href="/account/uploads"
         className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10"
       >
+
         {isNotificationsActive ? (
-          <Icon icon="mingcute:notification-fill" width="38" height="38" />
-        ) : (
-          <Icon icon="mingcute:notification-line" width="38" height="38" />
-        )}
+          <Icon icon="ph:plus-fill" width={32} height={32} />) : (
+          <Icon icon="ph:plus-fill" width={32} height={32} />)
+        }
+
         <span
-          className={`text-2xl pt-2 hidden md:flex ${
-            isNotificationsActive ? 'font-bold' : ''
-          }`}
+          className={`text-2xl pt-2 hidden md:flex ${isNotificationsActive ? 'font-bold' : ''
+            }`}
         >
-          Notifications
+          Upload
         </span>
       </Link>
       <Link
         href="/account/profile"
         className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10"
       >
-        {isMessagesActive ? (
-          <Icon icon="ic:baseline-email" width="38" height="38" />
-        ) : (
-          <Icon icon="ic:outline-email" width="38" height="38" />
-        )}
+        {user ? (user.photoURL) ? <Image className='rounded-full border border-2 border-zinc-900' alt='user' src={user.photoURL} height={32} width={32}></Image> : <Icon icon="ph:user-bold" height={32} width={32} /> : null}
         <span
-          className={`text-2xl pt-2 hidden md:flex ${
-            isMessagesActive ? 'font-bold' : ''
-          }`}
+          className={`text-2xl pt-2 hidden md:flex ${isMessagesActive ? 'font-bold' : ''
+            }`}
         >
-          Messages
+          Profile
         </span>
       </Link>
     </div>
   );
+          }
 };
 
 export default SideNav;

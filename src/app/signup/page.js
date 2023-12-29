@@ -8,10 +8,27 @@ export default function Login() {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
 
+    async function handleEmailSignup(e) {
+        e.preventDefault();
+        const data = {
+            email: "test@gmail.com",
+            password: "test"
+        }
+        e.preventDefault();
+        const res = await fetch('api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+
+        })
+        console.log(res)
+    }
     return (
         <>
-        <BackBtn/>
-            <div className="m-10 flex flex-col pt-10 justify-center items-center h-full gap-4">
+            <BackBtn />
+            <div className="m-10 flex flex-col pt-5 justify-center items-center h-full gap-4">
                 <div className="lg:w-1/4 flex flex-col gap-4">
                     <div className="flex flex-col gap-4 text-center">
                         <h1 className="text-4xl font-bold">Sign up for Circle!</h1>
@@ -32,7 +49,7 @@ export default function Login() {
                         <h1>Or</h1>
                         <hr className="h-[2px] bg-zinc-200  w-full rounded-full" />
                     </div>
-                    
+
                     <button className="px-4 py-2 border-2 flex items-center justify-center gap-4 rounded-md" onClick={() => googleSignup()}>
                         <Icon icon="devicon:google" />
                         <h1>Continue with Google</h1>

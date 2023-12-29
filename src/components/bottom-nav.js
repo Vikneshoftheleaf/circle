@@ -46,7 +46,8 @@ const BottomNav = () => {
           <Link href="/account/uploads" className="flex items-center">
             {isNotificationsActive ? (
               <Icon icon="ph:plus-fill" width={32} height={32} />) : (
-              <Icon icon="ph:plus-fill" width={32} height={32}/>)}
+              <Icon icon="ph:plus-fill" width={32} height={32}/>)
+              }
           </Link>
           <Link href="/account/profile" className="flex items-center">
             {user ? (user.photoURL)?<Image className='rounded-full border border-2 border-zinc-900' alt='user' src={user.photoURL} height={32} width={32}></Image>:<Icon icon="ph:user-bold" height={32} width={32} /> : null}

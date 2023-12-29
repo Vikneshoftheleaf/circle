@@ -25,7 +25,9 @@ export function googleSignup() {
         photoURL: user.photoURL ? user.photoURL : null,
         followers: 0,
         following: 0,
-        posts: 0
+        posts: 0,
+        followedBy:[],
+        followingBy:[]
 
       });
       // IdP data available using getAdditionalUserInfo(result)
@@ -103,7 +105,9 @@ export function emailSignup(e, email, password) {
         photoURL: user.photoURL ? user.photoURL : null,
         followers: 0,
         following: 0,
-        posts: 0
+        posts: 0,
+        followedBy:[],
+        followingBy:[]
 
       });
       console.log('siggned in with email!')

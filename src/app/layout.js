@@ -15,8 +15,20 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
 
         <AuthContextProvider>
-            <main>{children}</main>
-        <BottomNav />
+          {/*<div className='lg:grid grid-cols-5 sm:grid-cols-1'>
+            <div className='lg:col-span-1'>
+              <SideNav />
+            </div>
+            <div className='lg:col-span-4'>
+              <main>{children}</main>
+
+            </div>
+            
+          </div>
+          */}
+          <main>{children}</main>
+
+          <BottomNav />
 
         </AuthContextProvider>
       </body>

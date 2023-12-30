@@ -170,7 +170,7 @@ export default function Posts({ data, profile, view }) {
                     }
 
                 </div>
-                <Drawer>
+                <Drawer >
                     <DrawerTrigger>Comments</DrawerTrigger>
                     <DrawerContent>
                         <DrawerHeader className={'flex justify-between items-center'}>
@@ -198,7 +198,7 @@ export default function Posts({ data, profile, view }) {
                                                             {com.cDisplayName}
                                                             {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
                                                         </h1>
-                                                        <p className="text-sm">{com.commentText}</p>
+                                                        <p className="text-sm px-2">{com.commentText}</p>
 
 
                                                     </div>
@@ -211,9 +211,9 @@ export default function Posts({ data, profile, view }) {
 
                         </div>
 
-                        <DrawerFooter  className={'w-full fixed bottom-0 z-10'}>
-                            <div className="w-full flex gap-2">
-                                <input type="text" className="w-[80%] focus:outline-none" name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} />
+                        <DrawerFooter  className={'w-full fixed bg-white bottom-0 z-10 mb-[-5px]'}>
+                            <div className="w-full flex gap-2 ">
+                                <textarea type="text" className="w-[80%] focus:outline-none resize-none" name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
                                 <button className="bg-red-500 text-slate-100 px-4 py-2 rounded-md" onClick={() => addComment()}>Send</button>
                             </div>
                         </DrawerFooter>

@@ -211,7 +211,7 @@ export default function Posts({ data, profile, view }) {
 
                         </div>
 
-                        <DrawerFooter  className={'w-full'}>
+                        <DrawerFooter  className={'w-full fixed bottom-0 z-10'}>
                             <div className="w-full flex gap-2">
                                 <input type="text" className="w-[80%] focus:outline-none" name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} />
                                 <button className="bg-red-500 text-slate-100 px-4 py-2 rounded-md" onClick={() => addComment()}>Send</button>

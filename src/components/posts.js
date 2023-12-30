@@ -5,13 +5,22 @@ import { updateDoc, doc, arrayUnion, arrayRemove, increment } from "firebase/fir
 import { db, auth } from "@/firebase";
 import { useAuthContext } from "@/context/authcontext";
 import { Icon } from "@iconify/react";
-export default function Posts({ data , profile}) {
+export default function Posts({ data , profile, view}) {
 
+    const viewto = document.getElementById(view)
     const [liked, setLiked] = useState(false);
-    const [followed, setFollowed] = useState(false)
-    let likes = data.likes;
-    let followers = profile.followers;
-    let following = profile.following;
+    const [followed, setFollowed] = useState(false);
+
+    useEffect(()=>{
+
+        
+       if(viewto != null)
+        {
+            viewto.scrollIntoView({behavior:"auto"});
+        }
+        
+    },[viewto])
+    
 
     async function putLike(){
         await updateDoc(doc(db, "posts", data.id), {
@@ -83,15 +92,17 @@ export default function Posts({ data , profile}) {
         }
     },[profile.following])
 
-  
+ 
 
     return (
-        <div className="p-4 flex flex-col gap-4 ">
+        <div id={data.id} className="p-4 flex flex-col gap-4 ">
             <div className="flex items-center gap-4">
-                {data.authorImg?<Image className="h-[35px] w-[35px] object-cover rounded-full" src={data.authorImg} height={50} width={50} alt="userImage"></Image>:null}
+                {data.authorImg?<Image className="h-[35px] w-[35px] object-cover rounded-full" src={data.authorImg} height={50} width={50} alt="userImage"></Image>:<Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
                 <h1>{data.authorName}</h1>
                 <div>
-                    {followed
+                    {(data.author == profile.uid)
+                    ?null
+                    :followed
                     ?<button onClick={()=>removeFollowing()} className="px-2 py-1 border-2 text-red-950 rounded-md">Following</button>
                     :<button onClick={()=>addFollowing()} className="px-2 py-1 bg-red-500 text-slate-100 rounded-md">Follow</button>
                 }
@@ -117,4 +128,5 @@ export default function Posts({ data , profile}) {
             </div>
         </div>
     )
+            
 }

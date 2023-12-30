@@ -1,30 +1,98 @@
 "use client";
-import { googleSignup, emailSignup } from "@/functions/functions";
-import { useState } from "react";
+import { auth, db } from "@/firebase";
+import { signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, } from "firebase/auth";
+const provider = new GoogleAuthProvider();
+import { doc, setDoc } from "firebase/firestore";
+
+import { useState,useRef } from "react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import BackBtn from "@/components/backBtn";
 export default function Login() {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    const errorRef = useRef();
 
-    async function handleEmailSignup(e) {
-        e.preventDefault();
-        const data = {
-            email: "test@gmail.com",
-            password: "test"
-        }
-        e.preventDefault();
-        const res = await fetch('api/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
 
-        })
-        console.log(res)
-    }
+    function googleSignup() {
+        signInWithPopup(auth, provider)
+          .then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+            const [displayName] = user.email.split('@')
+            setDoc(doc(db, "user", user.uid), {
+              uid: user.uid,
+              userName:null,
+              descrip:null,
+              displayName: user.displayName ? user.displayName : displayName[0],
+              email: user.email,
+              photoURL: user.photoURL ? user.photoURL : null,
+              followers: 0,
+              following: 0,
+              posts: 0,
+              followedBy:[],
+              followingBy:[],
+              verified: false
+      
+            });
+            // IdP data available using getAdditionalUserInfo(result)
+            console.log("signned up with google!")
+      
+            // ...
+          }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            
+            console.log(errorMessage)
+            // ...
+          });
+      }
+
+      function emailSignup(e, email, password) {
+        e.preventDefault();
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed up 
+            const user = userCredential.user;
+            const displayName = user.email.split('@')
+            setDoc(doc(db, "user", user.uid), {
+              uid: user.uid,
+              userName:null,
+              descrip:null,
+              displayName: user.displayName ? user.displayName : displayName[0],
+              email: user.email,
+              photoURL: user.photoURL ? user.photoURL : null,
+              followers: 0,
+              following: 0,
+              posts: 0,
+              followedBy:[],
+              followingBy:[],
+              verified: false
+      
+            });
+            console.log('siggned in with email!')
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorMessage)
+            const errMsg = errorCode.split('/')
+            errorRef.current.textContent = errMsg[1];
+      
+            // ..
+          });
+      
+      
+      }
     return (
         <>
             <BackBtn />
@@ -34,6 +102,9 @@ export default function Login() {
                         <h1 className="text-4xl font-bold">Sign up for Circle!</h1>
                         <p className="text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, quasi.</p>
                     </div>
+                    <div>
+                    <p className="text-red-500 text-sm text-center" ref={errorRef}></p>
+                   </div>
                     <form onSubmit={(e) => emailSignup(e, email, password)} className="flex flex-col gap-4 ">
                         <input onChange={(e) => setEmail(e.target.value)} type="email" name="email" id="email" className="rounded-md border border-2 p-2" placeholder="Email" />
                         <input onChange={(e) => setPassword(e.target.value)} type="password" name="password" id="password" className="rounded-md border border-2 p-2" placeholder="Password" />

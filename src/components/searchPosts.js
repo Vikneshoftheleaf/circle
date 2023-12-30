@@ -1,5 +1,5 @@
 import Image from "next/image"
-export default function UserPosts({data})
+export default function SearchPosts({data})
 {
     return(
         <div id="data.id">

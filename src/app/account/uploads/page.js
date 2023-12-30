@@ -7,15 +7,16 @@ import { createPost } from "@/functions/functions"
 import { useRouter } from "next/navigation"
 import { storage, db, auth } from "@/firebase"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, updateDoc, and } from "firebase/firestore";
 export default function Upload() {
-    const {profile} = useAuthContext();
+    const { profile } = useAuthContext();
     const router = useRouter();
     const { user } = useAuthContext();
     const [image, setImage] = useState(null);
     const fileInputRef = useRef(null);
     const [title, settitle] = useState(null)
     const [tags, settags] = useState(null)
+    const [postId, setPostId] = useState(null)
     const handleImageChange = (e) => {
         const selectedImage = e.target.files[0];
         setImage(selectedImage);
@@ -32,41 +33,47 @@ export default function Upload() {
 
     function createPost(image, title, tags, uid, displayName, photoURL) {
         const metadata = {
-          contentType: 'image/jpeg',
+            contentType: 'image/jpeg',
         };
         const newUserPostCount = Number(profile.posts) + 1;
-      
+
         const storageRef = ref(storage, `posts/${image.name}`);
-      
+
         // 'file' comes from the Blob or File API
         uploadBytes(storageRef, image, metadata).then(() => {
-      
-          getDownloadURL(ref(storage, `posts/${image.name}`))
-            .then(async(url) => {
-      
-              const docRef = await addDoc(collection(db, "posts"), {
-                postPicURL: url,
-                title: title,
-                tags: tags,
-                author: uid,
-                likes:0,
-                authorName:displayName,
-                authorImg:photoURL,
-                likedBy:[]
-                
-              });
-             await updateDoc(doc(db, "user", user.uid), {
-                posts: newUserPostCount
-            });
-      
-              console.log("post id", docRef.id)
-            })
-      
-      
+
+            getDownloadURL(ref(storage, `posts/${image.name}`))
+                .then(async (url) => {
+
+                    const docRef = await addDoc(collection(db, "posts"), {
+                        postPicURL: url,
+                        title: title,
+                        tags: tags,
+                        author: uid,
+                        likes: 0,
+                        authorName: displayName,
+                        authorImg: photoURL,
+                        likedBy: []
+
+                    });
+                    await updateDoc(doc(db, "user", user.uid), {
+                        posts: newUserPostCount
+                    });
+                    const id = docRef.id;
+                    await setDoc(doc(db, "comments", id), {
+                        values:[]
+                      });
+
+
+                })
+
+
         });
-      
-      
-      }
+
+
+    }
+
+
 
     return (
         <>

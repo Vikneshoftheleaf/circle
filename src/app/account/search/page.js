@@ -30,7 +30,6 @@ export default function Search() {
         if (searchQuery) {
             if (searchQuery.length > 0) {
                 const searchArray = searchQuery.split('');
-                const sample = "viknesh"
 
                 const q = query(collection(db, "user"), where('displayName', '==', searchQuery), limit(30));
                 const unsubscribe = onSnapshot(q, (QuerySnapshot) => {

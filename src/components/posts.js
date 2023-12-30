@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { updateDoc, doc, arrayUnion, arrayRemove, increment, onSnapshot } from "firebase/firestore";
+import { updateDoc, doc, arrayUnion, arrayRemove, increment, onSnapshot, where, collection, query, QuerySnapshot, addDoc } from "firebase/firestore";
 import { db, auth } from "@/firebase";
 import { useAuthContext } from "@/context/authcontext";
 import { Icon } from "@iconify/react";
@@ -24,15 +24,9 @@ export default function Posts({ data, profile, view }) {
     const [followed, setFollowed] = useState(false);
     const [commentText, setCommentText] = useState()
     const [postComments, setPostComments] = useState([])
-    const [commentValues, setCommentValues] = useState({
-        commentId: profile.id,
-        commentPic: profile.photoURL,
-        commentName: profile.displayName,
-        commentVerified: profile.verified,
-        commentText: commentText
-})
-    
-    
+
+
+
 
     useEffect(() => {
         if (postComments != null) {
@@ -42,12 +36,13 @@ export default function Posts({ data, profile, view }) {
 
     useEffect(() => {
 
-        const unsub = onSnapshot(doc(db, "comments", data.id), (doc) => {
-            const newData = doc.data()
-            setPostComments(newData)
-            console.log("data are fetched")
-        });
-        return unsub;
+        const cref = collection(db, 'comments')
+        const q = query(cref, where('postId', '==', data.id));
+        const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+            setPostComments(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+
+        })
+        return unsubscribe;
 
     }, [])
 
@@ -129,8 +124,18 @@ export default function Posts({ data, profile, view }) {
     }, [profile.following])
 
     async function addComment() {
-        await updateDoc(doc(db, "comments", data.id), {
-            values: {commentValues}
+        /* await updateDoc(doc(db, "comments", data.id), {
+             values: {commentValues}
+         });
+         */
+        await addDoc(collection(db, "comments"), {
+            postId: data.id,
+            cUserImg: profile.photoURL,
+            cUserId: profile.uid,
+            cUserName: profile.userName,
+            cDisplayName: profile.displayName,
+            commentText: commentText,
+            cVerified: profile.verified
         });
 
     }
@@ -177,16 +182,36 @@ export default function Posts({ data, profile, view }) {
                         <div>
                             {
                                 (postComments == null) ? null
-                                    : <div>
+                                    : <div className="flex flex-col gap-4 h-[500px] overflow-y-scroll">
+                                        {postComments.map(com =>
 
-                                        {/*postComments.comments.map(com => <h1 key={com.commentName}>{com.commentText}</h1> )*/}
+                                            <div key={com.id} className="w-full px-4 flex flex-col">
+                                                <div className="flex gap-2 items-start">
+                                                    <div>
+                                                        {com.cUserImg
+                                                            ? <Image src={com.cUserImg} height={24} width={24} className="h-[24px] w-[24px] object-cover rounded-full" alt="user Image"></Image>
+                                                            : <Icon className="h-[24px] w-[24px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={24} width={24} />
+                                                        }
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <h1 className="flex gap-2 items-center font-semibold">
+                                                            {com.cDisplayName}
+                                                            {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
+                                                        </h1>
+                                                        <p className="text-sm">{com.commentText}</p>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
 
                             }
 
                         </div>
 
-                        <DrawerFooter className={'w-full'}>
+                        <DrawerFooter  className={'w-full'}>
                             <div className="w-full flex gap-2">
                                 <input type="text" className="w-[80%] focus:outline-none" name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} />
                                 <button className="bg-red-500 text-slate-100 px-4 py-2 rounded-md" onClick={() => addComment()}>Send</button>

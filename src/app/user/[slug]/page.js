@@ -8,7 +8,9 @@ import { getDoc, collection, query, where, onSnapshot, QuerySnapshot, updateDoc,
 import { useAuthContext } from "@/context/authcontext";
 import UserPosts from "@/components/userPosts";
 import { db, auth } from "@/firebase";
+import { useRouter } from "next/navigation";
 export default function UserPage({ params }) {
+    const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [uData, setuData] = useState([])
     const [userPosts, setUserPosts] = useState([])
@@ -18,17 +20,30 @@ export default function UserPage({ params }) {
 
     const searchId = params.slug
 
-    useEffect(() => {
+    useEffect(()=>{
+        if(searchId == profile.uid)
+        {
+            router.push('/account/profile')
+        }
+    },[])
 
-        const unsub = onSnapshot(doc(db, "user", searchId), (doc) => {
-            const newData = doc.data()
-            setuData(newData)
-        });
-        return unsub;
+    useEffect(() => {
+        if(searchId.length > 0)
+        {
+            const unsub = onSnapshot(doc(db, "user", searchId), (doc) => {
+                const newData = doc.data()
+                setuData(newData)
+            });
+            return unsub;    
+
+        }
+
     }, [])
 
 
     useEffect(() => {
+        if(searchId.length > 0)
+        {
         const q = query(collection(db, "posts"), where("author", "==", searchId));
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
             //const cities = [];
@@ -36,6 +51,7 @@ export default function UserPage({ params }) {
             //console.log("Current cities in CA: ", cities.join(", "));
         });
         return unsubscribe
+    }
 
     }, [])
 
@@ -46,9 +62,9 @@ export default function UserPage({ params }) {
                 setUserFound(true)
                 console.log(uData)
             }
+            setLoading(false)
 
         }
-        setLoading(false)
 
     }, [uData])
 
@@ -57,7 +73,7 @@ export default function UserPage({ params }) {
             if (userPosts.length != 0) {
                 console.log(userPosts)
             }
-
+            
         }
     }, [userPosts])
 
@@ -104,10 +120,7 @@ export default function UserPage({ params }) {
         return (<><h1>Searching For User...</h1></>)
     }
     else {
-        if (!userfound) {
-            return (<><h1>No User Found!</h1></>)
-        }
-        else {
+
 
             return (
                 <>
@@ -165,13 +178,17 @@ export default function UserPage({ params }) {
 
                         <div className="grid grid-cols-3 gap-1 p-4">
                             {userPosts.map(upost =>
-                                <UserPosts key={upost.id} data={upost} />
+                                <Link key={upost.id} href={`/user/p?user=${searchId}&view=${upost.id}`}>
+
+                                    <UserPosts key={upost.id} data={upost} />
+
+                                </Link>
                             )}
                         </div>
                     </div>
                 </>
             )
         }
-    }
+    
 
 }

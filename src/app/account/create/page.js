@@ -76,7 +76,8 @@ export default function Create() {
                         await updateDoc(doc(db, "user", user.uid), {
                             userName: username,
                             descrip: descrip,
-                            photoURL: url
+                            photoURL: url,
+                            userNameArray: [...username]
                         });
                         router.push('/account/profile')
                         console.log("updated with image")
@@ -92,6 +93,8 @@ export default function Create() {
                 await updateDoc(doc(db, "user", user.uid), {
                     userName: username,
                     descrip: descrip,
+                    userNameArray: [...username]
+
                 });
                 router.push('/account/profile')
                         console.log("updated without image")

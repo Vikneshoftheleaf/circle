@@ -64,8 +64,8 @@ export default function Notification() {
 
         <>
             <div>
-                <div className="flex justify-between items-center">
-                    <BackBtn />
+                <div className="flex justify-between items-center m-4">
+                    <h1 className="text-xl font-bold">Notifications</h1>
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <Icon icon="zondicons:dots-horizontal-triple" />
@@ -76,13 +76,13 @@ export default function Notification() {
                     </DropdownMenu>
                 </div>
                 <div className="m-5">
-                    <div >
+                    <div className="flex flex-col gap-2" >
                         {(notificationMsg == null) ? null
                             : notificationMsg.map(not =>
                                 <div key={not.id} className="flex felx-col gap-4">
                                     <div className="flex gap-2 items-center">
-                                        {not.nImg ? <Image src={not.nImg} height={42} width={42} className="h-[42px] w-[42px] object-cover rounded-full" alt="notification images"></Image> : null}
-                                        <p>{not.message}</p>
+                                        {not.nImg ? <Image src={not.nImg} height={42} width={42} className=" border-2 h-[42px] w-[42px] object-cover rounded-full" alt="notification images"></Image> : null}
+                                        <p className="text-sm">{not.message}</p>
                                     </div>
                                 </div>
                             )

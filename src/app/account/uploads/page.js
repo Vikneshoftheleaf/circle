@@ -93,7 +93,7 @@ export default function Upload() {
                     </div>
                     <div className="flex gap-4 mx-5">
                         <div>
-                            <Image src={URL.createObjectURL(image)} height={350} width={350} alt="uploaded Image" />
+                            <Image src={URL.createObjectURL(image)} className="h-[50px] w-[50px] object-cover" height={50} width={50} alt="uploaded Image" />
                         </div>
                         <div>
                             <textarea name="desc" id="" cols="30" rows="5" className="resize-none focus:outline-none" placeholder="Write Something" onChange={(e) => settitle(e.target.value)}></textarea>
@@ -101,12 +101,12 @@ export default function Upload() {
 
                     </div>
                     <div className="flex flex-col gap-2 mx-5">
-                        <h1>Tags</h1>
+                        <h1 className="text-base font-semibold">Tags</h1>
                         <input type="text" name="tags" id="" placeholder="#Tags" className="focus:outline-none p-2" onChange={(e) => settags(e.target.value)} />
                     </div>
 
                     <div className="m-5">
-                        <button className="w-full py-2 bg-red-500 text-xl text-semibold text-slate-100 rounded-sm" onClick={() => { createPost(image, title, tags, user.uid, profile.displayName, profile.photoURL); router.push('/account/vids') }}>Post</button>
+                        <button className="w-full py-2 bg-red-500 text-xl font-semibold text-slate-100 rounded-sm" onClick={() => { createPost(image, title, tags, user.uid, profile.displayName, profile.photoURL); router.push('/account/vids') }}>Post</button>
                     </div>
                 </div>
 

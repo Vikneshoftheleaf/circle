@@ -107,7 +107,7 @@ export default function Setting() {
             </div>
 
             <div className="flex flex-col gap-2">
-                <div className="flex flex-col gap-4 p-5 text-xl">
+                <div className="flex flex-col gap-4 p-5 text-base">
                     <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:share" />Invite Friends</h1>
                     <h1 className="flex gap-2 items-center"><Icon icon="ph:user-bold" />Account</h1>
                     <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:help-outline" />Help</h1>
@@ -142,7 +142,7 @@ export default function Setting() {
                         </AlertDialog>
 
                     </h1>
-                    <button onClick={() => logOut()} className="flex flex-row justify-center items-center rounded-sm  gap-2 px-4 py-2 bg-red-500 text-slate-50">Log Out<Icon icon="material-symbols:logout" /></button>
+                    <button onClick={() => logOut()} className="flex flex-row justify-center font-semibold items-center rounded-sm  gap-2 px-4 py-2 bg-red-500 text-slate-50">Log Out<Icon icon="material-symbols:logout" /></button>
 
                 </div>
             </div>

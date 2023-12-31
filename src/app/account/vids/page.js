@@ -36,7 +36,7 @@ export default function Videos() {
         return (
             <div>
                 <NavBar />
-                <div className="my-20">
+                <div className="mt-16 mb-24">
                     {(posts == null) ? null
                         : posts.map(post => <Posts key={post.id} data={post} profile={profile} />)
                     }

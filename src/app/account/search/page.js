@@ -31,7 +31,7 @@ export default function Search() {
             if (searchQuery.length > 0) {
                 const searchArray = searchQuery.split('');
 
-                const q = query(collection(db, "user"), where('displayName', '==', searchQuery), limit(30));
+                const q = query(collection(db, "user"), where('displayNameArray', 'array-contains-any', searchArray), limit(30));
                 const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
                     //const cities = [];
                     setSearchResult(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -50,13 +50,17 @@ export default function Search() {
 
     return (
         <div>
-            <div className="flex gap-2 items-center p-2 relative">
-                <BackBtn />
-                <input type="text" onFocus={() => setSearchPanel('flex')} name="search" id="search" className="p-2 rounded-full w-full bg-red-50" placeholder="Search Videos" onChange={(e) => setSearchQuery(e.target.value)} />
-
+            <div className="flex gap-2 items-center justify-start bg-red-50 m-4 px-2 relative">
+            <Icon
+                icon="uil:search"
+                width="32"
+                height="32"
+                className="p-2 rounded-md bg-red-50"
+              />
+                <input type="text" onFocus={() => setSearchPanel('flex')} name="search" id="search" className="focus:outline-none p-2 rounded-md w-full bg-red-50" placeholder="Search Videos" onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
 
-            <div className={`${searchPanel} absolute w-full h-full bg-white justify-center`}>
+            <div className={`${searchPanel} absolute w-full h-full bg-white text-slate-900 justify-center`}>
                 <div className="w-full flex flex-col ">
                     {
                     (searchResult == null || searchResult.length == 0 )?null
@@ -77,6 +81,7 @@ export default function Search() {
                 </div>
 
             </div>
+            
             <div className="grid grid-cols-3 gap-1 p-4">
                 {userPosts.map(upost =>
                     <Link key={upost.id} href={`/account/search/p?view=${upost.id}`}>

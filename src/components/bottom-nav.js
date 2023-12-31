@@ -22,7 +22,7 @@ const BottomNav = () => {
 
   if (user !=null && user != undefined) {
     return (
-      <div className={`fixed bottom-0 w-full py-4 z-10 bg-zinc-100 dark:bg-zinc-950 border-t dark:border-zinc-800 border-zinc-200 shadow-lg sm:hidden ${navClass}`}>
+      <div className={`fixed bottom-0 w-full py-4 z-10 bg-white dark:bg-zinc-950 border-t dark:border-zinc-800 border-zinc-200 shadow-lg sm:hidden ${navClass}`}>
         <div className="flex flex-row justify-around items-center w-full">
           <Link href="/account/vids" className="flex items-center relative">
             {isHomeActive ? (
@@ -59,7 +59,10 @@ const BottomNav = () => {
           </Link>
 
           <Link href="/account/profile" className="flex items-center">
-          <Icon icon="ph:user-bold" height={32} width={32} />
+            {isProfileActive
+            ?<Icon icon="ph:user-bold" height={32} width={32} />
+            :<Icon icon="ph:user" height={32} width={32} />
+          }
           </Link>
         </div>
       </div>

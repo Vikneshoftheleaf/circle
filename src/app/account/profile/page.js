@@ -62,62 +62,70 @@ export default function Profile() {
 
         return (
             <>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
 
-                    <div className="flex items-center p-2 justify-between">
+                    <div className="flex items-center m-4 justify-between">
                         <div className="flex gap-2 items-center" >
                             <h1 className="font-bold">{profile.displayName}</h1>
+                            <h1>{profile.verified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}</h1>
                         </div>
 
-                        <Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" /></Link>
+                        <Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" height={24} width={24} /></Link>
                     </div>
 
-                    <div className="flex flex-col gap-4 ">
+                    <div className="flex justify-between gap-4 px-4">
 
 
-                        <div className="flex justify-center items-center relative">
-                            <div>
-                                {(profile.photoURL != null) ? <Image className="rounded-full h-[100px] w-[100px] object-cover" src={profile.photoURL} height={100} width={100} alt="User"></Image>
+                        <div className="flex justify-center items-center relative ">
+                            <div className="">
+                                {(profile.photoURL != null) ? <Image className="rounded-full h-[80px] w-[80px] object-cover" src={profile.photoURL} height={80} width={80} alt="User"></Image>
                                     : <Icon className="h-[100px] w-[100px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
 
                                 }
 
                             </div>
 
-
                         </div>
 
-                        <div className="flex gap-2 items-center justify-center text-center">
-                            <h1>{profile.userName}</h1>
-                            <h1>{profile.verified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}</h1>
-                        </div>
 
                         <div className="flex justify-center items-center gap-6">
                             <div className="flex flex-col justify-center items-center text-center">
-                                <h1>{profile.following}</h1>
-                                <h1>Following</h1>
+                                <h1 className="text-lg font-bold">{profile.posts}</h1>
+                                <h1 className="text-base">Posts</h1>
+                            </div>
+
+
+
+                            <div className="flex flex-col justify-center items-center text-center">
+                                <h1 className="text-lg font-bold">{profile.followers}</h1>
+                                <h1 className="text-base">Followers</h1>
                             </div>
 
                             <div className="flex flex-col justify-center items-center text-center">
-                                <h1>{profile.followers}</h1>
-                                <h1>Followers</h1>
+                                <h1 className="text-lg font-bold">{profile.following}</h1>
+                                <h1 className="text-base">Following</h1>
                             </div>
 
-                            <div className="flex flex-col justify-center items-center text-center">
-                                <h1>{profile.posts}</h1>
-                                <h1>Posts</h1>
-                            </div>
+
 
                         </div>
 
-
-
-                        <div className="text-center text-sm p-2">
-                            <p>{profile.descrip}</p>
-                        </div>
 
                     </div>
 
+                    <div className="flex gap-2  font-semibold text-base px-4">
+                        <h1>{profile.userName}</h1>
+                    </div>
+
+                    <div className=" text-sm px-4">
+                        <p>{profile.descrip}</p>
+                    </div>
+
+                    <div className="w-full px-4">
+                        <button className="bg-slate-100 rounded-md font-semibold text-base py-2 w-full">Edit Profile</button>
+                    </div>
+
+                    <hr className="mt-4"/>
 
                     <div className="grid grid-cols-3 gap-1 p-4">
                         {userPosts.map(upost =>

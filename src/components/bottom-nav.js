@@ -9,14 +9,15 @@ import { Icon } from '@iconify/react';
 import { useAuthContext } from '@/context/authcontext';
 const BottomNav = () => {
   const scrollDirection = useScrollingEffect(); // Use the custom hook
-  const navClass = scrollDirection === 'up' ? '':'opacity-25 duration-500';
+  const navClass = scrollDirection === 'up' ? 'opacity-25 duration-500':'';
   const { user } = useAuthContext();
+  const {profile} = useAuthContext();
 
   const {
     isHomeActive,
     isExploreActive,
-    isNotificationsActive,
-    isMessagesActive,
+    isProfileActive,
+    isNotificationsActive
   } = useNavigation();
 
   if (user) {
@@ -49,8 +50,16 @@ const BottomNav = () => {
               <Icon icon="ph:plus-fill" width={32} height={32}/>)
               }
           </Link>
+
+          <Link href="/account/notification" className="flex items-center">
+            {isNotificationsActive ? (
+              <Icon icon="mingcute:notification-fill" height={32} width={32} />) : (
+                <Icon icon="mingcute:notification-line" height={32} width={32} />)
+              }
+          </Link>
+
           <Link href="/account/profile" className="flex items-center">
-            {user ? (user.photoURL)?<Image className='rounded-full border border-2 border-zinc-900' alt='user' src={user.photoURL} height={32} width={32}></Image>:<Icon icon="ph:user-bold" height={32} width={32} /> : null}
+            {(profile)?<Image className='rounded-full border-2 border-zinc-900' alt='user' src={profile.photoURL} height={32} width={32}></Image>:<Icon icon="ph:user-bold" height={32} width={32} />}
           </Link>
         </div>
       </div>

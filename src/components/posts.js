@@ -64,12 +64,26 @@ export default function Posts({ data, profile, view }) {
             likedBy: arrayUnion(profile.uid)
         });
         console.log('done')
+        await addDoc(collection(db, "notifications"), {
+            notificationTo: data.author,
+            nImg: data.postPicURL,
+            isVerified:profile.verified,
+            message: `${profile.displayName} Liked Your Post.`,
+            read:false
+        });
     }
 
     async function removeLike() {
         await updateDoc(doc(db, "posts", data.id), {
             likes: increment(-1),
             likedBy: arrayRemove(profile.uid)
+        });
+        await addDoc(collection(db, "notifications"), {
+            notificationTo: data.author,
+            nImg: data.postPicURL,
+            isVerified:profile.verified,
+            message: `${profile.displayName} removed Like from Your Post.`,
+            read:false
         });
 
     }
@@ -96,6 +110,15 @@ export default function Posts({ data, profile, view }) {
             followingBy: arrayUnion(data.author)
         });
         console.log("followed")
+
+        await addDoc(collection(db, "notifications"), {
+            notificationTo: data.author,
+            nImg: profile.photoURL,
+            isVerified:profile.verified,
+            message: `${profile.displayName} is Following You.`,
+            read:false
+        });
+
     }
 
     async function removeFollowing() {
@@ -108,6 +131,13 @@ export default function Posts({ data, profile, view }) {
             followingBy: arrayRemove(data.author)
         });
         console.log("Unfollowed")
+        await addDoc(collection(db, "notifications"), {
+            notificationTo: data.author,
+            nImg: profile.photoURL,
+            isVerified:profile.verified,
+            message: `${profile.displayName} Unfollowd You.`,
+            read:false
+        });
 
 
     }
@@ -137,6 +167,16 @@ export default function Posts({ data, profile, view }) {
             commentText: commentText,
             cVerified: profile.verified
         });
+
+        await addDoc(collection(db, "notifications"), {
+            notificationTo: data.author,
+            nImg: data.photoURL,
+            isVerified:profile.verified,
+            message: `${profile.displayName} commented on your Post.`,
+            commentText: commentText,
+            read:false
+        });
+
 
     }
 
@@ -185,15 +225,17 @@ export default function Posts({ data, profile, view }) {
                                     : <div className="flex flex-col gap-4 h-[500px] overflow-y-scroll">
                                         {postComments.map(com =>
 
-                                            <div key={com.id} className="w-full px-4 flex flex-col">
-                                                <div className="flex gap-2 items-start">
-                                                    <div>
+                                            <div key={com.id} className="w-full px-4  ">
+
+                                                <div className="grid grid-cols-10  gap-2 ">
+                                                    <div className="col-span-1">
                                                         {com.cUserImg
                                                             ? <Image src={com.cUserImg} height={24} width={24} className="h-[24px] w-[24px] object-cover rounded-full" alt="user Image"></Image>
                                                             : <Icon className="h-[24px] w-[24px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={24} width={24} />
                                                         }
                                                     </div>
-                                                    <div className="flex flex-col">
+
+                                                    <div className="col-span-9 flex flex-col">
                                                         <h1 className="flex gap-2 items-center font-semibold">
                                                             {com.cDisplayName}
                                                             {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}

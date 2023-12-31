@@ -9,13 +9,13 @@ const useNavigation = () => {
   const [isHomeActive, setIsHomeActive] = useState(false);
   const [isExploreActive, setIsExploreActive] = useState(false);
   const [isNotificationsActive, setIsNotificationsActive] = useState(false);
-  const [isMessagesActive, setIsMessagesActive] = useState(false);
+  const [isProfileActive, setIsProfileActive] = useState(false);
 
   useEffect(() => {
     setIsHomeActive(false);
     setIsExploreActive(false);
     setIsNotificationsActive(false);
-    setIsMessagesActive(false);
+    setIsProfileActive(false);
 
     switch (pathname) {
       case '/account/vids':
@@ -24,11 +24,11 @@ const useNavigation = () => {
       case '/account/search':
         setIsExploreActive(true);
         break;
-      case '/account/uploads':
+      case '/account/notification':
         setIsNotificationsActive(true);
         break;
       case '/account/profile':
-        setIsMessagesActive(true);
+        setIsProfileActive(true);
         break;
         
       default:
@@ -41,7 +41,7 @@ const useNavigation = () => {
     isHomeActive,
     isExploreActive,
     isNotificationsActive,
-    isMessagesActive,
+    isProfileActive,
   };
 };
 

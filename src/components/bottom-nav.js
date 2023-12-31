@@ -9,7 +9,7 @@ import { Icon } from '@iconify/react';
 import { useAuthContext } from '@/context/authcontext';
 const BottomNav = () => {
   const scrollDirection = useScrollingEffect(); // Use the custom hook
-  const navClass = scrollDirection === 'up' ? 'opacity-25 duration-500':'';
+  const navClass = scrollDirection === 'up' ? 'opacity-100 duration-500':'opacity-25 duration-500';
   const { user } = useAuthContext();
   const {profile} = useAuthContext();
 
@@ -20,7 +20,7 @@ const BottomNav = () => {
     isNotificationsActive
   } = useNavigation();
 
-  if (user) {
+  if (user !=null && user != undefined) {
     return (
       <div className={`fixed bottom-0 w-full py-4 z-10 bg-zinc-100 dark:bg-zinc-950 border-t dark:border-zinc-800 border-zinc-200 shadow-lg sm:hidden ${navClass}`}>
         <div className="flex flex-row justify-around items-center w-full">
@@ -59,7 +59,7 @@ const BottomNav = () => {
           </Link>
 
           <Link href="/account/profile" className="flex items-center">
-            {(profile)?<Image className='rounded-full border-2 border-zinc-900' alt='user' src={profile.photoURL} height={32} width={32}></Image>:<Icon icon="ph:user-bold" height={32} width={32} />}
+          <Icon icon="ph:user-bold" height={32} width={32} />
           </Link>
         </div>
       </div>

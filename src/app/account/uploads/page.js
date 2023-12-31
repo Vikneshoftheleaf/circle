@@ -7,12 +7,13 @@ import { createPost } from "@/functions/functions"
 import { useRouter } from "next/navigation"
 import { storage, db, auth } from "@/firebase"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, doc, setDoc, updateDoc, and } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, updateDoc, and, serverTimestamp } from "firebase/firestore";
 export default function Upload() {
     const { profile } = useAuthContext();
     const router = useRouter();
     const { user } = useAuthContext();
     const [image, setImage] = useState(null);
+    const [imageName, setImageName] = useState(null);
     const fileInputRef = useRef(null);
     const [title, settitle] = useState(null)
     const [tags, settags] = useState(null)
@@ -20,6 +21,12 @@ export default function Upload() {
     const handleImageChange = (e) => {
         const selectedImage = e.target.files[0];
         setImage(selectedImage);
+        if (selectedImage.name) {
+            setImageName(selectedImage.name)
+        }
+        else {
+            setImageName(null)
+        }
     };
 
     const isEffectTriggered = useRef(false);
@@ -53,7 +60,9 @@ export default function Upload() {
                         likes: 0,
                         authorName: displayName,
                         authorImg: photoURL,
-                        likedBy: []
+                        likedBy: [],
+                        postPicName: imageName,
+                        postedAt: serverTimestamp()
 
                     });
                     await updateDoc(doc(db, "user", user.uid), {
@@ -61,8 +70,8 @@ export default function Upload() {
                     });
                     const id = docRef.id;
                     await setDoc(doc(db, "comments", id), {
-                        values:[]
-                      });
+                        values: []
+                    });
 
 
                 })

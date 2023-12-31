@@ -8,14 +8,14 @@ import Posts from "@/components/posts";
 
 import { useAuthContext } from "@/context/authcontext";
 export default function Videos() {
-    const {profile} = useAuthContext();
+    const { profile } = useAuthContext();
 
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const cref = collection(db, 'posts')
-        const q = query(cref, orderBy("title", "desc"));
+        const q = query(cref, orderBy('postedAt'));
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
             setPosts(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
 
@@ -29,18 +29,20 @@ export default function Videos() {
         }
     }, [posts])
 
-if(loading){
-return(<><h1>Users Posts...</h1></>)
-}
-else{
-    return (
-        <div>
-            <NavBar />
-            <div className="my-20">
-                {posts.map(post => <Posts key={post.id} data={post} profile={profile}/>)}
+    if (loading) {
+        return (<><h1>Users Posts...</h1></>)
+    }
+    else {
+        return (
+            <div>
+                <NavBar />
+                <div className="my-20">
+                    {(posts == null) ? null
+                        : posts.map(post => <Posts key={post.id} data={post} profile={profile} />)
+                    }
+                </div>
             </div>
-        </div>
 
-    )
-}
+        )
+    }
 }

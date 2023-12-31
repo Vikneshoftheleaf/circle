@@ -1,10 +1,11 @@
 "use client"
 import Image from "next/image"
-import { useEffect, useState } from "react"
-import { updateDoc, doc, arrayUnion, arrayRemove, increment, onSnapshot, where, collection, query, QuerySnapshot, addDoc } from "firebase/firestore";
-import { db, auth } from "@/firebase";
+import { useEffect, useRef, useState } from "react"
+import { updateDoc, doc, arrayUnion, arrayRemove, increment, onSnapshot, where, collection, query, QuerySnapshot, addDoc, deleteDoc } from "firebase/firestore";
+import { db, auth, storage } from "@/firebase";
 import { useAuthContext } from "@/context/authcontext";
 import { Icon } from "@iconify/react";
+import { getStorage, ref, deleteObject } from "firebase/storage";
 
 import {
     Drawer,
@@ -17,6 +18,16 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer"
 
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+
 export default function Posts({ data, profile, view }) {
 
     const viewto = document.getElementById(view)
@@ -24,6 +35,7 @@ export default function Posts({ data, profile, view }) {
     const [followed, setFollowed] = useState(false);
     const [commentText, setCommentText] = useState()
     const [postComments, setPostComments] = useState([])
+    const commentInputRef = useRef();
 
 
 
@@ -67,9 +79,9 @@ export default function Posts({ data, profile, view }) {
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
             nImg: data.postPicURL,
-            isVerified:profile.verified,
+            isVerified: profile.verified,
             message: `${profile.displayName} Liked Your Post.`,
-            read:false
+            read: false
         });
     }
 
@@ -81,9 +93,9 @@ export default function Posts({ data, profile, view }) {
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
             nImg: data.postPicURL,
-            isVerified:profile.verified,
+            isVerified: profile.verified,
             message: `${profile.displayName} removed Like from Your Post.`,
-            read:false
+            read: false
         });
 
     }
@@ -114,9 +126,9 @@ export default function Posts({ data, profile, view }) {
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
             nImg: profile.photoURL,
-            isVerified:profile.verified,
+            isVerified: profile.verified,
             message: `${profile.displayName} is Following You.`,
-            read:false
+            read: false
         });
 
     }
@@ -134,9 +146,9 @@ export default function Posts({ data, profile, view }) {
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
             nImg: profile.photoURL,
-            isVerified:profile.verified,
+            isVerified: profile.verified,
             message: `${profile.displayName} Unfollowd You.`,
-            read:false
+            read: false
         });
 
 
@@ -154,10 +166,7 @@ export default function Posts({ data, profile, view }) {
     }, [profile.following])
 
     async function addComment() {
-        /* await updateDoc(doc(db, "comments", data.id), {
-             values: {commentValues}
-         });
-         */
+        
         await addDoc(collection(db, "comments"), {
             postId: data.id,
             cUserImg: profile.photoURL,
@@ -170,30 +179,67 @@ export default function Posts({ data, profile, view }) {
 
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
-            nImg: data.photoURL,
-            isVerified:profile.verified,
+            nImg: data.postPicURL,
+            isVerified: profile.verified,
             message: `${profile.displayName} commented on your Post.`,
             commentText: commentText,
-            read:false
+            read: false
         });
 
+        commentInputRef.current.value = ''
 
+    }
+
+    async function deletePost() {
+        await deleteDoc(doc(db, "posts", data.id));
+        console.log("posts deleted")
+        await updateDoc(doc(db, 'user', data.author), {
+            posts: increment(-1)
+        })
+        const desertRef = ref(storage, `posts/${data.postPicName}`);
+
+        // Delete the file
+        deleteObject(desertRef).then(() => {
+            console.log('post pic deleted')
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    async function deleteComment(cid) {
+        await deleteDoc(doc(db, 'comments', cid))
     }
 
 
     return (
         <div id={data.id} className="p-4 flex flex-col gap-4 ">
-            <div className="flex items-center gap-4">
-                {data.authorImg ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={data.authorImg} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
-                <h1>{data.authorName}</h1>
-                <div>
-                    {(data.author == profile.uid)
-                        ? null
-                        : followed
-                            ? <button onClick={() => removeFollowing()} className="px-2 py-1 border-2 text-red-950 rounded-md">Following</button>
-                            : <button onClick={() => addFollowing()} className="px-2 py-1 bg-red-500 text-slate-100 rounded-md">Follow</button>
-                    }
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    {data.authorImg ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={data.authorImg} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
+                    <h1>{data.authorName}</h1>
+                    <div>
+                        {(data.author == profile.uid)
+                            ? null
+                            : followed
+                                ? <button onClick={() => removeFollowing()} className="px-2 py-1 border-2 text-red-950 rounded-md">Following</button>
+                                : <button onClick={() => addFollowing()} className="px-2 py-1 bg-red-500 text-slate-100 rounded-md">Follow</button>
+                        }
+                    </div>
+
                 </div>
+
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        {(data.author == profile.uid)
+                            ? <Icon icon="zondicons:dots-horizontal-triple" />
+                            : null}
+
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuItem><button onClick={() => deletePost()}>Delete</button></DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
             </div>
             <div className="object-cover">
                 <Image className="h-[350px] w-[350px] object-cover" src={data.postPicURL} height={350} width={350} alt="posts"></Image>
@@ -236,9 +282,21 @@ export default function Posts({ data, profile, view }) {
                                                     </div>
 
                                                     <div className="col-span-9 flex flex-col">
-                                                        <h1 className="flex gap-2 items-center font-semibold">
-                                                            {com.cDisplayName}
-                                                            {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
+                                                        <h1 className="flex gap-2 items-center justify-between font-semibold">
+                                                            <div className="flex gap-2 items-center">
+                                                                {com.cDisplayName}
+                                                                {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
+                                                            </div>
+                                                            {(com.cUserId != profile.uid) ? null
+                                                                : <DropdownMenu>
+                                                                    <DropdownMenuTrigger>
+                                                                        <Icon icon="zondicons:dots-horizontal-triple" />
+                                                                    </DropdownMenuTrigger>
+                                                                    <DropdownMenuContent>
+                                                                        <DropdownMenuItem><button onClick={() => deleteComment(com.id)}>Remove</button></DropdownMenuItem>
+                                                                    </DropdownMenuContent>
+                                                                </DropdownMenu>
+                                                            }
                                                         </h1>
                                                         <p className="text-sm px-2">{com.commentText}</p>
 
@@ -253,9 +311,9 @@ export default function Posts({ data, profile, view }) {
 
                         </div>
 
-                        <DrawerFooter  className={'w-full fixed bg-white bottom-0 z-10 mb-[-5px]'}>
+                        <DrawerFooter className={'w-full fixed bg-white bottom-0 z-10 mb-[-5px]'}>
                             <div className="w-full flex gap-2 ">
-                                <textarea type="text" className="w-[80%] focus:outline-none resize-none" name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
+                                <textarea ref={commentInputRef} type="text" className="w-[80%] focus:outline-none resize-none" name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
                                 <button className="bg-red-500 text-slate-100 px-4 py-2 rounded-md" onClick={() => addComment()}>Send</button>
                             </div>
                         </DrawerFooter>

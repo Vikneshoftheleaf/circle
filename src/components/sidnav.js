@@ -12,14 +12,13 @@ const SideNav = () => {
     isHomeActive,
     isExploreActive,
     isNotificationsActive,
-    isMessagesActive,
+    isProfileActive,
   } = useNavigation();
 
   const {user} = useAuthContext();
   if(user)
-  {
   return (
-    <div className="sm:hidden flex-col space-y-4 items-center py-8 hidden sm:flex border-r border-zinc-700 h-full  w-[120px] md:w-[250px] md:items-start fixed">
+    <div className="lg:flex sm:hidden flex-col space-y-4 items-center py-8 hidden border-r border-zinc-700 h-full  w-[120px] md:w-[250px] md:items-start fixed">
       <Link
         href="/"
         className="flex flex-row space-x-1 items-center hover:bg-white/10 p-4 rounded-full duration-200"
@@ -82,13 +81,36 @@ const SideNav = () => {
           Upload
         </span>
       </Link>
+
+      <Link
+        href="/account/notificaiton"
+        className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10"
+      >
+
+{isNotificationsActive ? (
+              <Icon icon="mingcute:notification-fill" height={32} width={32} />) : (
+                <Icon icon="mingcute:notification-line" height={32} width={32} />)
+              }
+
+        <span
+          className={`text-2xl pt-2 hidden md:flex ${isNotificationsActive ? 'font-bold' : ''
+            }`}
+        >
+          Notifications
+        </span>
+      </Link>
+
+
       <Link
         href="/account/profile"
         className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10"
       >
-        {user ? (user.photoURL) ? <Image className='rounded-full border border-2 border-zinc-900' alt='user' src={user.photoURL} height={32} width={32}></Image> : <Icon icon="ph:user-bold" height={32} width={32} /> : null}
+        {isProfileActive
+            ?<Icon icon="ph:user-bold" height={32} width={32} />
+            :<Icon icon="ph:user" height={32} width={32} />
+          }
         <span
-          className={`text-2xl pt-2 hidden md:flex ${isMessagesActive ? 'font-bold' : ''
+          className={`text-2xl pt-2 hidden md:flex ${isProfileActive ? 'font-bold' : ''
             }`}
         >
           Profile
@@ -96,7 +118,7 @@ const SideNav = () => {
       </Link>
     </div>
   );
-          }
+          
 };
 
 export default SideNav;

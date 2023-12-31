@@ -24,6 +24,7 @@ export const AuthContextProvider = ({
                 //router.push('/account/profile')
             } else {
                 setUser(null);
+                router.push("/")
             }
             setLoading(false)
         });
@@ -31,11 +32,11 @@ export const AuthContextProvider = ({
     });
 
 
-
+/*
     useEffect(() => {
         if (user == null) router.push("/")
     }, [user])
-
+*/
 
     useEffect(()=>{
         if(user){

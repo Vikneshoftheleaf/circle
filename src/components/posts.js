@@ -212,7 +212,7 @@ export default function Posts({ data, profile, view }) {
 
 
     return (
-        <div id={data.id} className="flex flex-col gap-2 ">
+        <div id={data.id} className="flex flex-col gap-2 lg:w-[500px] my-4">
             <div className="flex items-center justify-between px-4">
                 <div className="flex items-center gap-2 ">
                     {data.authorImg ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={data.authorImg} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
@@ -242,7 +242,7 @@ export default function Posts({ data, profile, view }) {
 
             </div>
             <div className="object-cover">
-                <Image className="h-[500px] w-full object-cover" src={data.postPicURL} height={350} width={350} alt="posts"></Image>
+                <Image className=" w-full aspect-square object-fill  " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
             </div>
 
             <div className="flex items-center px-4 ">

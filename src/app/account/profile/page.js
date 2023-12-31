@@ -121,13 +121,13 @@ export default function Profile() {
                         <p>{profile.descrip}</p>
                     </div>
 
-                    <div className="w-full px-4">
-                        <button className="bg-slate-100 rounded-md font-semibold text-base py-2 w-full">Edit Profile</button>
+                    <div className="w-full px-4 text-center">
+                        <Link href={'/account/profile/edit'} className="bg-red-50 rounded-md font-semibold text-base py-2 w-full">Edit Profile</Link>
                     </div>
 
                     <hr className="mt-4"/>
 
-                    <div className="grid grid-cols-3 gap-1 p-4">
+                    <div className="grid grid-cols-3 gap-1">
                         {userPosts.map(upost =>
                             <Link key={upost.id} href={`/account/profile/p?view=${upost.id}`}>
                                 <UserPosts data={upost} />

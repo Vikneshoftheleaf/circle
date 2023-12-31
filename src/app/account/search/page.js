@@ -31,7 +31,7 @@ export default function Search() {
             if (searchQuery.length > 0) {
                 const searchArray = searchQuery.split('');
 
-                const q = query(collection(db, "user"), where('displayNameArray', 'array-contains-any', searchArray), limit(30));
+                const q = query(collection(db, "user"), where('userNameArray', 'array-contains-any', searchArray), limit(30));
                 const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
                     //const cities = [];
                     setSearchResult(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -57,7 +57,7 @@ export default function Search() {
                 height="32"
                 className="p-2 rounded-md bg-red-50"
               />
-                <input type="text" onFocus={() => setSearchPanel('flex')} name="search" id="search" className="focus:outline-none p-2 rounded-md w-full bg-red-50" placeholder="Search Videos" onChange={(e) => setSearchQuery(e.target.value)} />
+                <input type="search" onFocus={() => setSearchPanel('flex')} name="search" id="search" className="focus:outline-none p-2 rounded-md w-full bg-red-50" placeholder="Search Videos" onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
 
             <div className={`${searchPanel} absolute w-full h-full bg-white text-slate-900 justify-center`}>
@@ -65,16 +65,17 @@ export default function Search() {
                     {
                     (searchResult == null || searchResult.length == 0 )?null
                     :searchResult.map(res =>
-                        <Link key={res.id} href={`/user/${res.uid}`} className="w-full flex items-center gap-4 border-b-2 px-4 py-2">
+                        <Link key={res.id} href={`/user/${res.uid}`} className="w-full flex items-center gap-4  px-4 py-2">
                             <div>
                                 {(res.photoURL)
-                                ?<Image src={res.photoURL} height={32} width={32} className="h-[32px] w-[32px] rounded-full object-cover" alt="userProfile"></Image>
+                                ?<Image src={res.photoURL} height={48} width={48} className="h-[48px] w-[48px] rounded-full object-cover" alt="userProfile"></Image>
                                 :<Icon className="h-[32px] w-[32px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={32} width={32} />
                             }
                             </div>
-                            <div className=" flex flex-col justify-center items-start">
-                                <h1 className="text-lg font-bold flex gap-1 items-center">{res.displayName}{res.verified?<Icon className="text-blue-500" icon="material-symbols:verified" />:null}</h1>
-                                <h1 className="text-sm">@{res.userName}</h1>
+                            <div className="flex flex-col gap-0 items-start leading-tight ">
+                                <p className="text-sm flex gap-1 items-center">{res.displayName}{res.verified?<Icon className="text-blue-500" icon="material-symbols:verified" />:null}</p>
+                                <p className="text-sm text-gray-400">@{res.userName}</p>
+                                <p className="text-sm text-gray-400">{res.followers} Followers</p>
                             </div>
                         </Link>)}
 
@@ -82,7 +83,7 @@ export default function Search() {
 
             </div>
             
-            <div className="grid grid-cols-3 gap-1 p-4">
+            <div className="grid grid-cols-3 gap-1">
                 {userPosts.map(upost =>
                     <Link key={upost.id} href={`/account/search/p?view=${upost.id}`}>
                         <SearchPosts data={upost} />

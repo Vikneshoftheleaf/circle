@@ -85,7 +85,9 @@ export default function Notification() {
                                     <div className="w-full flex justify-between items-center">
                                         <div className="flex gap-2 items-center">
                                             <div className="col-span-2">
-                                                {not.npImg ? <Image src={not.npImg} height={42} width={42} className=" border-2 h-[42px] w-[42px] object-cover rounded-full" alt="notification images"></Image> : null}
+                                                {not.npImg ? <Image src={not.npImg} height={42} width={42} className=" border-2 h-[42px] w-[42px] object-cover rounded-full" alt="notification images"></Image>
+                                                :<Icon className="h-[42px] w-[42px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />                                               
+                                            }
                                             </div>
                                             <p className="text-sm col-span-6"><span className="font-semibold">{(not.nUserName==profile.userName)?'You':not.nUserName}</span> {not.message}</p>
 

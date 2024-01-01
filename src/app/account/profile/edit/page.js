@@ -143,10 +143,11 @@ export default function EditProfile() {
                 userName: username,
                 displayName: displayName,
                 descrip: descrip,
+            }).then(()=>{
+                setNameTaken(null)
+                router.back()    
             })
             console.log("profile updated")
-            setNameTaken(null)
-            router.back()
         }
         else{
             console.log("username is Taken")

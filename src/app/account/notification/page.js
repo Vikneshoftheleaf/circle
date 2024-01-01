@@ -20,6 +20,8 @@ export default function Notification() {
     const { profile } = useAuthContext();
     const [notificationMsg, setNotificationMsg] = useState([]);
 
+    
+
     useEffect(() => {
 
         const cref = collection(db, 'notifications')
@@ -44,18 +46,18 @@ export default function Notification() {
         const cref = collection(db, 'notifications')
         const q = query(cref, where('notificationTo', '==', profile.uid));
         getDocs(q)
-        .then((QuerySnapshot) => {
-          // Iterate through the documents
-          QuerySnapshot.forEach((doc) => {
-            // Delete each document using deleteDoc with the document reference directly
-            deleteDoc(doc.ref)
-              .then(() => {
-                console.log('Document successfully deleted!');
-              })
-              
-          });
-        })
-        
+            .then((QuerySnapshot) => {
+                // Iterate through the documents
+                QuerySnapshot.forEach((doc) => {
+                    // Delete each document using deleteDoc with the document reference directly
+                    deleteDoc(doc.ref)
+                        .then(() => {
+                            console.log('Document successfully deleted!');
+                        })
+
+                });
+            })
+
 
     }
 
@@ -80,9 +82,17 @@ export default function Notification() {
                         {(notificationMsg == null) ? null
                             : notificationMsg.map(not =>
                                 <div key={not.id} className="flex felx-col gap-4">
-                                    <div className="flex gap-2 items-center">
-                                        {not.nImg ? <Image src={not.nImg} height={42} width={42} className=" border-2 h-[42px] w-[42px] object-cover rounded-full" alt="notification images"></Image> : null}
-                                        <p className="text-sm">{not.message}</p>
+                                    <div className="w-full flex justify-between items-center">
+                                        <div className="flex gap-2 items-center">
+                                            <div className="col-span-2">
+                                                {not.npImg ? <Image src={not.npImg} height={42} width={42} className=" border-2 h-[42px] w-[42px] object-cover rounded-full" alt="notification images"></Image> : null}
+                                            </div>
+                                            <p className="text-sm col-span-6"><span className="font-semibold">{(not.nUserName==profile.userName)?'You':not.nUserName}</span> {not.message}</p>
+
+                                        </div>
+                                        <div className=" flex ">
+                                            {not.nImg ? <Image src={not.nImg} className=" float-right h-[42px] w-[42px] rounded-md aspect-square object-cover" alt="post pic" height={42} width={42}></Image> : null}
+                                        </div>
                                     </div>
                                 </div>
                             )

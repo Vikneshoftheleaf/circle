@@ -1,11 +1,12 @@
 "use client"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
-import { updateDoc, doc, arrayUnion, arrayRemove, increment, onSnapshot, where, collection, query, QuerySnapshot, addDoc, deleteDoc } from "firebase/firestore";
+import { updateDoc, doc, arrayUnion, arrayRemove, increment, onSnapshot, where, collection, query, QuerySnapshot, getDocs, addDoc, deleteDoc } from "firebase/firestore";
 import { db, auth, storage } from "@/firebase";
 import { useAuthContext } from "@/context/authcontext";
 import { Icon } from "@iconify/react";
 import { getStorage, ref, deleteObject } from "firebase/storage";
+import Link from "next/link";
 
 import {
     Drawer,
@@ -79,9 +80,11 @@ export default function Posts({ data, profile, view }) {
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
             nImg: data.postPicURL,
+            npImg: profile.photoURL,
             isVerified: profile.verified,
-            message: `${profile.displayName} Liked Your Post.`,
-            read: false
+            read: false,
+            nUserName: profile.userName,
+            message: 'Liked your Post.',
         });
     }
 
@@ -93,9 +96,11 @@ export default function Posts({ data, profile, view }) {
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
             nImg: data.postPicURL,
+            npImg: profile.photoURL,
             isVerified: profile.verified,
-            message: `${profile.displayName} removed Like from Your Post.`,
-            read: false
+            read: false,
+            nUserName: profile.userName,
+            message: 'Removed Like from your Post.',
         });
 
     }
@@ -127,8 +132,10 @@ export default function Posts({ data, profile, view }) {
             notificationTo: data.author,
             nImg: profile.photoURL,
             isVerified: profile.verified,
-            message: `${profile.displayName} is Following You.`,
-            read: false
+            read: false,
+            nUserName: profile.userName,
+            message: 'is following you.',
+            gotfollowed: profile.uid
         });
 
     }
@@ -147,8 +154,9 @@ export default function Posts({ data, profile, view }) {
             notificationTo: data.author,
             nImg: profile.photoURL,
             isVerified: profile.verified,
-            message: `${profile.displayName} Unfollowd You.`,
-            read: false
+            read: false,
+            nUserName: profile.userName,
+            message: 'unfollowed you.',
         });
 
 
@@ -180,10 +188,13 @@ export default function Posts({ data, profile, view }) {
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
             nImg: data.postPicURL,
+            npImg:profile.photoURL,
             isVerified: profile.verified,
-            message: `${profile.displayName} commented on your Post.`,
             commentText: commentText,
-            read: false
+            read: false,
+            nUserName:profile.userName,
+            message:"commented on your post."
+
         });
 
         commentInputRef.current.value = ''
@@ -204,6 +215,22 @@ export default function Posts({ data, profile, view }) {
         }).catch((error) => {
             console.log(error)
         })
+
+        const commentRef = collection(db, 'comments')
+        const cq = query(commentRef, where('postId', '==', data.id));
+        getDocs(cq)
+            .then((QuerySnapshot) => {
+                // Iterate through the documents
+                QuerySnapshot.forEach((doc) => {
+                    // Delete each document using deleteDoc with the document reference directly
+                    deleteDoc(doc.ref)
+                        .then(() => {
+                            console.log('all comments are deleted');
+                        })
+
+                });
+            })
+
     }
 
     async function deleteComment(cid) {
@@ -215,8 +242,13 @@ export default function Posts({ data, profile, view }) {
         <div id={data.id} className="flex flex-col gap-2 lg:w-[500px] my-4">
             <div className="flex items-center justify-between px-4">
                 <div className="flex items-center gap-2 ">
-                    {data.authorImg ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={data.authorImg} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
-                    <h1 className="text-base font-semibold">{data.authorName}</h1>
+                    <Link href={`/user/${data.author}`} >
+                        {data.authorImg ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={data.authorImg} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
+                    </Link>
+                    <Link  href={`/user/${data.author}`}>
+                        <h1 className="text-base font-semibold">{data.authorName}</h1>
+
+                    </Link>
                     <div>
                         {(data.author == profile.uid)
                             ? null
@@ -241,8 +273,8 @@ export default function Posts({ data, profile, view }) {
                 </DropdownMenu>
 
             </div>
-            <div className="object-cover">
-                <Image className=" w-full aspect-square object-fill  " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
+            <div className="" >
+                <Image onDoubleClick={()=> putLike()} className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
             </div>
 
             <div className="flex items-center px-4 ">

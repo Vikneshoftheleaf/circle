@@ -62,10 +62,10 @@ export default function Profile() {
 
         return (
             <>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 w-full">
 
                     <div className="flex items-center m-4 justify-between">
-                        <div className="flex gap-2 items-center" >
+                        <div className="flex gap-1 items-center" >
                             <h1 className="font-bold">{profile.displayName}</h1>
                             <h1>{profile.verified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}</h1>
                         </div>
@@ -73,7 +73,7 @@ export default function Profile() {
                         <Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" height={24} width={24} /></Link>
                     </div>
 
-                    <div className="flex justify-between gap-4 px-4">
+                    <div className="flex justify-center gap-4 px-4">
 
 
                         <div className="flex justify-center items-center relative ">
@@ -121,11 +121,11 @@ export default function Profile() {
                         <p>{profile.descrip}</p>
                     </div>
 
-                    <div className="w-full px-4 text-center">
-                        <Link href={'/account/profile/edit'} className="bg-red-50 rounded-md font-semibold text-base py-2 w-full">Edit Profile</Link>
+                    <div className="w-full px-4 text-center flex">
+                        <Link href={'/account/profile/edit'} className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 ">Edit Profile</Link>
                     </div>
 
-                    <hr className="mt-4"/>
+                    <hr className="my-4"/>
 
                     <div className="grid grid-cols-3 gap-1">
                         {userPosts.map(upost =>

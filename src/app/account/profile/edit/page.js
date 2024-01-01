@@ -143,6 +143,7 @@ export default function EditProfile() {
                 userName: username,
                 displayName: displayName,
                 descrip: descrip,
+                userNameArray: [...username]
             }).then(()=>{
                 setNameTaken(null)
                 router.back()    

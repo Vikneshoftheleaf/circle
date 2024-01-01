@@ -274,7 +274,7 @@ export default function Posts({ data, profile, view }) {
 
             </div>
             <div className="" >
-                <Image onDoubleClick={()=> putLike()} className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
+                <Image className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
             </div>
 
             <div className="flex items-center px-4 ">

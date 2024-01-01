@@ -24,7 +24,7 @@ export const AuthContextProvider = ({
                 //router.push('/account/profile')
             } else {
                 setUser(null);
-                router.push("/")
+               // router.push("/")
             }
             setLoading(false)
         });

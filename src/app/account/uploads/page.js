@@ -3,11 +3,10 @@ import { useState, useEffect, useRef } from "react"
 import { useAuthContext } from "@/context/authcontext"
 import BackBtn from "@/components/backBtn"
 import Image from "next/image"
-import { createPost } from "@/functions/functions"
 import { useRouter } from "next/navigation"
 import { storage, db, auth } from "@/firebase"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, doc, setDoc, updateDoc, and, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, updateDoc, and, serverTimestamp, increment } from "firebase/firestore";
 export default function Upload() {
     const { profile } = useAuthContext();
     const router = useRouter();
@@ -58,7 +57,7 @@ export default function Upload() {
                         tags: tags,
                         author: uid,
                         likes: 0,
-                        authorName: displayName,
+                        authoruserName: profile.userName,
                         authorImg: photoURL,
                         likedBy: [],
                         postPicName: imageName,
@@ -66,18 +65,14 @@ export default function Upload() {
 
                     });
                     await updateDoc(doc(db, "user", user.uid), {
-                        posts: newUserPostCount
-                    });
-                    const id = docRef.id;
-                    await setDoc(doc(db, "comments", id), {
-                        values: []
+                        posts: increment(1)
                     });
 
 
                 })
 
 
-        });
+        }).then(()=>router.push('/account/vids') );
 
 
     }
@@ -106,7 +101,7 @@ export default function Upload() {
                     </div>
 
                     <div className="m-5">
-                        <button className="w-full py-2 bg-red-500 text-xl font-semibold text-slate-100 rounded-sm" onClick={() => { createPost(image, title, tags, user.uid, profile.displayName, profile.photoURL); router.push('/account/vids') }}>Post</button>
+                        <button className="w-full py-2 bg-red-500 text-xl font-semibold text-slate-100 rounded-sm" onClick={() => { createPost(image, title, tags, user.uid, profile.displayName, profile.photoURL); }}>Post</button>
                     </div>
                 </div>
 

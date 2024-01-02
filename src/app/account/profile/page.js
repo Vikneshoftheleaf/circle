@@ -9,6 +9,16 @@ import { useAuthContext } from "@/context/authcontext";
 import { db, auth } from "@/firebase";
 import UserPosts from "@/components/userPosts";
 import { useRouter } from "next/navigation";
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+
 export default function Profile() {
     const router = useRouter();
     const { profile } = useAuthContext();
@@ -77,13 +87,28 @@ export default function Profile() {
 
 
                         <div className="flex justify-center items-center relative ">
-                            <div className="">
-                                {(profile.photoURL != null) ? <Image className="rounded-full h-[80px] w-[80px] object-cover" src={profile.photoURL} height={80} width={80} alt="User"></Image>
-                                    : <Icon className="h-[100px] w-[100px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
 
-                                }
 
-                            </div>
+                            <Dialog>
+                                <DialogTrigger>
+                                    <div className="">
+                                        {(profile.photoURL != null) ? <Image className="rounded-full h-[80px] w-[80px] object-cover" src={profile.photoURL} height={80} width={80} alt="User"></Image>
+                                            : <Icon className="h-[100px] w-[100px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
+
+                                        }
+
+                                    </div>
+                                </DialogTrigger>
+                                <DialogContent className="backdrop-blur-sm border-none bg-white/90">
+                                    <DialogHeader>
+                                        <DialogTitle></DialogTitle>
+                                        <DialogDescription className="flex justify-center items-center">
+                                            <Image className="h-[200] aspect-square" src={profile.photoURL} height={200} width={200} alt="user profile"></Image>
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
+
 
                         </div>
 
@@ -125,7 +150,7 @@ export default function Profile() {
                         <Link href={'/account/profile/edit'} className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 ">Edit Profile</Link>
                     </div>
 
-                    <hr className="my-4"/>
+                    <hr className="my-4" />
 
                     <div className="grid grid-cols-3 gap-1">
                         {userPosts.map(upost =>

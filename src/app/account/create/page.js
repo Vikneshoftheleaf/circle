@@ -61,17 +61,15 @@ export default function Create() {
         }
         else {
 
-            if (image != null) {
 
                 await updateDoc(doc(db, "user", user.uid), {
-                    userName: username,
+                    userName: username.toLowerCase() ,
                     descrip: descrip,
                     userNameArray: [...username]
                 });
                 router.push('/account/profile')
                 console.log("updated with image")
 
-            }
  
         }
 
@@ -89,7 +87,7 @@ export default function Create() {
         if (username != null) {
             if (username.length > 0) {
                 const cref = collection(db, 'user')
-                const q = query(cref, where('userName', '==', username));
+                const q = query(cref, where('userName', '==', username.toLowerCase()));
                 const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
                     if (QuerySnapshot.empty) {
                         setNameTaken(false)

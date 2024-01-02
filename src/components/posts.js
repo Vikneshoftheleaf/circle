@@ -1,13 +1,13 @@
 "use client"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
-import { updateDoc, doc, arrayUnion, arrayRemove, increment, onSnapshot, where, collection, query, QuerySnapshot, getDocs, addDoc, deleteDoc } from "firebase/firestore";
+import { updateDoc, doc,getDoc, arrayUnion, arrayRemove, increment, onSnapshot, where, collection, query, QuerySnapshot, getDocs, addDoc, deleteDoc, orderBy, serverTimestamp } from "firebase/firestore";
 import { db, auth, storage } from "@/firebase";
 import { useAuthContext } from "@/context/authcontext";
 import { Icon } from "@iconify/react";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import Link from "next/link";
-
+import { Timestamp } from "firebase/firestore";
 import {
     Drawer,
     DrawerClose,
@@ -38,7 +38,7 @@ export default function Posts({ data, profile, view }) {
     const [postComments, setPostComments] = useState([])
     const commentInputRef = useRef();
 
-
+   // const timestamp = new Timestamp(seconds)
 
 
     useEffect(() => {
@@ -47,10 +47,14 @@ export default function Posts({ data, profile, view }) {
         }
     }, [postComments])
 
+
+
+      
+
     useEffect(() => {
 
         const cref = collection(db, 'comments')
-        const q = query(cref, where('postId', '==', data.id));
+        const q = query(cref, where('postId', '==', data.id),orderBy('commentedAt','desc'));
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
             setPostComments(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
 
@@ -85,6 +89,7 @@ export default function Posts({ data, profile, view }) {
             read: false,
             nUserName: profile.userName,
             message: 'Liked your Post.',
+            nat:  Timestamp.fromDate(new Date())
         });
     }
 
@@ -101,9 +106,12 @@ export default function Posts({ data, profile, view }) {
             read: false,
             nUserName: profile.userName,
             message: 'Removed Like from your Post.',
+            nat:  Timestamp.fromDate(new Date())
+
         });
 
     }
+
     useEffect(() => {
         if (data.likedBy.includes(profile.uid)) {
             setLiked(true)
@@ -135,7 +143,9 @@ export default function Posts({ data, profile, view }) {
             read: false,
             nUserName: profile.userName,
             message: 'is following you.',
-            gotfollowed: profile.uid
+            gotfollowed: profile.uid,
+            nat:  Timestamp.fromDate(new Date())
+
         });
 
     }
@@ -157,6 +167,8 @@ export default function Posts({ data, profile, view }) {
             read: false,
             nUserName: profile.userName,
             message: 'unfollowed you.',
+            nat:  Timestamp.fromDate(new Date())
+
         });
 
 
@@ -182,18 +194,20 @@ export default function Posts({ data, profile, view }) {
             cUserName: profile.userName,
             cDisplayName: profile.displayName,
             commentText: commentText,
-            cVerified: profile.verified
+            cVerified: profile.verified,
+            commentedAt:  Timestamp.fromDate(new Date())
         });
 
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
             nImg: data.postPicURL,
-            npImg:profile.photoURL,
+            npImg: profile.photoURL,
             isVerified: profile.verified,
             commentText: commentText,
             read: false,
-            nUserName:profile.userName,
-            message:"commented on your post."
+            nUserName: profile.userName,
+            message: "commented on your post.",
+            nat:  Timestamp.fromDate(new Date())
 
         });
 
@@ -245,8 +259,8 @@ export default function Posts({ data, profile, view }) {
                     <Link href={`/user/${data.author}`} >
                         {data.authorImg ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={data.authorImg} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
                     </Link>
-                    <Link  href={`/user/${data.author}`}>
-                        <h1 className="text-base font-semibold">{data.authorName}</h1>
+                    <Link href={`/user/${data.author}`}>
+                        <h1 className="text-base font-semibold">{data.authoruserName}</h1>
 
                     </Link>
                     <div>
@@ -274,7 +288,7 @@ export default function Posts({ data, profile, view }) {
 
             </div>
             <div className="" >
-                <Image className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
+                <Image  className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
             </div>
 
             <div className="flex items-center px-4 ">
@@ -296,7 +310,9 @@ export default function Posts({ data, profile, view }) {
                             </DrawerHeader>
                             <div>
                                 {
-                                    (postComments == null) ? null
+                                    (postComments == null) 
+                                    ? null
+
                                         : <div className="flex flex-col gap-4 h-[500px] overflow-y-scroll pt-4">
                                             {postComments.map(com =>
 
@@ -357,14 +373,16 @@ export default function Posts({ data, profile, view }) {
                             </DrawerFooter>
                         </DrawerContent>
                     </Drawer>
+
+                    <button><Icon icon="mingcute:send-plane-line"  height={32} width={32}  /></button>
                 </div>
 
             </div>
             <div>
-                <h1 className="px-4 font-semibold">{(data.like > 2) ? `Liked By ${data.likes} and others` : `${data.likes} Likes`}</h1>
+                <h1 className="px-4 font-semibold">{(data.like < 2)?`${data.like} like`:(data.like > 2) ? `Liked By ${data.likes} and others` : `${data.likes} Likes`}</h1>
             </div>
             <div className="px-4">
-                <h1 className="font-semibold text-base">{data.title}</h1>
+                <h1 className="text-base"><span className="font-semibold text-base">{data.authoruserName}</span> {data.title}</h1>
             </div>
             <div className="px-4">
 

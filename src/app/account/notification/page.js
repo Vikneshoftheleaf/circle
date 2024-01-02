@@ -4,7 +4,7 @@ import { useAuthContext } from "@/context/authcontext";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { db, auth } from "@/firebase";
-import { collection, doc, query, onSnapshot, where, updateDoc, QuerySnapshot, deleteDoc, getDocs } from "firebase/firestore";
+import { collection, doc, query, onSnapshot, where, updateDoc, QuerySnapshot, deleteDoc, getDocs, orderBy } from "firebase/firestore";
 import { Icon } from "@iconify/react";
 import {
     DropdownMenu,
@@ -25,7 +25,7 @@ export default function Notification() {
     useEffect(() => {
 
         const cref = collection(db, 'notifications')
-        const q = query(cref, where('notificationTo', '==', profile.uid));
+        const q = query(cref, where('notificationTo', '==', profile.uid),orderBy('nat','desc'));
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
             setNotificationMsg(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
 

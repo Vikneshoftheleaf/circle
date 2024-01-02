@@ -15,7 +15,7 @@ export default function Videos() {
 
     useEffect(() => {
         const cref = collection(db, 'posts')
-        const q = query(cref, orderBy('postedAt'));
+        const q = query(cref, orderBy('postedAt','desc'));
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
             setPosts(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
 

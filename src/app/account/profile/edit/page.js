@@ -27,7 +27,7 @@ export default function EditProfile() {
         if (username != null) {
             if (username.length > 0) {
                 const cref = collection(db, 'user')
-                const q = query(cref, where('userName', '==', username));
+                const q = query(cref, where('userName', '==', username.toLowerCase()));
                 const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
                     if (QuerySnapshot.empty) {
                         setNameTaken(false)
@@ -58,16 +58,6 @@ export default function EditProfile() {
         }
     }, [username])
 
-
-    function validURL(str) {
-        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-        return !!pattern.test(str);
-    }
 
     const metadata = {
         contentType: 'image/jpeg',
@@ -140,7 +130,7 @@ export default function EditProfile() {
         if(!nameTaken)
         {
             await updateDoc(doc(db,'user',profile.uid),{
-                userName: username,
+                userName: username.toLowerCase(),
                 displayName: displayName,
                 descrip: descrip,
                 userNameArray: [...username]

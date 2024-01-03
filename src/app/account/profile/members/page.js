@@ -1,12 +1,14 @@
 "use client"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export default function Members() {
-    const [membertype, setMemberType] = useState()
+    /*const [membertype, setMemberType] = useState('follower')
     const searchparam = useSearchParams();
     const type = searchparam.get('type');
-    setMemberType(type)
+    useEffect(()=>{
+        setMemberType(type)          
+    },[])*/
     return (
         <Tabs defaultValue='follower' className="w-full">
             <TabsList className="w-full flex justify-center">

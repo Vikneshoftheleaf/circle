@@ -89,7 +89,7 @@ export default function Notification() {
                                                 :<Icon className="h-[42px] w-[42px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />                                               
                                             }
                                             </div>
-                                            <p className="text-sm col-span-6"><span className="font-semibold">{(not.nUserName==profile.userName)?'You':not.nUserName}</span> {not.message}</p>
+                                            <p className="text-base col-span-6"><span className="font-semibold">{(not.nUserName==profile.userName)?'You':not.nUserName}</span> {not.message}</p>
 
                                         </div>
                                         <div className=" flex ">

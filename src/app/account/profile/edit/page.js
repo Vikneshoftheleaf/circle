@@ -4,12 +4,12 @@ import Image from "next/image";
 import { storage, db, auth } from "@/firebase";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { useAuthContext } from "@/context/authcontext";
-import { doc, updateDoc, onSnapshot, where, query, collection, QuerySnapshot } from "firebase/firestore";
+import { doc, updateDoc, onSnapshot, where, query, collection, QuerySnapshot, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Icon } from "@iconify/react";
 import BackBtn from "@/components/backBtn";
 export default function EditProfile() {
-    const router  = useRouter();
+    const router = useRouter();
     const { user } = useAuthContext();
     const { profile } = useAuthContext();
     const [image, setImage] = useState(null)
@@ -32,12 +32,10 @@ export default function EditProfile() {
                     if (QuerySnapshot.empty) {
                         setNameTaken(false)
                     }
-                    else if(username == profile.userName)
-                    {
+                    else if (username == profile.userName) {
                         setNameTaken(null)
                     }
-                    else if(username == null)
-                    {
+                    else if (username == null) {
                         setNameTaken(null)
                     }
                     else {
@@ -73,16 +71,15 @@ export default function EditProfile() {
             descripRef.current.value = profile.descrip
             displayNameRef.current.value = profile.displayName
         }
-        else
-        {
+        else {
             setImage(null)
             setUsername(profile.userName)
             setDsiplayName(profile.displayName)
             setdescrip(profile.descrip)
             userNameRef.current.value = profile.userName
             descripRef.current.value = profile.descrip
-            displayNameRef.current.value = profile.displayName    
-            
+            displayNameRef.current.value = profile.displayName
+
         }
 
     }, [profile])
@@ -91,56 +88,112 @@ export default function EditProfile() {
         const selectedImage = e.target.files[0];
         const storageRef = ref(storage, `user/${user.uid}`);
 
-            uploadBytes(storageRef, selectedImage, metadata).then(() => {
-    
-                getDownloadURL(ref(storage, `user/${user.uid}`))
-                    .then(async (url) => {
-    
-                        await updateDoc(doc(db, "user", user.uid), {
-                            photoURL: url,
-                        });
-                        console.log("image updated")
-    
-                    })
-    
-            });
+        uploadBytes(storageRef, selectedImage, metadata).then(() => {
+
+            getDownloadURL(ref(storage, `user/${user.uid}`))
+                .then(async (url) => {
+
+                    await updateDoc(doc(db, "user", user.uid), {
+                        photoURL: url,
+                    }).then(() => {
+                        const commentRef = collection(db, 'comments');
+                        const cq = query(commentRef, where('cUserId', '==', user.uid));
+                        getDocs(cq)
+                            .then((QuerySnapshot) => {
+                                // Iterate through the documents
+                                QuerySnapshot.forEach((doc) => {
+                                    // Delete each document using deleteDoc with the document reference directly
+                                    updateDoc(doc.ref, {
+                                        cUserImg: url
+                                    })
+
+                                });
+                            })
+                    });
+                    console.log("image updated")
+
+                })
+
+        });
     };
 
     function clickGetImg() {
         fileInputRef.current.click();
     }
 
-    async function removeProfilePic()
-    {
-        await updateDoc(doc(db,'user',profile.uid),{
-            photoURL:null
+    async function removeProfilePic() {
+        await updateDoc(doc(db, 'user', profile.uid), {
+            photoURL: null
         })
         const desertRef = ref(storage, `user/${profile.uid}`);
 
         // Delete the file
         deleteObject(desertRef).then(() => {
-          // File deleted successfully
+            const commentRef = collection(db, 'comments');
+            const cq = query(commentRef, where('cUserId', '==', user.uid));
+            getDocs(cq)
+                .then((QuerySnapshot) => {
+                    // Iterate through the documents
+                    QuerySnapshot.forEach((doc) => {
+                        // Delete each document using deleteDoc with the document reference directly
+                        updateDoc(doc.ref, {
+                            cUserImg: null
+                        })
+
+                    });
+                })
+            // File deleted successfully
         }).catch((error) => {
-          // Uh-oh, an error occurred!
-        });    
+            // Uh-oh, an error occurred!
+        });
     }
 
-    async function updateProfile()
-    {
-        if(!nameTaken)
-        {
-            await updateDoc(doc(db,'user',profile.uid),{
-                userName: username.toLowerCase(),
-                displayName: displayName,
-                descrip: descrip,
-                userNameArray: [...username]
-            }).then(()=>{
-                setNameTaken(null)
-                router.back()    
-            })
-            console.log("profile updated")
+    async function updateProfile() {
+        if (!nameTaken) {
+            if(username == profile.userName)
+            {
+                await updateDoc(doc(db, 'user', profile.uid), {
+                    userName: username.toLowerCase(),
+                    displayName: displayName,
+                    descrip: descrip,
+                    userNameArray: [...username]
+                }).then(() => {
+    
+                    setNameTaken(null)
+                    router.back()
+                })
+                console.log("profile updated")
+    
+            }
+            else{
+                await updateDoc(doc(db, 'user', profile.uid), {
+                    userName: username.toLowerCase(),
+                    displayName: displayName,
+                    descrip: descrip,
+                    userNameArray: [...username]
+                }).then(() => {
+                    const commentRef = collection(db, 'comments');
+                        const cq = query(commentRef, where('cUserId', '==', user.uid));
+                        getDocs(cq)
+                            .then((QuerySnapshot) => {
+                                // Iterate through the documents
+                                QuerySnapshot.forEach((doc) => {
+                                    // Delete each document using deleteDoc with the document reference directly
+                                    updateDoc(doc.ref, {
+                                        cUserName: username
+                                    })
+
+                                });
+                            })
+    
+                    setNameTaken(null)
+                    router.back()
+                })
+                console.log("profile updated")
+    
+            }
         }
-        else{
+        else {
             console.log("username is Taken")
         }
 
@@ -151,9 +204,9 @@ export default function EditProfile() {
             <div className="flex justify-between items-center pr-4">
                 <div className="flex gap-2 items-center">
                     <BackBtn />
-                    <h1 className="font-semibold text-lg">Edit Profile</h1>
+                    <h1 className="font-semibold text-xl">Edit Profile</h1>
                 </div>
-                <button onClick={()=> updateProfile()}>OK</button>
+                <button onClick={() => updateProfile()}>OK</button>
             </div>
 
             <div className="flex justify-center items-center gap-4 p-4">
@@ -169,7 +222,7 @@ export default function EditProfile() {
                     <button onClick={() => clickGetImg()} className="py-2 w-full font-semibold bg-red-50 rounded-md">
                         Change Photo
                     </button>
-                    <button onClick={()=> removeProfilePic()} className="px-4 py-2 text-slate-100 rounded-md bg-red-500 font-semibold">Remove Photo</button>
+                    <button onClick={() => removeProfilePic()} className="px-4 py-2 text-slate-100 rounded-md bg-red-500 font-semibold">Remove Photo</button>
 
 
                 </div>
@@ -181,15 +234,15 @@ export default function EditProfile() {
                     <input ref={displayNameRef} type="text" placeholder="Name" className="p-2 focus:outline-none" onChange={(e) => setDsiplayName(e.target.value)} />
                 </div>
                 <div className="border-b-2  ">
-                <p className="text-xs ">Username</p>
+                    <p className="text-xs ">Username</p>
                     <input ref={userNameRef} type="text" placeholder="Username" className="p-2 focus:outline-none" onChange={(e) => setUsername(e.target.value)} />
                     <div className="text-sm flex justify-start">
                         {(nameTaken == null) ? null : nameTaken ? <h1 className="text-red-500">Username is Taken!</h1> : <h1 className="text-green-500">Username is Avialable!</h1>}
                     </div>
                 </div>
                 <div className="border-b-2">
-                <p className="text-xs ">Description</p>
-                <textarea ref={descripRef} name="" id="" cols="30" rows="10" className="p-2 focus:outline-none" onChange={(e) => setdescrip(e.target.value)} placeholder="write about you.."></textarea>
+                    <p className="text-xs ">Description</p>
+                    <textarea ref={descripRef} name="" id="" cols="30" rows="10" className="p-2 focus:outline-none" onChange={(e) => setdescrip(e.target.value)} placeholder="write about you.."></textarea>
                 </div>
             </div>
         </div>

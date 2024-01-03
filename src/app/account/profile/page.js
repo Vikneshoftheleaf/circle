@@ -76,7 +76,7 @@ export default function Profile() {
 
                     <div className="flex items-center m-4 justify-between">
                         <div className="flex gap-1 items-center" >
-                            <h1 className="font-bold">{profile.displayName}</h1>
+                            <h1 className="font-bold text-xl">{profile.displayName}</h1>
                             <h1>{profile.verified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}</h1>
                         </div>
 
@@ -103,7 +103,13 @@ export default function Profile() {
                                     <DialogHeader>
                                         <DialogTitle></DialogTitle>
                                         <DialogDescription className="flex justify-center items-center">
-                                            <Image className="h-[200] aspect-square" src={profile.photoURL} height={200} width={200} alt="user profile"></Image>
+
+                                            {
+                                                (profile.photoURL)?<Image className="h-[200px] aspect-square" src={profile.photoURL} height={200} width={200} alt="user profile"></Image>
+
+                                                :<Icon className="h-[200px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={200} width={200} />
+
+                                            }
                                         </DialogDescription>
                                     </DialogHeader>
                                 </DialogContent>
@@ -113,7 +119,7 @@ export default function Profile() {
                         </div>
 
 
-                        <div className="flex justify-center items-center gap-6">
+                        <div className="flex justify-center items-center gap-8">
                             <div className="flex flex-col justify-center items-center text-center">
                                 <h1 className="text-lg font-bold">{profile.posts}</h1>
                                 <h1 className="text-base">Posts</h1>
@@ -121,15 +127,15 @@ export default function Profile() {
 
 
 
-                            <div className="flex flex-col justify-center items-center text-center">
+                            <Link href={'/account/profile/members?type=follower'} className="flex flex-col justify-center items-center text-center">
                                 <h1 className="text-lg font-bold">{profile.followers}</h1>
                                 <h1 className="text-base">Followers</h1>
-                            </div>
+                            </Link>
 
-                            <div className="flex flex-col justify-center items-center text-center">
+                            <Link href={'/account/profile/members?type=following'} className="flex flex-col justify-center items-center text-center">
                                 <h1 className="text-lg font-bold">{profile.following}</h1>
                                 <h1 className="text-base">Following</h1>
-                            </div>
+                            </Link>
 
 
 

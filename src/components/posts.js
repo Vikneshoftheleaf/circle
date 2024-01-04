@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { updateDoc, doc, getDoc, arrayUnion, arrayRemove, increment, onSnapshot, where, collection, query, QuerySnapshot, getDocs, addDoc, deleteDoc, orderBy, serverTimestamp } from "firebase/firestore";
 import { db, auth, storage } from "@/firebase";
@@ -9,6 +8,7 @@ import { getStorage, ref, deleteObject } from "firebase/storage";
 import SocialShareBtn from "./socialshareBtn";
 import Link from "next/link";
 import { Timestamp } from "firebase/firestore";
+import Image from "next/image";
 import {
     Drawer,
     DrawerClose,
@@ -29,6 +29,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Title } from "@radix-ui/react-dialog";
+import MemberList from "./memberList";
 
 
 export default function Posts({ data, profile, view }) {
@@ -262,7 +263,7 @@ export default function Posts({ data, profile, view }) {
             setPostUserProfile(newData)
             setLoading(false)
         });
-        return unsub;        
+        return unsub;
 
 
     }, [])
@@ -273,7 +274,7 @@ export default function Posts({ data, profile, view }) {
                 <div className="flex items-center justify-between px-4">
                     <div className="flex items-center gap-2 ">
                         <Link href={`/user/${data.author}`} >
-                            {(postUserProfile.photoURL !=null) ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={postUserProfile.photoURL} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
+                            {(postUserProfile.photoURL != null) ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={postUserProfile.photoURL} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
                         </Link>
                         <Link href={`/user/${data.author}`} className="flex gap-2 items-center">
                             <h1 className="text-base font-semibold">{postUserProfile.userName}</h1>
@@ -293,7 +294,7 @@ export default function Posts({ data, profile, view }) {
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             {(data.author == profile.uid)
-                                ? <Icon icon="zondicons:dots-horizontal-triple" height={24} width={24} />
+                                ? <Icon icon="zondicons:dots-horizontal-triple" height={18} width={18} />
                                 : null}
 
                         </DropdownMenuTrigger>
@@ -334,15 +335,15 @@ export default function Posts({ data, profile, view }) {
 
                                                     <div key={com.id} className="w-full px-4  ">
 
-                                                        <div className="grid grid-cols-10  gap-2 ">
-                                                            <div className="col-span-1">
+                                                        <div className="grid grid-cols-10  ">
+                                                            <div className="col-span-2">
                                                                 {com.cUserImg
-                                                                    ? <Image src={com.cUserImg} height={24} width={24} className="h-[24px] w-[24px] object-cover rounded-full" alt="user Image"></Image>
-                                                                    : <Icon className="h-[24px] w-[24px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={24} width={24} />
+                                                                    ? <Image src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
+                                                                    : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
                                                                 }
                                                             </div>
 
-                                                            <div className="col-span-9 flex flex-col">
+                                                            <div className="col-span-8 flex flex-col">
                                                                 <h1 className="flex gap-2 items-center justify-between font-semibold">
                                                                     <div className="flex gap-2 items-center text-sm font-semibold">
                                                                         {com.cUserName}
@@ -363,6 +364,7 @@ export default function Posts({ data, profile, view }) {
 
 
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 )}
@@ -377,7 +379,7 @@ export default function Posts({ data, profile, view }) {
                                         <div className="flex gap-4 items-center">
                                             <div className="">
                                                 {(profile.photoURL)
-                                                    ? <Image src={profile.photoURL} className="h-[32px] w-[32px] object-ccover rounded-full" height={32} width={32} alt="user Image"></Image>
+                                                    ? <Image src={profile.photoURL} className="h-[42px] aspect-square object-cover rounded-full" height={42} width={42} alt="user Image"></Image>
                                                     : null
                                                 }
                                             </div>
@@ -416,12 +418,33 @@ export default function Posts({ data, profile, view }) {
 
                 </div>
                 <div>
-                    <h1 className="px-4 font-semibold">{(data.likes <= 1) ? `${data.likes} like` : (data.likes > 2) ? `Liked By ${data.likes} and others` : `${data.likes} Likes`}</h1>
+                    <Drawer>
+                        <DrawerTrigger>
+                            <h1 className="px-4 font-semibold">{(data.likes <= 1) ? `${data.likes} like` : (data.likes > 2) ? `Liked By ${data.likes} and others` : `${data.likes} Likes`}</h1>
+                        </DrawerTrigger>
+                        <DrawerContent>
+                            <DrawerHeader>
+                                <DrawerTitle>Likes</DrawerTitle>
+                            </DrawerHeader>
+                            <div>
+                                {(data.likedBy != null)
+                                    ? <div>
+                                        {data.likedBy.map(id => <MemberList key={id} profile={profile} id={id} type={'following'} />)}
+
+                                    </div>
+                                    : null
+                                }
+                            </div>
+
+                        </DrawerContent>
+                    </Drawer>
+
                 </div>
                 <div className="px-4">
                     <h1 className="text-base"><span className="font-semibold text-base">{postUserProfile.userName}</span> {data.title}</h1>
                 </div>
                 <div className="px-4">
+
 
                     <Drawer >
                         <DrawerTrigger>
@@ -436,21 +459,23 @@ export default function Posts({ data, profile, view }) {
                             </DrawerHeader>
                             <div>
                                 {
-                                    (postComments == null) ? null
+                                    (postComments == null)
+                                        ? null
+
                                         : <div className="flex flex-col gap-4 h-[500px] overflow-y-scroll pt-4">
                                             {postComments.map(com =>
 
                                                 <div key={com.id} className="w-full px-4  ">
 
-                                                    <div className="grid grid-cols-10  gap-2 ">
-                                                        <div className="col-span-1">
+                                                    <div className="grid grid-cols-10  ">
+                                                        <div className="col-span-2">
                                                             {com.cUserImg
-                                                                ? <Image src={com.cUserImg} height={24} width={24} className="h-[24px] w-[24px] object-cover rounded-full" alt="user Image"></Image>
-                                                                : <Icon className="h-[24px] w-[24px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={24} width={24} />
+                                                                ? <Image src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
+                                                                : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
                                                             }
                                                         </div>
 
-                                                        <div className="col-span-9 flex flex-col">
+                                                        <div className="col-span-8 flex flex-col">
                                                             <h1 className="flex gap-2 items-center justify-between font-semibold">
                                                                 <div className="flex gap-2 items-center text-sm font-semibold">
                                                                     {com.cUserName}
@@ -471,6 +496,7 @@ export default function Posts({ data, profile, view }) {
 
 
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             )}
@@ -485,7 +511,7 @@ export default function Posts({ data, profile, view }) {
                                     <div className="flex gap-4 items-center">
                                         <div className="">
                                             {(profile.photoURL)
-                                                ? <Image src={profile.photoURL} className="h-[32px] w-[32px] object-ccover rounded-full" height={32} width={32} alt="user Image"></Image>
+                                                ? <Image src={profile.photoURL} className="h-[42px] aspect-square object-cover rounded-full" height={42} width={42} alt="user Image"></Image>
                                                 : null
                                             }
                                         </div>

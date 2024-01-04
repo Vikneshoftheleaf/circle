@@ -95,10 +95,6 @@ export default function Setting() {
         });
 
         await deleteDoc(doc(db, "user", user.uid)).then(()=> logOut())
-
-        
-
-
     }
     return (
         <div>

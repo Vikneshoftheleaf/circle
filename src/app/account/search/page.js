@@ -85,7 +85,7 @@ export default function Search() {
             
             <div className="grid grid-cols-3 gap-1">
                 {userPosts.map(upost =>
-                    <Link key={upost.id} href={`/account/search/p?view=${upost.id}`}>
+                    <Link key={upost.id} href={`/user/p?user=${upost.author}&view=${upost.id}`}>
                         <SearchPosts data={upost} />
                     </Link>
                 )}

@@ -34,7 +34,6 @@ import MemberList from "./memberList";
 
 export default function Posts({ data, profile, view }) {
 
-    const viewto = document.getElementById(view)
     const [liked, setLiked] = useState(false);
     const [followed, setFollowed] = useState(false);
     const [commentText, setCommentText] = useState()
@@ -42,8 +41,18 @@ export default function Posts({ data, profile, view }) {
     const [postUserProfile, setPostUserProfile] = useState();
     const [loading, setLoading] = useState(true);
     const commentInputRef = useRef();
+    const viewto = document.getElementById(view)
 
     // const timestamp = new Timestamp(seconds)
+
+    useEffect(() => {
+     
+        if (viewto != null) {
+            viewto.scrollIntoView({ behavior: 'instant' });
+        }
+
+    },[viewto])
+  
 
 
     useEffect(() => {
@@ -68,14 +77,6 @@ export default function Posts({ data, profile, view }) {
 
     }, [])
 
-    useEffect(() => {
-
-
-        if (viewto != null) {
-            viewto.scrollIntoView({ behavior: "auto" });
-        }
-
-    }, [viewto])
 
 
 

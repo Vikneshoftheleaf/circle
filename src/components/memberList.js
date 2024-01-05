@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { useAuthContext } from "@/context/authcontext";
 import Image from "next/image";
-export default function MemberList({ id, profile, type }) {
+export default function MemberList({ id, profile, type, mode }) {
     const [idDetail, setIdDetail] = useState(null)
     const [loading, setLoading] = useState(true)
     const [isFollowed, setIsFollowed] = useState(null)
@@ -98,14 +98,12 @@ export default function MemberList({ id, profile, type }) {
     if (!loading)
         return (
             <>
-                {(id == profile.uid)
-                    ? null
-                    : <div className="w-full flex items-center justify-between px-4 py-2">
+                <div className="w-full flex items-center justify-between px-4 py-2">
 
-                        <Link href={`/account/user/${id}`} className="flex items-center gap-2">
+                        <Link href={`/user/${id}`} className="flex items-center gap-2">
                             <div>
-                                {(idDetail.photoURL != null) ? <Image className="rounded-full h-[52px] aspect-square object-cover" src={idDetail.photoURL} height={52} width={52} alt="User"></Image>
-                                    : <Icon className="h-[52px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={52} width={52} />
+                                {(idDetail.photoURL != null) ? <Image className="rounded-full h-[42px] aspect-square object-cover" src={idDetail.photoURL} height={42} width={42} alt="User"></Image>
+                                    : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
 
                                 }
                             </div>
@@ -122,6 +120,11 @@ export default function MemberList({ id, profile, type }) {
 
 
                         </Link>
+                        {
+                            (id == profile.uid)
+                            ?null
+                            :
+                        
                         <div className="flex items-center gap-4">
                             <h1>{(isFollowed)
                                 ? <button onClick={() => removeFollowing()} className="px-4 py-2 bg-red-50 text-base  font-semibold rounded-md">Unfollow</button>
@@ -129,14 +132,17 @@ export default function MemberList({ id, profile, type }) {
                             }</h1>
 
                             {
-                                (type == 'followers')
+                                (mode != 'search')
+                                ?(type == 'followers')
                                     ? <button onClick={() => removeFollower()} className="px-4 py-2 bg-red-50 text-base font-semibold rounded-md">Remove</button>
                                     : null
+                                :null
                             }
                         </div>
+}
 
                     </div>
-                }
+                
 
 
             </>

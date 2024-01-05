@@ -80,7 +80,7 @@ export default function Profile() {
                             <h1>{profile.verified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}</h1>
                         </div>
 
-                        <Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" height={24} width={24} /></Link>
+                        <Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" height={18} width={18} /></Link>
                     </div>
 
                     <div className="flex justify-center gap-4 px-4">

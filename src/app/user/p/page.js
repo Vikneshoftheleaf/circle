@@ -16,6 +16,16 @@ export default function ViewSearchUserPosts() {
     const searchUser = searchparam.get('user')
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true);
+    const viewto = document.getElementById(view)
+
+    useEffect(() => {
+     
+        if (viewto != null) {
+            viewto.scrollIntoView({ behavior: 'instant' });
+        }
+
+    },[viewto])
+
 
     useEffect(() => {
         const cref = collection(db, 'posts')

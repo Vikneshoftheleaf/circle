@@ -184,10 +184,10 @@ export default function UserPage({ params }) {
                         {/*<Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" height={24} width={24} /></Link>*/}
                     </div>
 
-                    <div className="flex justify-center gap-4 px-4">
+                    <div className="flex justify-between gap-4 px-4">
 
 
-                        <div className="flex justify-between items-center relative ">
+                        <div className="flex justify-center items-center relative ">
 
 
                             <Dialog>

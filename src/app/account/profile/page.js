@@ -83,7 +83,7 @@ export default function Profile() {
                         <Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" height={18} width={18} /></Link>
                     </div>
 
-                    <div className="flex justify-bwetween gap-4 px-4">
+                    <div className="flex justify-between gap-4 px-4">
 
 
                         <div className="flex justify-center items-center relative ">

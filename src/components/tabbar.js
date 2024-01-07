@@ -29,7 +29,7 @@ export default function TabBar() {
         
 
         <>
-            <div className="fixed bottom-0 border border-2 w-full p-2 bg-slate-950 text-slate-50">
+            <div className="fixed bottom-0  border-2 w-full p-2 bg-slate-950 text-slate-50">
                 <div className="w-full flex gap-2 justify-center items-center">
                     <Link href={'account/vids'}>Videos</Link>
                     <Link href={'account/search'}>Search</Link>

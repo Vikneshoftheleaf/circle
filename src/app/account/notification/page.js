@@ -30,6 +30,22 @@ export default function Notification() {
             setNotificationMsg(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
 
         })
+            getDocs(q)
+            .then((QuerySnapshot) => {
+                // Iterate through the documents
+                QuerySnapshot.forEach((doc) => {
+                    // Delete each document using deleteDoc with the document reference directly
+                    updateDoc(doc.ref,{
+                        read: true
+                    })
+                        
+
+                });
+        
+
+
+        })
+
 
         return unsubscribe;
 

@@ -24,16 +24,21 @@ const BottomNav = () => {
   } = useNavigation();
 
   useEffect(() => {
+    if (user != null) {
 
-    const cref = collection(db, 'notifications')
-    const q = query(cref, where('notificationTo', '==', user.uid), where('read', '==', false));
-    const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
-      setncount(QuerySnapshot.size)
-    })
+      const cref = collection(db, 'notifications')
+      const q = query(cref, where('notificationTo', '==', user.uid), where('read', '==', false));
+      const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+        setncount(QuerySnapshot.size)
+      })
 
-    return unsubscribe;
+      return unsubscribe;
 
-  })
+
+    }
+
+
+  }, [user])
 
   useEffect(() => {
     if (ncount != null) {
@@ -74,7 +79,7 @@ const BottomNav = () => {
 
           <Link href="/account/notification" className="flex items-center relative">
             <div>{(ncount != null) ? (ncount > 0)
-              ?<div className='absolute h-2 w-2 bg-red-500 rounded-full top-0 right-0 text-xs text-slate-100'></div>
+              ? <div className='absolute h-2 w-2 bg-red-500 rounded-full top-0 right-0 text-xs text-slate-100'></div>
               : null : null}
             </div>
             {isNotificationsActive ? (

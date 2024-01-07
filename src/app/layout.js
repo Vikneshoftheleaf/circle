@@ -1,4 +1,6 @@
-import './globals.css'
+import './globals.css';
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from '@vercel/analytics/react';
 import { Inter, Roboto } from 'next/font/google'
 export const metadata = {
   title: 'Circle',
@@ -25,6 +27,8 @@ export default function RootLayout({ children }) {
               <SideNav />
             </div>
             <div className='lg:col-span-4'>
+              <SpeedInsights/>
+              <Analytics />
               <main>{children}</main>
               <BottomNav />
             </div>

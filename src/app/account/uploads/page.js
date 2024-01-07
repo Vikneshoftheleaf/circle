@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { storage, db, auth } from "@/firebase"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, doc, setDoc, updateDoc, and, serverTimestamp, increment } from "firebase/firestore";
+import SpinLoading from "@/components/spinLoading"
 export default function Upload() {
     const { profile } = useAuthContext();
     const router = useRouter();
@@ -17,6 +18,7 @@ export default function Upload() {
     const [title, settitle] = useState(null)
     const [tags, settags] = useState(null)
     const [postId, setPostId] = useState(null)
+    const [buttonLoading, setButtonLoading] = useState(false)
     const handleImageChange = (e) => {
         const selectedImage = e.target.files[0];
         setImage(selectedImage);
@@ -38,6 +40,7 @@ export default function Upload() {
     }, []);
 
     function createPost(image, title, tags, uid, displayName, photoURL) {
+        setButtonLoading(true)
         const metadata = {
             contentType: 'image/jpeg',
         };
@@ -101,7 +104,11 @@ export default function Upload() {
                     </div>
 
                     <div className="m-5">
-                        <button className="w-full py-2 bg-red-500 text-xl font-semibold text-slate-100 rounded-sm" onClick={() => { createPost(image, title, tags, user.uid, profile.displayName, profile.photoURL); }}>Post</button>
+                        {(buttonLoading)
+                        ?<button className="w-full py-2 flex items-center justify-center bg-red-50 text-base font-semibold text-slate-900 rounded-sm"><SpinLoading h={8} w={8}/></button>
+                        :<button className="w-full py-2 bg-red-500 text-base font-semibold text-slate-100 rounded-sm" onClick={() => { createPost(image, title, tags, user.uid, profile.displayName, profile.photoURL); }}>Post</button>
+
+                    }
                     </div>
                 </div>
 

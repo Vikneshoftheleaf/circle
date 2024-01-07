@@ -6,10 +6,12 @@ import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { useAuthContext } from "@/context/authcontext";
 import Image from "next/image";
+import SpinLoading from "./spinLoading";
 export default function MemberList({ id, profile, type, mode }) {
     const [idDetail, setIdDetail] = useState(null)
     const [loading, setLoading] = useState(true)
     const [isFollowed, setIsFollowed] = useState(null)
+    const [floading, setfloading] = useState(false)
     useEffect(() => {
 
         const unsub = onSnapshot(doc(db, "user", id), (doc) => {
@@ -17,7 +19,7 @@ export default function MemberList({ id, profile, type, mode }) {
         });
         return unsub;
 
-    },[profile])
+    }, [profile])
 
     useEffect(() => {
         if (idDetail != null) {
@@ -32,9 +34,10 @@ export default function MemberList({ id, profile, type, mode }) {
         }
 
 
-    },[idDetail])
+    }, [idDetail])
 
     async function addFollowing() {
+        setfloading(true)
         await updateDoc(doc(db, "user", id), {
             followers: increment(1),
             followedBy: arrayUnion(profile.uid)
@@ -55,11 +58,12 @@ export default function MemberList({ id, profile, type, mode }) {
             gotfollowed: profile.uid,
             nat: Timestamp.fromDate(new Date())
 
-        });
+        }).then(()=> setfloading(false));
 
     }
 
     async function removeFollowing() {
+        setfloading(true)
         await updateDoc(doc(db, "user", id), {
             followers: increment(-1),
             followedBy: arrayRemove(profile.uid)
@@ -67,7 +71,7 @@ export default function MemberList({ id, profile, type, mode }) {
         await updateDoc(doc(db, "user", profile.uid), {
             following: increment(-1),
             followingBy: arrayRemove(id)
-        });
+        })
         console.log("Unfollowed")
         await addDoc(collection(db, "notifications"), {
             notificationTo: id,
@@ -78,7 +82,7 @@ export default function MemberList({ id, profile, type, mode }) {
             message: 'unfollowed you.',
             nat: Timestamp.fromDate(new Date())
 
-        });
+        }).then(()=> setfloading(false));
 
 
     }
@@ -100,49 +104,52 @@ export default function MemberList({ id, profile, type, mode }) {
             <>
                 <div className="w-full flex items-center justify-between px-4 py-2">
 
-                        <Link href={`/user/${id}`} className="flex items-center gap-2">
-                            <div>
-                                {(idDetail.photoURL != null) ? <Image className="rounded-full h-[42px] aspect-square object-cover" src={idDetail.photoURL} height={42} width={42} alt="User"></Image>
-                                    : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
+                    <Link href={`/user/${id}`} className="flex items-center gap-2">
+                        <div>
+                            {(idDetail.photoURL != null) ? <Image className="rounded-full h-[42px] aspect-square object-cover" src={idDetail.photoURL} height={42} width={42} alt="User"></Image>
+                                : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
 
-                                }
-                            </div>
-                            <div>
-                                <h1 className="text-base font-semibold">{idDetail.userName}</h1>
-                            </div>
-
-                            <div>
-                                {(idDetail.verified)
-                                    ? <Icon className="text-blue-500" icon="material-symbols:verified" />
-                                    : null
-                                }
-                            </div>
-
-
-                        </Link>
-                        {
-                            (id == profile.uid)
-                            ?null
-                            :
-                        
-                        <div className="flex items-center gap-4">
-                            <h1>{(isFollowed)
-                                ? <button onClick={() => removeFollowing()} className="px-4 py-2 bg-red-50 text-base  font-semibold rounded-md">Unfollow</button>
-                                : <button onClick={() => addFollowing()} className="px-4 py-2 bg-red-500 text-base text-slate-100 font-semibold rounded-md">Follow</button>
-                            }</h1>
-
-                            {
-                                (mode != 'search')
-                                ?(type == 'followers')
-                                    ? <button onClick={() => removeFollower()} className="px-4 py-2 bg-red-50 text-base font-semibold rounded-md">Remove</button>
-                                    : null
-                                :null
                             }
                         </div>
-}
+                        <div>
+                            <h1 className="text-base font-semibold">{idDetail.userName}</h1>
+                        </div>
 
-                    </div>
-                
+                        <div>
+                            {(idDetail.verified)
+                                ? <Icon className="text-blue-500" icon="material-symbols:verified" />
+                                : null
+                            }
+                        </div>
+
+
+                    </Link>
+                    {
+                        (id == profile.uid)
+                            ? null
+                            :
+
+                            <div className="flex items-center gap-4">
+                                {
+                                    (floading)
+                                        ? <button className="px-4 py-2 bg-red-50 text-base  font-semibold rounded-md"><SpinLoading h={4} w={4} /></button>
+                                        : (isFollowed)
+                                            ? <button onClick={() => removeFollowing()} className="px-4 py-2 bg-red-50 text-base  font-semibold rounded-md">Unfollow</button>
+                                            : <button onClick={() => addFollowing()} className="px-4 py-2 bg-red-500 text-base text-slate-100 font-semibold rounded-md">Follow</button>
+                                }
+
+                                {
+                                    (mode != 'search')
+                                        ? (type == 'followers')
+                                            ? <button onClick={() => removeFollower()} className="px-4 py-2 bg-red-50 text-base font-semibold rounded-md">Remove</button>
+                                            : null
+                                        : null
+                                }
+                            </div>
+                    }
+
+                </div>
+
 
 
             </>

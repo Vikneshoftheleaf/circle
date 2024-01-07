@@ -4,7 +4,7 @@ import Link from "next/link";
 import BackBtn from "@/components/backBtn";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { doc, getDoc, collection, query, where, onSnapshot, QuerySnapshot } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, onSnapshot, QuerySnapshot, orderBy } from "firebase/firestore";
 import { useAuthContext } from "@/context/authcontext";
 import { db, auth } from "@/firebase";
 import UserPosts from "@/components/userPosts";
@@ -39,7 +39,7 @@ export default function Profile() {
 
 
     useEffect(() => {
-        const q = query(collection(db, "posts"), where("author", "==", user.uid));
+        const q = query(collection(db, "posts"), where("author", "==", user.uid),orderBy('postedAt','desc'));
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
             //const cities = [];
             setUserPosts(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -83,7 +83,7 @@ export default function Profile() {
                         <Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" height={18} width={18} /></Link>
                     </div>
 
-                    <div className="flex justify-center gap-4 px-4">
+                    <div className="flex justify-bwetween gap-4 px-4">
 
 
                         <div className="flex justify-center items-center relative ">

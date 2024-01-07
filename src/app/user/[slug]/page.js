@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/drawer"
 
 import SocialShareBtn from "@/components/socialshareBtn";
+import SpinLoading from "@/components/spinLoading";
 
 
 export default function UserPage({ params }) {
@@ -40,6 +41,7 @@ export default function UserPage({ params }) {
     const [userPosts, setUserPosts] = useState([])
     const [userfound, setUserFound] = useState(false)
     const [followed, setFollowed] = useState(false);
+    const [floading, setfloading] = useState(false)
     const { profile } = useAuthContext();
 
     const searchId = params.slug
@@ -99,6 +101,7 @@ export default function UserPage({ params }) {
     }, [userPosts])
 
     async function addFollowing() {
+        setfloading(true)
         await updateDoc(doc(db, "user", searchId), {
             followers: increment(1),
             followedBy: arrayUnion(profile.uid)
@@ -106,7 +109,7 @@ export default function UserPage({ params }) {
         await updateDoc(doc(db, "user", profile.uid), {
             following: increment(1),
             followingBy: arrayUnion(searchId)
-        })
+        }).then(()=> setfloading(false))
         console.log("followed")
 
         await addDoc(collection(db, "notifications"), {
@@ -124,6 +127,7 @@ export default function UserPage({ params }) {
     }
 
     async function removeFollowing() {
+        setfloading(true)
         await updateDoc(doc(db, "user", searchId), {
             followers: increment(-1),
             followedBy: arrayRemove(profile.uid)
@@ -131,7 +135,7 @@ export default function UserPage({ params }) {
         await updateDoc(doc(db, "user", profile.uid), {
             following: increment(-1),
             followingBy: arrayRemove(searchId)
-        });
+        }).then(()=> setfloading(false));
         console.log("Unfollowed")
         await addDoc(collection(db, "notifications"), {
             notificationTo: searchId,
@@ -183,7 +187,7 @@ export default function UserPage({ params }) {
                     <div className="flex justify-center gap-4 px-4">
 
 
-                        <div className="flex justify-center items-center relative ">
+                        <div className="flex justify-between items-center relative ">
 
 
                             <Dialog>
@@ -251,10 +255,15 @@ export default function UserPage({ params }) {
 
                     <div className="w-full px-4 text-center grid grid-cols-10">
                         <div className="col-span-8">
-                            {followed
+                            {
+                                (floading)
+                                ?<button className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 flex justify-center items-center "><SpinLoading h={8} w={8}/></button>
+                                :followed
                                 ? <button onClick={() => removeFollowing()} className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 ">Following</button>
-                                : <button onClick={() => addFollowing()} className=" w-full bg-red-500 rounded-md font-semibold text-base text-slate-100 py-2 ">Follow</button>
+                              : <button onClick={() => addFollowing()} className="  w-full bg-red-500 rounded-md font-semibold text-base text-slate-100 py-2 ">Follow</button>
+
                             }
+                            
 
 
                         </div>

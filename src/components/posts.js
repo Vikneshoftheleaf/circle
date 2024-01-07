@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Title } from "@radix-ui/react-dialog";
 import MemberList from "./memberList";
+import SpinLoading from "./spinLoading";
 
 
 export default function Posts({ data, profile, view }) {
@@ -40,19 +41,20 @@ export default function Posts({ data, profile, view }) {
     const [postComments, setPostComments] = useState([])
     const [postUserProfile, setPostUserProfile] = useState();
     const [loading, setLoading] = useState(true);
+    const [floading,setfloading] = useState(false);
     const commentInputRef = useRef();
     const viewto = document.getElementById(view)
 
     // const timestamp = new Timestamp(seconds)
 
     useEffect(() => {
-     
+
         if (viewto != null) {
             viewto.scrollIntoView({ behavior: 'instant' });
         }
 
-    },[viewto])
-  
+    }, [viewto])
+
 
 
     useEffect(() => {
@@ -131,6 +133,7 @@ export default function Posts({ data, profile, view }) {
     }, [data.likes])
 
     async function addFollowing() {
+        setfloading(true)
         await updateDoc(doc(db, "user", data.author), {
             followers: increment(1),
             followedBy: arrayUnion(profile.uid)
@@ -139,7 +142,7 @@ export default function Posts({ data, profile, view }) {
         await updateDoc(doc(db, "user", profile.uid), {
             following: increment(1),
             followingBy: arrayUnion(data.author)
-        });
+        }).then(()=> setfloading(false));
         console.log("followed")
 
         await addDoc(collection(db, "notifications"), {
@@ -157,6 +160,7 @@ export default function Posts({ data, profile, view }) {
     }
 
     async function removeFollowing() {
+        setfloading(true)
         await updateDoc(doc(db, "user", data.author), {
             followers: increment(-1),
             followedBy: arrayRemove(profile.uid)
@@ -164,7 +168,7 @@ export default function Posts({ data, profile, view }) {
         await updateDoc(doc(db, "user", profile.uid), {
             following: increment(-1),
             followingBy: arrayRemove(data.author)
-        });
+        }).then(()=> setfloading(false));
         console.log("Unfollowed")
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
@@ -202,7 +206,7 @@ export default function Posts({ data, profile, view }) {
             commentText: commentText,
             cVerified: profile.verified,
             commentedAt: Timestamp.fromDate(new Date())
-        });
+        }).then(()=>commentInputRef.current.value = '' );
 
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
@@ -217,7 +221,6 @@ export default function Posts({ data, profile, view }) {
 
         });
 
-        commentInputRef.current.value = ''
 
     }
 
@@ -271,7 +274,7 @@ export default function Posts({ data, profile, view }) {
 
     if (!loading)
         return (
-            <div id={data.id} className="flex flex-col gap-2 lg:w-[500px] my-4">
+            <div id={data.id} className="flex flex-col gap-2 lg:w-[500px] py-6 border-b-2 ">
                 <div className="flex items-center justify-between px-4">
                     <div className="flex items-center gap-2 ">
                         <Link href={`/user/${data.author}`} >
@@ -284,9 +287,11 @@ export default function Posts({ data, profile, view }) {
                         <div>
                             {(data.author == profile.uid)
                                 ? null
-                                : followed
-                                    ? <button onClick={() => removeFollowing()} className="px-2 py-1 border-2 text-red-950 rounded-md">Following</button>
-                                    : <button onClick={() => addFollowing()} className="px-2 py-1 bg-red-500 text-slate-100 rounded-md">Follow</button>
+                                : (floading)
+                                ? <button className="px-4 py-1 text-red-950 rounded-md"><SpinLoading h={4} w={4}/></button>
+                                :followed
+                                    ? <button onClick={() => removeFollowing()} className="px-4 py-1 text-red-950 rounded-md">Following</button>
+                                    : <button onClick={() => addFollowing()} className="px-4 py-1 text-red-500 rounded-md font-semibold">Follow</button>
                             }
                         </div>
 
@@ -305,7 +310,7 @@ export default function Posts({ data, profile, view }) {
                     </DropdownMenu>
 
                 </div>
-                <div className="" >
+                <div className="py-2" >
                     <Image className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
                 </div>
 
@@ -418,112 +423,115 @@ export default function Posts({ data, profile, view }) {
                     </div>
 
                 </div>
-                <div>
-                    <Drawer>
-                        <DrawerTrigger>
-                            <h1 className="px-4 font-semibold">{(data.likes <= 1) ? `${data.likes} like` : (data.likes > 2) ? `Liked By ${data.likes} and others` : `${data.likes} Likes`}</h1>
-                        </DrawerTrigger>
-                        <DrawerContent>
-                            <DrawerHeader>
-                                <DrawerTitle>Likes</DrawerTitle>
-                            </DrawerHeader>
-                            <div>
-                                {(data.likedBy != null)
-                                    ? <div>
-                                        {data.likedBy.map(id => <MemberList key={id} profile={profile} id={id} type={'following'} />)}
 
-                                    </div>
-                                    : null
-                                }
-                            </div>
+                <div className="flex flex-col gap-0">
+                    <div>
+                        <Drawer>
+                            <DrawerTrigger>
+                                <h1 className="px-4 font-semibold">{(data.likes <= 1) ? `${data.likes} like` : (data.likes > 2) ? `Liked By ${data.likes} and others` : `${data.likes} Likes`}</h1>
+                            </DrawerTrigger>
+                            <DrawerContent>
+                                <DrawerHeader>
+                                    <DrawerTitle>Likes</DrawerTitle>
+                                </DrawerHeader>
+                                <div>
+                                    {(data.likedBy != null)
+                                        ? <div>
+                                            {data.likedBy.map(id => <MemberList key={id} profile={profile} id={id} type={'following'} />)}
 
-                        </DrawerContent>
-                    </Drawer>
+                                        </div>
+                                        : null
+                                    }
+                                </div>
 
-                </div>
-                <div className="px-4">
-                    <h1 className="text-base"><span className="font-semibold text-base">{postUserProfile.userName}</span> {data.title}</h1>
-                </div>
-                <div className="px-4">
+                            </DrawerContent>
+                        </Drawer>
 
-
-                    <Drawer >
-                        <DrawerTrigger>
-                            <p className="text-slate-500">{(postComments.length > 2) ? `View all ${postComments.length} comments` : 'View all comments'}</p>
-                        </DrawerTrigger>
-                        <DrawerContent>
-                            <DrawerHeader className={'flex justify-center items-center border-b-2'}>
-                                <DrawerTitle><h1 className="text-xl font-semibold">Comments</h1></DrawerTitle>
-                                {/*<DrawerClose>
+                    </div>
+                    <div className="px-4">
+                        <h1 className="text-base"><span className="font-semibold text-base">{postUserProfile.userName}</span> {data.title}</h1>
+                    </div>
+                    <div className="px-4">
+                        <Drawer >
+                            <DrawerTrigger>
+                                <p className="text-slate-500">{(postComments.length > 2) ? `View all ${postComments.length} comments` : 'View all comments'}</p>
+                            </DrawerTrigger>
+                            <DrawerContent>
+                                <DrawerHeader className={'flex justify-center items-center border-b-2'}>
+                                    <DrawerTitle><h1 className="text-xl font-semibold">Comments</h1></DrawerTitle>
+                                    {/*<DrawerClose>
                                     <button>Cancel</button>
                                 </DrawerClose>*/}
-                            </DrawerHeader>
-                            <div>
-                                {
-                                    (postComments == null)
-                                        ? null
+                                </DrawerHeader>
+                                <div>
+                                    {
+                                        (postComments == null)
+                                            ? null
 
-                                        : <div className="flex flex-col gap-4 h-[500px] overflow-y-scroll pt-4">
-                                            {postComments.map(com =>
+                                            : <div className="flex flex-col gap-4 h-[500px] overflow-y-scroll pt-4">
+                                                {postComments.map(com =>
 
-                                                <div key={com.id} className="w-full px-4  ">
+                                                    <div key={com.id} className="w-full px-4  ">
 
-                                                    <div className="grid grid-cols-10  ">
-                                                        <div className="col-span-2">
-                                                            {com.cUserImg
-                                                                ? <Image src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
-                                                                : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
-                                                            }
-                                                        </div>
-
-                                                        <div className="col-span-8 flex flex-col">
-                                                            <h1 className="flex gap-2 items-center justify-between font-semibold">
-                                                                <div className="flex gap-2 items-center text-sm font-semibold">
-                                                                    {com.cUserName}
-                                                                    {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
-                                                                </div>
-                                                                {(com.cUserId != profile.uid) ? null
-                                                                    : <DropdownMenu>
-                                                                        <DropdownMenuTrigger>
-                                                                            <Icon icon="zondicons:dots-horizontal-triple" />
-                                                                        </DropdownMenuTrigger>
-                                                                        <DropdownMenuContent>
-                                                                            <DropdownMenuItem><button onClick={() => deleteComment(com.id)}>Remove</button></DropdownMenuItem>
-                                                                        </DropdownMenuContent>
-                                                                    </DropdownMenu>
+                                                        <div className="grid grid-cols-10  ">
+                                                            <div className="col-span-2">
+                                                                {com.cUserImg
+                                                                    ? <Image src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
+                                                                    : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
                                                                 }
-                                                            </h1>
-                                                            <p className="text-base">{com.commentText}</p>
+                                                            </div>
 
+                                                            <div className="col-span-8 flex flex-col">
+                                                                <h1 className="flex gap-2 items-center justify-between font-semibold">
+                                                                    <div className="flex gap-2 items-center text-sm font-semibold">
+                                                                        {com.cUserName}
+                                                                        {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
+                                                                    </div>
+                                                                    {(com.cUserId != profile.uid) ? null
+                                                                        : <DropdownMenu>
+                                                                            <DropdownMenuTrigger>
+                                                                                <Icon icon="zondicons:dots-horizontal-triple" />
+                                                                            </DropdownMenuTrigger>
+                                                                            <DropdownMenuContent>
+                                                                                <DropdownMenuItem><button onClick={() => deleteComment(com.id)}>Remove</button></DropdownMenuItem>
+                                                                            </DropdownMenuContent>
+                                                                        </DropdownMenu>
+                                                                    }
+                                                                </h1>
+                                                                <p className="text-base">{com.commentText}</p>
+
+
+                                                            </div>
 
                                                         </div>
-
                                                     </div>
-                                                </div>
-                                            )}
-                                        </div>
+                                                )}
+                                            </div>
 
-                                }
+                                    }
 
-                            </div>
-
-                            <DrawerFooter className={'w-full fixed bg-white bottom-0 z-10 mb-[-5px]'}>
-                                <div className="w-full flex justify-between items-center gap-2 ">
-                                    <div className="flex gap-4 items-center">
-                                        <div className="">
-                                            {(profile.photoURL)
-                                                ? <Image src={profile.photoURL} className="h-[42px] aspect-square object-cover rounded-full" height={42} width={42} alt="user Image"></Image>
-                                                : null
-                                            }
-                                        </div>
-                                        <textarea ref={commentInputRef} type="text" className=" focus:outline-none resize-none" rows={1} name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
-
-                                    </div>
-                                    <button className=" bg-red-500 text-slate-100 px-4 py-2 rounded-md" onClick={() => addComment()}>Send</button>
                                 </div>
-                            </DrawerFooter>
-                        </DrawerContent>
-                    </Drawer>
+
+                                <DrawerFooter className={'w-full fixed bg-white bottom-0 z-10 mb-[-5px]'}>
+                                    <div className="w-full flex justify-between items-center gap-2 ">
+                                        <div className="flex gap-4 items-center">
+                                            <div className="">
+                                                {(profile.photoURL)
+                                                    ? <Image src={profile.photoURL} className="h-[42px] aspect-square object-cover rounded-full" height={42} width={42} alt="user Image"></Image>
+                                                    : null
+                                                }
+                                            </div>
+                                            <textarea ref={commentInputRef} type="text" className=" focus:outline-none resize-none" rows={1} name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
+
+                                        </div>
+                                        <button className=" bg-red-500 text-slate-100 px-4 py-2 rounded-md" onClick={() => addComment()}>Send</button>
+                                    </div>
+                                </DrawerFooter>
+                            </DrawerContent>
+                        </Drawer>
+                    </div>
+
+
                 </div>
             </div>
         )

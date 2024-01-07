@@ -25,5 +25,5 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const rdb = getDatabase(app);
 const storage = getStorage(app)
-//setPersistence(auth, browserLocalPersistence);
+setPersistence(auth, browserSessionPersistence);
 export {app,auth,db,rdb,storage}

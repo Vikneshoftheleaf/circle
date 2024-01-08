@@ -184,10 +184,10 @@ export default function UserPage({ params }) {
                         {/*<Link className="text-2xl" href={'/account/settings'}><Icon icon="zondicons:dots-horizontal-triple" height={24} width={24} /></Link>*/}
                     </div>
 
-                    <div className="flex justify-center gap-4 px-4">
+                    <div className="flex justify-between gap-4 px-4">
 
 
-                        <div className="flex justify-between items-center relative ">
+                        <div className="flex justify-center items-center relative ">
 
 
                             <Dialog>
@@ -257,7 +257,7 @@ export default function UserPage({ params }) {
                         <div className="col-span-8">
                             {
                                 (floading)
-                                ?<button className="h-full w-full bg-red-50 rounded-md font-semibold text-base py-2 flex justify-center items-center "><SpinLoading h={6} w={6}/></button>
+                                ?<button className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 flex justify-center items-center "><SpinLoading h={8} w={8}/></button>
                                 :followed
                                 ? <button onClick={() => removeFollowing()} className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 ">Following</button>
                               : <button onClick={() => addFollowing()} className="  w-full bg-red-500 rounded-md font-semibold text-base text-slate-100 py-2 ">Follow</button>

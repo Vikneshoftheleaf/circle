@@ -15,6 +15,7 @@ export default function ViewPosts() {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         const cref = collection(db, 'posts')
         const q = query(cref, where("author", '==', profile.uid));
@@ -30,6 +31,8 @@ export default function ViewPosts() {
             setLoading(false)
         }
     }, [posts])
+
+
 
     if (loading) {
         return (<><h1>Users Posts...</h1></>)

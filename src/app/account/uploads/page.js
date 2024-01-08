@@ -105,7 +105,7 @@ export default function Upload() {
 
                     <div className="m-5">
                         {(buttonLoading)
-                        ?<button className="w-full py-2 flex items-center justify-center bg-red-50 text-base font-semibold text-slate-900 rounded-sm"><SpinLoading h={8} w={8}/></button>
+                        ?<button className="w-full py-2 flex items-center justify-center text-base font-semibold text-slate-900 rounded-sm"><SpinLoading h={4} w={4}/></button>
                         :<button className="w-full py-2 bg-red-500 text-base font-semibold text-slate-100 rounded-sm" onClick={() => { createPost(image, title, tags, user.uid, profile.displayName, profile.photoURL); }}>Post</button>
 
                     }

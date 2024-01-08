@@ -132,7 +132,7 @@ export default function MemberList({ id, profile, type, mode }) {
                             <div className="flex items-center gap-4">
                                 {
                                     (floading)
-                                        ? <button className="h-full w-full px-4 py-2 bg-red-50 text-base  font-semibold rounded-md"><SpinLoading h={4} w={4} /></button>
+                                        ? <button className="h-full w-full px-4 py-2 text-base  font-semibold rounded-md"><SpinLoading h={4} w={4} /></button>
                                         : (isFollowed)
                                             ? <button onClick={() => removeFollowing()} className="px-4 py-2 bg-red-50 text-base  font-semibold rounded-md">Unfollow</button>
                                             : <button onClick={() => addFollowing()} className="px-4 py-2 bg-red-500 text-base text-slate-100 font-semibold rounded-md">Follow</button>

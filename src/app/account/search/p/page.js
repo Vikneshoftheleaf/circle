@@ -17,7 +17,7 @@ export default function ViewSearchPosts() {
 
     useEffect(() => {
         const cref = collection(db, 'posts')
-        const q = query(cref, orderBy('title',"desc"));
+        const q = query(cref, orderBy('postedAt',"desc"));
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
             setPosts(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
 

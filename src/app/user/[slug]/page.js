@@ -257,7 +257,7 @@ export default function UserPage({ params }) {
                         <div className="col-span-8">
                             {
                                 (floading)
-                                ?<button className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 flex justify-center items-center "><SpinLoading h={8} w={8}/></button>
+                                ?<button className=" w-full rounded-md font-semibold text-base py-2 flex justify-center items-center "><SpinLoading h={4} w={4}/></button>
                                 :followed
                                 ? <button onClick={() => removeFollowing()} className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 ">Following</button>
                               : <button onClick={() => addFollowing()} className="  w-full bg-red-500 rounded-md font-semibold text-base text-slate-100 py-2 ">Follow</button>

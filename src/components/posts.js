@@ -47,11 +47,15 @@ export default function Posts({ data, profile, view }) {
 
     // const timestamp = new Timestamp(seconds)
 
-    useEffect(() => {
+   useEffect(() => {
 
         if (viewto != null) {
-            viewto.scrollIntoView({ behavior: 'instant' });
+            viewto.scrollIntoView({ behavior: 'auto' });
         }
+
+   
+
+        
 
     }, [viewto])
 
@@ -264,7 +268,7 @@ export default function Posts({ data, profile, view }) {
 
         const unsub = onSnapshot(doc(db, "user", data.author), (doc) => {
             const newData = doc.data();
-            setPostUserProfile(newData)
+            setPostUserProfile(newData);
             setLoading(false)
         });
         return unsub;
@@ -274,7 +278,7 @@ export default function Posts({ data, profile, view }) {
 
     if (!loading)
         return (
-            <div id={data.id} className="flex flex-col gap-2 lg:w-[500px] py-6 border-b-2 ">
+            <div id={data.id} className="flex flex-col gap-2 lg:w-[500px] py-6 ">
                 <div className="flex items-center justify-between px-4">
                     <div className="flex items-center gap-2 ">
                         <Link href={`/user/${data.author}`} >

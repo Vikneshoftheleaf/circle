@@ -16,7 +16,7 @@ export default function Search() {
     const [searchResult, setSearchResult] = useState([]);
 
     useEffect(() => {
-        const q = query(collection(db, "posts"), orderBy("title", "desc"), limit(100));
+        const q = query(collection(db, "posts"), orderBy("postedAt", "desc"), limit(100));
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
             //const cities = [];
             setUserPosts(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -29,7 +29,8 @@ export default function Search() {
     useEffect(() => {
         if (searchQuery) {
             if (searchQuery.length > 0) {
-                const searchArray = searchQuery.split('');
+                const slower = searchQuery.toLowerCase();
+                const searchArray = slower.split('');
 
                 const q = query(collection(db, "user"), where('userNameArray', 'array-contains-any', searchArray), limit(30));
                 const unsubscribe = onSnapshot(q, (QuerySnapshot) => {

@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '../firebase'
 import { useRouter } from 'next/navigation';
 import { doc, getDoc, collection, query, where, onSnapshot, QuerySnapshot } from "firebase/firestore";
+import SpinLoading from '@/components/spinLoading';
 export const AuthContext = createContext({});
 
 export const useAuthContext = () => useContext(AuthContext);
@@ -21,15 +22,15 @@ export const AuthContextProvider = ({
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
-                //router.push('/account/profile')
+                router.push('/account/vids')
             } else {
                 setUser(null);
-               // router.push("/")
+                router.push("/")
             }
             setLoading(false)
         });
         return () => unsubscribe();
-    });
+    },[auth]);
 
 
 
@@ -63,7 +64,7 @@ export const AuthContextProvider = ({
     },[profile])
     return (
         <AuthContext.Provider value={{ user, profile }}>
-            {loading ? <div>Loading...</div> : children}
+            {loading ? <div className='h-screen w-full flex justify-center items-center'><SpinLoading h={12} w={12}/></div> : children}
         </AuthContext.Provider>
     );
 };

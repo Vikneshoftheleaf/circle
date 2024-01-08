@@ -83,7 +83,7 @@ const SideNav = () => {
       </Link>
 
       <Link
-        href="/account/notificaiton"
+        href="/account/notification"
         className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10"
       >
 

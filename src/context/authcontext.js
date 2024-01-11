@@ -33,16 +33,6 @@ export const AuthContextProvider = ({
     },[auth]);
 
 
-
-    useEffect(() => {
-        if (user == null)
-        {
-            router.push("/")
-        } 
-    }, [user])
-
-
-
     useEffect(()=>{
         if(user){
             const unsub = onSnapshot(doc(db, "user", user.uid), (doc) => {
@@ -64,7 +54,7 @@ export const AuthContextProvider = ({
     },[profile])
     return (
         <AuthContext.Provider value={{ user, profile }}>
-            {loading ? <div className='h-screen w-full flex justify-center items-center'><SpinLoading h={12} w={12}/></div> : children}
+            {loading ? <div className='h-screen w-full flex justify-center items-center'><SpinLoading h={50} w={50}/></div> : children}
         </AuthContext.Provider>
     );
 };

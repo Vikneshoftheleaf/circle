@@ -314,7 +314,7 @@ export default function Posts({ data, profile, view }) {
                     </DropdownMenu>
 
                 </div>
-                <button onDoubleClick={()=>{if(liked){putLike()}else{removeLike()}}} className="py-2" >
+                <button onDoubleClick={()=>{if(!liked){putLike()}else{removeLike()}}} className="py-2" >
                     <Image className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
                 </button>
 

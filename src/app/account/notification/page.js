@@ -80,8 +80,7 @@ export default function Notification() {
 
     return (
 
-        <>
-            <div>
+            <div className="">
                 <div className="flex justify-between items-center m-4">
                     <h1 className="text-xl font-bold">Notifications</h1>
                     <DropdownMenu>
@@ -119,6 +118,5 @@ export default function Notification() {
                 </div>
             </div>
 
-        </>
     )
 }

@@ -21,20 +21,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={roboto.className}>
+        <SpeedInsights />
+        <Analytics />
 
         <AuthContextProvider>
           <Provider>
-            <div className='lg:grid lg:grid-cols-5 grid-cols-1'>
-              <div className='lg:col-span-1'>
+            <div className='flex justify-between'>
+              <div className=''>
                 <SideNav />
               </div>
-              <div className='lg:col-span-4'>
-                <SpeedInsights />
-                <Analytics />
+              <div className='w-full'>
                 <main>{children}</main>
                 <BottomNav />
               </div>
-
             </div>
           </Provider>
         </AuthContextProvider>

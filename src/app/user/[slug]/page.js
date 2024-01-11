@@ -283,9 +283,7 @@ export default function UserPage({ params }) {
 
                                     </div>
 
-                                    <DrawerFooter className={'w-full fixed bg-white bottom-0 z-10 mb-[-5px]'}>
 
-                                    </DrawerFooter>
                                 </DrawerContent>
                             </Drawer>
 

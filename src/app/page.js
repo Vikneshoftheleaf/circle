@@ -1,8 +1,19 @@
 "use client"
 import Link from "next/link"
 import NavBar from "@/components/navbar"
+import { useAuthContext } from "@/context/authcontext"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 export default function Home()
 {
+  const {user} = useAuthContext()
+  const router = useRouter()
+  useEffect(()=>{
+    if(user != null)
+    {
+      router.push('/account/vids')
+    }
+  },[user])
   return(
     <>
     <NavBar/>

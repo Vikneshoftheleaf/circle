@@ -22,10 +22,9 @@ export const AuthContextProvider = ({
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
-                router.push('/account/vids')
             } else {
                 setUser(null);
-                router.push("/")
+                router.push('/')
             }
             setLoading(false)
         });

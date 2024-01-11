@@ -64,7 +64,7 @@ export default function Posts({ data, profile, view }) {
     useEffect(()=>{
         setTimeout(()=>{
             setLikeAnimation('scale-0')
-        },800)
+        },500)
     },[likeAnimation])
 
 
@@ -293,7 +293,7 @@ export default function Posts({ data, profile, view }) {
                             {(postUserProfile.photoURL != null) ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={postUserProfile.photoURL} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
                         </Link>
                         <Link href={`/user/${data.author}`} className="flex gap-2 items-center">
-                            <h1 className="text-base font-semibold">{postUserProfile.userName}</h1>
+                            <h1 className="text-base font-medium">{postUserProfile.userName}</h1>
                             {postUserProfile.verified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
                         </Link>
                         <div>
@@ -302,8 +302,8 @@ export default function Posts({ data, profile, view }) {
                                 : (floading)
                                     ? <button className="px-4 py-1 text-red-950 rounded-md"><SpinLoading h={4} w={4} /></button>
                                     : followed
-                                        ? <button onClick={() => removeFollowing()} className="px-4 py-1 dark:text-slate-100 text-red-950 rounded-md">Following</button>
-                                        : <button onClick={() => addFollowing()} className="px-4 py-1 text-red-500 rounded-md font-semibold">Follow</button>
+                                        ? <button onClick={() => removeFollowing()} className="px-4 py-1 dark:text-slate-100 text-red-950 rounded-md font-medium">Following</button>
+                                        : <button onClick={() => addFollowing()} className="px-4 py-1 text-red-500 rounded-md font-medium">Follow</button>
                             }
                         </div>
 

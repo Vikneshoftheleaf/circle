@@ -69,7 +69,7 @@ export default function Search() {
                             <div>
                                 {(res.photoURL)
                                 ?<Image src={res.photoURL} height={48} width={48} className="h-[48px] w-[48px] rounded-full object-cover" alt="userProfile"></Image>
-                                :<Icon className="h-[32px] w-[32px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={32} width={32} />
+                                :<Icon className="h-[48px] w-[48px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={48} width={48} />
                             }
                             </div>
                             <div className="flex flex-col gap-0 items-start leading-tight ">

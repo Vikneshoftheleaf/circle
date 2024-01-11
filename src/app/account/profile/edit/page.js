@@ -211,9 +211,9 @@ export default function EditProfile() {
 
             <div className="flex justify-center items-center gap-4 p-4">
                 <input type="file" accept="image/*" ref={fileInputRef} className="hidden" onChange={(e) => handleImageChange(e)} />
-                <div className="border-2 rounded-full h-[100px] w-[100px] object-cover">
+                <div className="border-2 rounded-full h-[100px] w-[100px] object-cover overflow-hidden">
                     {(!image)
-                        ? <Icon className="h-[100px] w-[100px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
+                        ? <Icon className="h-[100px] w-[100px] text-slate-500 object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
                         : <Image className="h-[100px] w-[100px] object-cover rounded-full" src={image} style={{ width: '100px', height: '100px' }} height={100} width={100} alt="User Profile" />
                     }
 
@@ -229,20 +229,20 @@ export default function EditProfile() {
             </div>
 
             <div className="flex flex-col w-full gap-6 px-4">
-                <div className="border-b-2">
+                <div className="dark:border-b-0 border-b-2">
                     <p className="text-xs ">Name</p>
-                    <input ref={displayNameRef} type="text" placeholder="Name" className=" w-full p-2 focus:outline-none" onChange={(e) => setDsiplayName(e.target.value)} />
+                    <input ref={displayNameRef} type="text" placeholder="Name" className=" w-full p-2 focus:outline-none rounded-md" onChange={(e) => setDsiplayName(e.target.value)} />
                 </div>
-                <div className="border-b-2  ">
+                <div className="dark:border-b-0 border-b-2  ">
                     <p className="text-xs ">Username</p>
-                    <input ref={userNameRef} type="text" placeholder="Username" className="w-full p-2 focus:outline-none" onChange={(e) => setUsername(e.target.value)} />
+                    <input ref={userNameRef} type="text" placeholder="Username" className="w-full p-2 focus:outline-none rounded-md" onChange={(e) => setUsername(e.target.value)} />
                     <div className="text-sm flex justify-start">
                         {(nameTaken == null) ? null : nameTaken ? <h1 className="text-red-500">Username is Taken!</h1> : <h1 className="text-green-500">Username is Avialable!</h1>}
                     </div>
                 </div>
-                <div className="border-b-2">
+                <div className="dark:border-b-0 border-b-2">
                     <p className="text-xs ">Description</p>
-                    <textarea ref={descripRef} name="" id="" cols="30" rows="10" className="w-full p-2 focus:outline-none" onChange={(e) => setdescrip(e.target.value)} placeholder="write about you.."></textarea>
+                    <textarea ref={descripRef} name="" id="" cols="30" rows="8" className="rounded-md w-full p-2 focus:outline-none" onChange={(e) => setdescrip(e.target.value)} placeholder="write about you.."></textarea>
                 </div>
             </div>
         </div>

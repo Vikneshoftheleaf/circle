@@ -206,7 +206,7 @@ export default function EditProfile() {
                     <BackBtn />
                     <h1 className="font-semibold text-xl">Edit Profile</h1>
                 </div>
-                <button onClick={() => updateProfile()}>OK</button>
+                <button onClick={() => updateProfile()}><Icon icon="charm:tick" className="text-blue-500" height={22} width={22} /></button>
             </div>
 
             <div className="flex justify-center items-center gap-4 p-4">
@@ -219,7 +219,7 @@ export default function EditProfile() {
 
                 </div>
                 <div className="flex flex-col gap-2">
-                    <button onClick={() => clickGetImg()} className="py-2 w-full font-semibold bg-red-50 rounded-md">
+                    <button onClick={() => clickGetImg()} className="py-2 w-full font-semibold dark:bg-white/20 dark:backdrop-blur-md bg-red-50 rounded-md">
                         Change Photo
                     </button>
                     <button onClick={() => removeProfilePic()} className="px-4 py-2 text-slate-100 rounded-md bg-red-500 font-semibold">Remove Photo</button>
@@ -231,18 +231,18 @@ export default function EditProfile() {
             <div className="flex flex-col w-full gap-6 px-4">
                 <div className="border-b-2">
                     <p className="text-xs ">Name</p>
-                    <input ref={displayNameRef} type="text" placeholder="Name" className="p-2 focus:outline-none" onChange={(e) => setDsiplayName(e.target.value)} />
+                    <input ref={displayNameRef} type="text" placeholder="Name" className=" w-full p-2 focus:outline-none" onChange={(e) => setDsiplayName(e.target.value)} />
                 </div>
                 <div className="border-b-2  ">
                     <p className="text-xs ">Username</p>
-                    <input ref={userNameRef} type="text" placeholder="Username" className="p-2 focus:outline-none" onChange={(e) => setUsername(e.target.value)} />
+                    <input ref={userNameRef} type="text" placeholder="Username" className="w-full p-2 focus:outline-none" onChange={(e) => setUsername(e.target.value)} />
                     <div className="text-sm flex justify-start">
                         {(nameTaken == null) ? null : nameTaken ? <h1 className="text-red-500">Username is Taken!</h1> : <h1 className="text-green-500">Username is Avialable!</h1>}
                     </div>
                 </div>
                 <div className="border-b-2">
                     <p className="text-xs ">Description</p>
-                    <textarea ref={descripRef} name="" id="" cols="30" rows="10" className="p-2 focus:outline-none" onChange={(e) => setdescrip(e.target.value)} placeholder="write about you.."></textarea>
+                    <textarea ref={descripRef} name="" id="" cols="30" rows="10" className="w-full p-2 focus:outline-none" onChange={(e) => setdescrip(e.target.value)} placeholder="write about you.."></textarea>
                 </div>
             </div>
         </div>

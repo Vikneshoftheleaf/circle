@@ -51,17 +51,16 @@ export default function Search() {
 
     return (
         <div>
-            <div className="flex gap-2 items-center justify-start bg-red-50 m-4 px-2 relative">
+            <div className="flex gap-2 items-center  dark:bg-white/10 dark:backdrop-blur-md bg-red-50 justify-start m-4 px-2 relative rounded-md">
             <Icon
                 icon="uil:search"
-                width="32"
-                height="32"
-                className="p-2 rounded-md bg-red-50"
+                className="p-2 rounded-md "
+                height={42} width={42}
               />
-                <input type="search" onFocus={() => setSearchPanel('flex')} name="search" id="search" className="focus:outline-none p-2 rounded-md w-full bg-red-50" placeholder="Search Videos" onChange={(e) => setSearchQuery(e.target.value)} />
+                <input type="search" onFocus={() => setSearchPanel('flex')} name="search" id="search" className=" focus:outline-none p-2 rounded-md w-full bg-transparent" placeholder="Search Videos" onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
 
-            <div className={`${searchPanel} absolute w-full h-full bg-white text-slate-900 justify-center`}>
+            <div className={`${searchPanel} absolute w-full h-full dark:bg-slate-900  bg-white justify-center`}>
                 <div className="w-full flex flex-col ">
                     {
                     (searchResult == null || searchResult.length == 0 )?null

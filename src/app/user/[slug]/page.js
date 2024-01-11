@@ -257,9 +257,9 @@ export default function UserPage({ params }) {
                         <div className="col-span-8">
                             {
                                 (floading)
-                                ?<button className=" w-full rounded-md font-semibold text-base py-2 flex justify-center items-center "><SpinLoading h={4} w={4}/></button>
+                                ?<button className=" w-full rounded-md font-semibold text-base py-2 flex justify-center items-center "><SpinLoading h={6} w={6}/></button>
                                 :followed
-                                ? <button onClick={() => removeFollowing()} className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 ">Following</button>
+                                ? <button onClick={() => removeFollowing()} className=" w-full dark:bg-white/10 dark:backdrop-blur-sm bg-red-50 rounded-md font-semibold text-base py-2 ">Following</button>
                               : <button onClick={() => addFollowing()} className="  w-full bg-red-500 rounded-md font-semibold text-base text-slate-100 py-2 ">Follow</button>
 
                             }
@@ -269,7 +269,7 @@ export default function UserPage({ params }) {
                         </div>
                         <div className="col-span-2">
                             <Drawer >
-                                <DrawerTrigger className="rounded-md bg-red-50 h-full px-2">
+                                <DrawerTrigger className="rounded-md dark:bg-white/10 dark:backdrop-blur-sm bg-red-50 h-full px-2">
                                 <Icon icon="heroicons-outline:share" height={32} width={32} />
                                 </DrawerTrigger>
                                 <DrawerContent>

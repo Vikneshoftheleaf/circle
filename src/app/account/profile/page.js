@@ -153,7 +153,7 @@ export default function Profile() {
                     </div>
 
                     <div className="w-full px-4 text-center flex">
-                        <Link href={'/account/profile/edit'} className=" w-full bg-red-50 rounded-md font-semibold text-base py-2 ">Edit Profile</Link>
+                        <Link href={'/account/profile/edit'} className=" w-full dark:bg-red-500 bg-red-50 rounded-md font-semibold text-base py-2 ">Edit Profile</Link>
                     </div>
 
                     <hr className="my-4" />

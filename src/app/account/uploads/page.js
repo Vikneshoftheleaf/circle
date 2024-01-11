@@ -94,19 +94,19 @@ export default function Upload() {
                             <Image src={URL.createObjectURL(image)} className="h-[50px] aspect-square object-cover" height={50} width={50} alt="uploaded Image" />
                         </div>
                         <div>
-                            <textarea name="desc" id="" cols="30" rows="5" className="resize-none focus:outline-none" placeholder="Write Something" onChange={(e) => settitle(e.target.value)}></textarea>
+                            <textarea name="desc" id="" cols="30" rows="5" className="resize-none focus:outline-none p-2 rounded-md w-full" placeholder="Write Something" onChange={(e) => settitle(e.target.value)}></textarea>
                         </div>
 
                     </div>
                     <div className="flex flex-col gap-2 mx-5">
                         <h1 className="text-base font-semibold">Tags</h1>
-                        <input type="text" name="tags" id="" placeholder="#Tags" className="focus:outline-none p-2" onChange={(e) => settags(e.target.value)} />
+                        <input type="text" name="tags" id="" placeholder="#Tags" className="focus:outline-none p-2 rounded-md" onChange={(e) => settags(e.target.value)} />
                     </div>
 
                     <div className="m-5">
                         {(buttonLoading)
-                        ?<button className="w-full py-2 flex items-center justify-center text-base font-semibold text-slate-900 rounded-sm"><SpinLoading h={4} w={4}/></button>
-                        :<button className="w-full py-2 bg-red-500 text-base font-semibold text-slate-100 rounded-sm" onClick={() => { createPost(image, title, tags, user.uid, profile.displayName, profile.photoURL); }}>Post</button>
+                        ?<button className="w-full h-full py-2 flex items-center justify-center text-base font-semibold dark:text-slate-100 text-slate-900 rounded-sm dark:bg-white/10 dark:backdrop-blur-sm bg-red-50 gap-2"><SpinLoading h={6} w={6}/><span>Posting...</span></button>
+                        :<button className="w-full h-full py-2 bg-red-500 text-base font-semibold text-slate-100 rounded-sm" onClick={() => { createPost(image, title, tags, user.uid, profile.displayName, profile.photoURL); }}>Post</button>
 
                     }
                     </div>

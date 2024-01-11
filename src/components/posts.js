@@ -302,7 +302,7 @@ export default function Posts({ data, profile, view }) {
                                 : (floading)
                                     ? <button className="px-4 py-1 text-red-950 rounded-md"><SpinLoading h={4} w={4} /></button>
                                     : followed
-                                        ? <button onClick={() => removeFollowing()} className="px-4 py-1 text-red-950 rounded-md">Following</button>
+                                        ? <button onClick={() => removeFollowing()} className="px-4 py-1 dark:text-slate-100 text-red-950 rounded-md">Following</button>
                                         : <button onClick={() => addFollowing()} className="px-4 py-1 text-red-500 rounded-md font-semibold">Follow</button>
                             }
                         </div>
@@ -393,7 +393,7 @@ export default function Posts({ data, profile, view }) {
 
                                 </div>
 
-                                <DrawerFooter className={'w-full fixed bg-white bottom-0 z-10 mb-[-5px]'}>
+                                <DrawerFooter className={'w-full fixed bottom-0 z-10 mb-[-5px]'}>
                                     <div className="w-full flex justify-between items-center gap-2 ">
                                         <div className="flex gap-4 items-center">
                                             <div className="">
@@ -402,10 +402,10 @@ export default function Posts({ data, profile, view }) {
                                                     : null
                                                 }
                                             </div>
-                                            <textarea ref={commentInputRef} type="text" className=" focus:outline-none resize-none" rows={1} name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
+                                            <textarea ref={commentInputRef} type="text" className="dark:bg-transparent focus:outline-none resize-none p-1 " rows={1} name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
 
                                         </div>
-                                        <button className=" bg-red-500 text-slate-100 px-4 py-2 rounded-md" onClick={() => addComment()}>Send</button>
+                                        <button className=" px-4 py-2 rounded-md" onClick={() => addComment()}><Icon icon="ic:round-send" height={22} width={22}/></button>
                                     </div>
                                 </DrawerFooter>
                             </DrawerContent>
@@ -427,9 +427,7 @@ export default function Posts({ data, profile, view }) {
 
                                 </div>
 
-                                <DrawerFooter className={'w-full fixed bg-white bottom-0 z-10 mb-[-5px]'}>
-
-                                </DrawerFooter>
+                                
                             </DrawerContent>
                         </Drawer>
 
@@ -525,7 +523,7 @@ export default function Posts({ data, profile, view }) {
 
                                 </div>
 
-                                <DrawerFooter className={'w-full fixed bg-white bottom-0 z-10 mb-[-5px]'}>
+                                <DrawerFooter className={'w-full fixed bottom-0 z-10 mb-[-5px]'}>
                                     <div className="w-full flex justify-between items-center gap-2 ">
                                         <div className="flex gap-4 items-center">
                                             <div className="">
@@ -534,10 +532,10 @@ export default function Posts({ data, profile, view }) {
                                                     : null
                                                 }
                                             </div>
-                                            <textarea ref={commentInputRef} type="text" className=" focus:outline-none resize-none" rows={1} name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
+                                            <textarea ref={commentInputRef} type="text" className="dark:bg-transparent focus:outline-none resize-none p-1 " rows={1} name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
 
                                         </div>
-                                        <button className=" bg-red-500 text-slate-100 px-4 py-2 rounded-md" onClick={() => addComment()}>Send</button>
+                                        <button className=" px-4 py-2 rounded-md" onClick={() => addComment()}><Icon icon="ic:round-send" height={22} width={22}/></button>
                                     </div>
                                 </DrawerFooter>
                             </DrawerContent>

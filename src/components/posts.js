@@ -41,23 +41,31 @@ export default function Posts({ data, profile, view }) {
     const [postComments, setPostComments] = useState([])
     const [postUserProfile, setPostUserProfile] = useState();
     const [loading, setLoading] = useState(true);
-    const [floading,setfloading] = useState(false);
+    const [floading, setfloading] = useState(false);
     const commentInputRef = useRef();
-    const viewto = document.getElementById(view)
+    const viewto = document.getElementById(view);
+    const [likeAnimation, setLikeAnimation] = useState('scale-0')
 
     // const timestamp = new Timestamp(seconds)
 
-   useEffect(() => {
+    useEffect(() => {
 
         if (viewto != null) {
             viewto.scrollIntoView({ behavior: 'auto' });
         }
 
-   
 
-        
+
+
 
     }, [viewto])
+
+
+    useEffect(()=>{
+        setTimeout(()=>{
+            setLikeAnimation('scale-0')
+        },800)
+    },[likeAnimation])
 
 
 
@@ -146,7 +154,7 @@ export default function Posts({ data, profile, view }) {
         await updateDoc(doc(db, "user", profile.uid), {
             following: increment(1),
             followingBy: arrayUnion(data.author)
-        }).then(()=> setfloading(false));
+        }).then(() => setfloading(false));
         console.log("followed")
 
         await addDoc(collection(db, "notifications"), {
@@ -172,7 +180,7 @@ export default function Posts({ data, profile, view }) {
         await updateDoc(doc(db, "user", profile.uid), {
             following: increment(-1),
             followingBy: arrayRemove(data.author)
-        }).then(()=> setfloading(false));
+        }).then(() => setfloading(false));
         console.log("Unfollowed")
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
@@ -210,7 +218,7 @@ export default function Posts({ data, profile, view }) {
             commentText: commentText,
             cVerified: profile.verified,
             commentedAt: Timestamp.fromDate(new Date())
-        }).then(()=>commentInputRef.current.value = '' );
+        }).then(() => commentInputRef.current.value = '');
 
         await addDoc(collection(db, "notifications"), {
             notificationTo: data.author,
@@ -292,10 +300,10 @@ export default function Posts({ data, profile, view }) {
                             {(data.author == profile.uid)
                                 ? null
                                 : (floading)
-                                ? <button className="px-4 py-1 text-red-950 rounded-md"><SpinLoading h={4} w={4}/></button>
-                                :followed
-                                    ? <button onClick={() => removeFollowing()} className="px-4 py-1 text-red-950 rounded-md">Following</button>
-                                    : <button onClick={() => addFollowing()} className="px-4 py-1 text-red-500 rounded-md font-semibold">Follow</button>
+                                    ? <button className="px-4 py-1 text-red-950 rounded-md"><SpinLoading h={4} w={4} /></button>
+                                    : followed
+                                        ? <button onClick={() => removeFollowing()} className="px-4 py-1 text-red-950 rounded-md">Following</button>
+                                        : <button onClick={() => addFollowing()} className="px-4 py-1 text-red-500 rounded-md font-semibold">Follow</button>
                             }
                         </div>
 
@@ -314,7 +322,8 @@ export default function Posts({ data, profile, view }) {
                     </DropdownMenu>
 
                 </div>
-                <button onDoubleClick={()=>{if(!liked){putLike()}else{removeLike()}}} className="py-2" >
+                <button onDoubleClick={() => { if (!liked) { putLike(); setLikeAnimation('scale-100') } else { removeLike() } }} className="py-2 relative w-full h-full" >
+                    <Icon className={`text-white drop-shadow-xl absolute right-1/3 top-1/3 transition duration-300 ease-in-out ${likeAnimation}`} icon="mdi:heart" height={150} width={150} />
                     <Image className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
                 </button>
 
@@ -414,7 +423,7 @@ export default function Posts({ data, profile, view }) {
                                 </DrawerHeader>
 
                                 <div className="h-full p-4 w-full flex justify-center items-start">
-                                    <SocialShareBtn url={'http:localhost:3000'} />
+                                    <SocialShareBtn url={`${process.env.NEXT_PUBLIC_URL}/user/p?user=${data.author}&view=${data.id}`} />
 
                                 </div>
 

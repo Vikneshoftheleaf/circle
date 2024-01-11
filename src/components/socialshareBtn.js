@@ -2,36 +2,38 @@
 import {
     FacebookShareButton,
     FacebookIcon,
-    PinterestShareButton,
-    PinterestIcon,
-    RedditShareButton,
-    RedditIcon,
     WhatsappShareButton,
     WhatsappIcon,
-    LinkedinShareButton,
-    LinkedinIcon,
     TwitterIcon,
-    TwitterShareButton
+    TwitterShareButton,
+    InstapaperShareButton,
+    InstagramIcon,
+    GabShareButton,
+    GabIcon
 } from 'next-share';
 
-export default function SocialShareBtn({url}) {
+export default function SocialShareBtn({ url }) {
     return (
         <div className='h-full p-4 flex justify-center items-center gap-4'>
-            <FacebookShareButton
-                url={url} >
-                <FacebookIcon size={54} round />
-            </FacebookShareButton>
+            <InstapaperShareButton url={url}>
+                <InstagramIcon size={54} round></InstagramIcon>
+            </InstapaperShareButton>
+
             <WhatsappShareButton
                 url={url} >
                 <WhatsappIcon size={54} round />
             </WhatsappShareButton>
-            <LinkedinShareButton
+
+
+            <FacebookShareButton
                 url={url} >
-                <LinkedinIcon size={54} round />
-            </LinkedinShareButton>
+                <FacebookIcon size={54} round />
+            </FacebookShareButton>
+
             <TwitterShareButton url={url}>
                 <TwitterIcon size={54} round></TwitterIcon>
             </TwitterShareButton>
+
         </div>
     )
 } 

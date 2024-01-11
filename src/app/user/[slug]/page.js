@@ -279,7 +279,7 @@ export default function UserPage({ params }) {
                                     </DrawerHeader>
 
                                     <div className="h-full p-4 w-full flex justify-center items-start">
-                                        <SocialShareBtn url={'http:localhost:3000'} />
+                                        <SocialShareBtn url={`${process.env.NEXT_PUBLIC_URL}/user/${uData.uid}`}/>
 
                                     </div>
 

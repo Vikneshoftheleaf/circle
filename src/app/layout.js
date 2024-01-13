@@ -1,7 +1,7 @@
 import './globals.css';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from '@vercel/analytics/react';
-import { Inter, Roboto } from 'next/font/google';
+import { Inter, Roboto, Poppins, Lato, Montserrat } from 'next/font/google';
 import Provider from '@/components/themeProvider';
 export const metadata = {
   title: 'Circle',
@@ -17,17 +17,44 @@ const roboto = Roboto({
   style: ['normal', 'italic'],
   subsets: ['latin'],
 })
+
+const monte = Montserrat(
+  {
+    weight:['100','200', '300', '400', '500','600', '700','800', '900'],
+    style: ['normal', 'italic'],
+    subsets:['cyrillic','cyrillic-ext','latin','latin-ext','vietnamese']
+})
+
+const lato = Lato(
+  {
+
+    weight: ['100','300','400','700','900'],
+    style: ['normal', 'italic'],
+    subsets: ['latin','latin-ext'],
+  
+
+  }
+)
+
+const pop = Poppins(
+  {
+    weight:['100','200', '300', '400', '500','600', '700','800', '900'],
+    style: ['normal', 'italic'],
+    subsets:['devanagari','latin','latin-ext']
+
+  }
+)
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={lato.className}>
         <SpeedInsights />
         <Analytics />
 
         <AuthContextProvider>
           <Provider>
             <div className='flex justify-between'>
-              <div className=''>
+              <div className='h-screen'>
                 <SideNav />
               </div>
               <div className='w-full'>

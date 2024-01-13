@@ -214,7 +214,7 @@ export default function EditProfile() {
                 <div className="border-2 rounded-full h-[100px] w-[100px] object-cover overflow-hidden">
                     {(!image)
                         ? <Icon className="h-[100px] w-[100px] text-slate-500 object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
-                        : <Image className="h-[100px] w-[100px] object-cover rounded-full" src={image} style={{ width: '100px', height: '100px' }} height={100} width={100} alt="User Profile" />
+                        : <Image priority className="h-[100px] w-[100px] object-cover rounded-full" src={image} style={{ width: '100px', height: '100px' }} height={100} width={100} alt="User Profile" />
                     }
 
                 </div>

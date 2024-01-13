@@ -100,7 +100,7 @@ export default function Notification() {
                                     <div className="w-full flex justify-between items-center">
                                         <div className="flex gap-2 items-center">
                                             <div className="col-span-2">
-                                                {not.npImg ? <Image src={not.npImg} height={42} width={42} className=" border-2 h-[42px] w-[42px] object-cover rounded-full" alt="notification images"></Image>
+                                                {not.npImg ? <Image priority src={not.npImg} height={42} width={42} className=" border-2 h-[42px] w-[42px] object-cover rounded-full" alt="notification images"></Image>
                                                 :<Icon className="h-[42px] w-[42px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />                                               
                                             }
                                             </div>
@@ -108,7 +108,7 @@ export default function Notification() {
 
                                         </div>
                                         <div className=" flex ">
-                                            {not.nImg ? <Image src={not.nImg} className=" float-right h-[42px] w-[42px] rounded-md aspect-square object-cover" alt="post pic" height={42} width={42}></Image> : null}
+                                            {not.nImg ? <Image priority src={not.nImg} className=" float-right h-[42px] w-[42px] rounded-md aspect-square object-cover" alt="post pic" height={42} width={42}></Image> : null}
                                         </div>
                                     </div>
                                 </div>

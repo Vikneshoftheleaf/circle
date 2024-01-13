@@ -45,20 +45,26 @@ export default function Posts({ data, profile, view }) {
     const commentInputRef = useRef();
     const viewto = document.getElementById(view);
     const [likeAnimation, setLikeAnimation] = useState('scale-0')
+    const [scrolled, setScrolled] = useState(false)
+    const [doit, setdoit] = useState(null)
+
 
     // const timestamp = new Timestamp(seconds)
 
     useEffect(() => {
 
-        if (viewto != null) {
+
+        if(viewto != null && scrolled == false){
             viewto.scrollIntoView({ behavior: 'auto' });
+            setScrolled(true)
+            console.log("scrolled")
         }
 
+        
+
+},[doit])
 
 
-
-
-    }, [viewto])
 
 
     useEffect(()=>{
@@ -278,6 +284,10 @@ export default function Posts({ data, profile, view }) {
             const newData = doc.data();
             setPostUserProfile(newData);
             setLoading(false)
+            setTimeout(()=>{
+                setdoit(true)
+        
+            },100)
         });
         return unsub;
 
@@ -290,7 +300,7 @@ export default function Posts({ data, profile, view }) {
                 <div className="flex items-center justify-between px-4">
                     <div className="flex items-center gap-2 ">
                         <Link href={`/user/${data.author}`} >
-                            {(postUserProfile.photoURL != null) ? <Image className="h-[35px] w-[35px] object-cover rounded-full" src={postUserProfile.photoURL} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
+                            {(postUserProfile.photoURL != null) ? <Image priority className="h-[35px] w-[35px] object-cover rounded-full" src={postUserProfile.photoURL} height={50} width={50} alt="userImage"></Image> : <Icon className="h-[35px] w-[35px] object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />}
                         </Link>
                         <Link href={`/user/${data.author}`} className="flex gap-2 items-center">
                             <h1 className="text-base font-medium">{postUserProfile.userName}</h1>
@@ -324,7 +334,7 @@ export default function Posts({ data, profile, view }) {
                 </div>
                 <button onDoubleClick={() => { if (!liked) { putLike(); setLikeAnimation('scale-100') } else { removeLike() } }} className="py-2 relative w-full h-full" >
                     <Icon className={`text-white drop-shadow-xl absolute right-1/3 top-1/3 transition duration-300 ease-in-out ${likeAnimation}`} icon="mdi:heart" height={150} width={150} />
-                    <Image className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts"></Image>
+                    <Image className=" w-full aspect-square object-contain " src={data.postPicURL} height={350} width={350} alt="posts" priority></Image>
                 </button>
 
                 <div className="flex items-center px-4 ">
@@ -357,7 +367,7 @@ export default function Posts({ data, profile, view }) {
                                                         <div className="grid grid-cols-10  ">
                                                             <div className="col-span-2">
                                                                 {com.cUserImg
-                                                                    ? <Image src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
+                                                                    ? <Image priority src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
                                                                     : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
                                                                 }
                                                             </div>
@@ -398,7 +408,7 @@ export default function Posts({ data, profile, view }) {
                                         <div className="flex gap-4 items-center">
                                             <div className="">
                                                 {(profile.photoURL)
-                                                    ? <Image src={profile.photoURL} className="h-[42px] aspect-square object-cover rounded-full" height={42} width={42} alt="user Image"></Image>
+                                                    ? <Image priority src={profile.photoURL} className="h-[42px] aspect-square object-cover rounded-full" height={42} width={42} alt="user Image"></Image>
                                                     : null
                                                 }
                                             </div>
@@ -487,7 +497,7 @@ export default function Posts({ data, profile, view }) {
                                                         <div className="grid grid-cols-10  ">
                                                             <div className="col-span-2">
                                                                 {com.cUserImg
-                                                                    ? <Image src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
+                                                                    ? <Image priority src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
                                                                     : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
                                                                 }
                                                             </div>
@@ -528,7 +538,7 @@ export default function Posts({ data, profile, view }) {
                                         <div className="flex gap-4 items-center">
                                             <div className="">
                                                 {(profile.photoURL)
-                                                    ? <Image src={profile.photoURL} className="h-[42px] aspect-square object-cover rounded-full" height={42} width={42} alt="user Image"></Image>
+                                                    ? <Image priority src={profile.photoURL} className="h-[42px] aspect-square object-cover rounded-full" height={42} width={42} alt="user Image"></Image>
                                                     : null
                                                 }
                                             </div>

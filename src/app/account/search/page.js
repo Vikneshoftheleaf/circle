@@ -68,7 +68,7 @@ export default function Search() {
                         <Link key={res.id} href={`/user/${res.uid}`} className="w-full flex items-center gap-4  px-4 py-2">
                             <div>
                                 {(res.photoURL)
-                                ?<Image src={res.photoURL} height={48} width={48} className="h-[48px] w-[48px] rounded-full object-cover" alt="userProfile"></Image>
+                                ?<Image priority src={res.photoURL} height={48} width={48} className="h-[48px] w-[48px] rounded-full object-cover" alt="userProfile"></Image>
                                 :<Icon className="h-[48px] w-[48px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={48} width={48} />
                             }
                             </div>

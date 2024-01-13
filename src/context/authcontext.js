@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useContext, createContext } from 'react'
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from '../firebase'
+import { auth,db } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { doc, getDoc, collection, query, where, onSnapshot, QuerySnapshot } from "firebase/firestore";
 import SpinLoading from '@/components/spinLoading';
@@ -14,7 +14,7 @@ export const AuthContextProvider = ({
 }) => {
     const router = useRouter()
     const [user, setUser] = useState(null);
-    const [profile,setProfile]=useState(null);
+    const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
 
@@ -29,31 +29,41 @@ export const AuthContextProvider = ({
             setLoading(false)
         });
         return () => unsubscribe();
-    },[auth]);
+    }, [auth]);
 
+    useEffect(() => {
 
-    useEffect(()=>{
-        if(user){
+       if(auth != null)
+       {
+        const aUser = auth.currentUser;
+        if(aUser !=null && aUser.emailVerified == false)
+        {
+            router.push('/verify')
+        }
+       }
+    })
+
+    useEffect(() => {
+        if (user) {
             const unsub = onSnapshot(doc(db, "user", user.uid), (doc) => {
                 const newData = doc.data()
                 setProfile(newData)
             });
-            return unsub;        
+            return unsub;
         }
-    },[user])
+    }, [user])
 
-    useEffect(()=>{
-        if(profile){
-            if(profile.userName == null)
-            {
+    useEffect(() => {
+        if (profile) {
+            if (profile.userName == null) {
                 router.push('/account/create')
             }
-            
+
         }
-    },[profile])
+    }, [profile])
     return (
         <AuthContext.Provider value={{ user, profile }}>
-            {loading ? <div className='h-screen w-full flex justify-center items-center'><SpinLoading h={50} w={50}/></div> : children}
+            {loading ? <div className='h-screen w-full flex justify-center items-center'><SpinLoading h={8} w={8} /></div> : children}
         </AuthContext.Provider>
     );
 };

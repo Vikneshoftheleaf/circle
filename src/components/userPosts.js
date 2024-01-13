@@ -3,7 +3,7 @@ export default function UserPosts({data})
 {
     return(
         <div id="data.id">
-            <Image className="w-full aspect-square object-cover" src={data.postPicURL} height={120} width={120} alt="User Posts"/>
+            <Image priority className="w-full aspect-square object-cover" src={data.postPicURL} height={120} width={120} alt="User Posts"/>
         </div>
     )
 }

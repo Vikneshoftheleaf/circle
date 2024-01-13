@@ -91,7 +91,7 @@ export default function Upload() {
                     </div>
                     <div className="flex gap-4 mx-5">
                         <div>
-                            <Image src={URL.createObjectURL(image)} className="h-[50px] aspect-square object-cover" height={50} width={50} alt="uploaded Image" />
+                            <Image priority src={URL.createObjectURL(image)} className="h-[50px] aspect-square object-cover" height={50} width={50} alt="uploaded Image" />
                         </div>
                         <div>
                             <textarea name="desc" id="" cols="30" rows="5" className="resize-none focus:outline-none p-2 rounded-md w-full" placeholder="Write Something" onChange={(e) => settitle(e.target.value)}></textarea>

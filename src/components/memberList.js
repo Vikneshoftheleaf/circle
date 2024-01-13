@@ -106,7 +106,7 @@ export default function MemberList({ id, profile, type, mode }) {
 
                     <Link href={`/user/${id}`} className="flex items-center gap-2">
                         <div>
-                            {(idDetail.photoURL != null) ? <Image className="rounded-full h-[42px] aspect-square object-cover" src={idDetail.photoURL} height={42} width={42} alt="User"></Image>
+                            {(idDetail.photoURL != null) ? <Image priority className="rounded-full h-[42px] aspect-square object-cover" src={idDetail.photoURL} height={42} width={42} alt="User"></Image>
                                 : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
 
                             }

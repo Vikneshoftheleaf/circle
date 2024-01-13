@@ -17,6 +17,9 @@ export default function ViewSearchUserPosts() {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true);
     const scrollpatcher = useRef();
+    const viewto = document.getElementById(view);
+    const [scrolled, setScrolled] = useState(false)
+
 
     /*useEffect(() => {
 
@@ -25,7 +28,14 @@ export default function ViewSearchUserPosts() {
         }
 
     }, [viewto])
-*/
+    
+    function scrollProxy()
+    {
+    if (viewto != null) {
+            viewto.scrollIntoView({ behavior: "auto", block: "start", inline: "nearest" });
+        }
+    }*/
+
 
 
 
@@ -43,6 +53,7 @@ export default function ViewSearchUserPosts() {
     useEffect(() => {
         if (posts) {
             setLoading(false)
+
         }
 
     }, [posts])
@@ -55,6 +66,7 @@ export default function ViewSearchUserPosts() {
             <div>
                 <BackBtn />
                 <div className="mt-5 mb-20">
+                    <button ref={scrollpatcher} onClick={()=>console.log('scrollpathced')} className="hidden">scollpather</button>
                     {posts.map(post => <Posts key={post.id} data={post} profile={profile} view={view} /> )}
                 </div>
             </div>

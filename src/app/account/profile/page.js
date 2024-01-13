@@ -92,7 +92,7 @@ export default function Profile() {
                             <Dialog>
                                 <DialogTrigger>
                                     <div className="">
-                                        {(profile.photoURL != null) ? <Image className="rounded-full h-[80px] w-[80px] object-cover" src={profile.photoURL} height={80} width={80} alt="User"></Image>
+                                        {(profile.photoURL != null) ? <Image priority className="rounded-full h-[80px] w-[80px] object-cover" src={profile.photoURL} height={80} width={80} alt="User"></Image>
                                             : <Icon className="h-[100px] w-[100px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
 
                                         }
@@ -105,7 +105,7 @@ export default function Profile() {
                                         <DialogDescription className="flex justify-center items-center">
 
                                             {
-                                                (profile.photoURL)?<Image className="h-[200px] aspect-square" src={profile.photoURL} height={200} width={200} alt="user profile"></Image>
+                                                (profile.photoURL)?<Image priority className="h-[200px] aspect-square" src={profile.photoURL} height={200} width={200} alt="user profile"></Image>
 
                                                 :<Icon className="h-[200px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={200} width={200} />
 

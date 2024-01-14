@@ -25,7 +25,7 @@ export default function VerifyAccount()
             setloading(false)
         }
         
-    },[auth])
+    })
 
     function sendVerificationEmail()
     {

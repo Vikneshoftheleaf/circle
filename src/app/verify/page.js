@@ -10,15 +10,17 @@ export default function VerifyAccount()
 {
     const router = useRouter()
     const [emailSented, setEmailSented] = useState(false)
-    const [loading, setloading] = useState(true)
-    const [user, setUser] = useState(null)
+    const [loading, setloading] = useState(true);
+    const {user} = useAuthContext()
+
     useEffect(()=>{
 
-        if(auth!=null)
+        if(user!=null)
         {
-           setUser(auth.currentUser)
-           if(auth.emailVerified)
+            console.log(user)
+           if(user.emailVerified == true)
            {
+            console.log(user)
                router.push('/account/vids')
            }
    
@@ -30,10 +32,7 @@ export default function VerifyAccount()
     function sendVerificationEmail()
     {
         if (user) {
-            sendEmailVerification(user, {
-              url: process.env.NEXT_PUBLIC_URL, // Replace with your app's URL
-              handleCodeInApp: true,
-            })
+            sendEmailVerification(user)
               .then(() => {
                 console.log('Verification email sent!');
                 setEmailSented(true)
@@ -60,6 +59,7 @@ export default function VerifyAccount()
 
                 }
                 <button className="w-full py-2 font-medium border-2 rounded-md" onClick={()=> logOut()}>Sign Out</button>
+                <button className="w-full py-2 font-medium border-2 rounded-md" onClick={()=> console.log(auth.currentUser)}>print</button>
 
             </div>
             <div>

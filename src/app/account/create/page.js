@@ -112,7 +112,7 @@ export default function Create() {
 
 
     if (loading) {
-        return (<h1>Loading bro..</h1>)
+        return (<h1>Loading...</h1>)
     }
     else {
         return (
@@ -131,14 +131,14 @@ export default function Create() {
                     <div className="flex flex-col w-full gap-4">
                         <div className="border-b-2">
                             <p className="text-xs">Username</p>
-                            <input type="text" placeholder="Username" className="p-2 focus:outline-none" onChange={(e) => setUsername(e.target.value)} />
+                            <input type="text" placeholder="Username" className="rounded-md p-2 focus:outline-none w-full" onChange={(e) => setUsername(e.target.value)} />
                             <div className="text-sm flex justify-start">
                                 {(nameTaken == null) ? null : nameTaken ? <h1 className="text-red-500">Username is Taken!</h1> : <h1 className="text-green-500">Username is Avialable!</h1>}
                             </div>
                         </div>
                         <div className="border-b-2">
                             <p className="text-xs">Bio</p>
-                            <textarea name="" id="" cols="30" rows="5" className="p-2 focus:outline-none" onChange={(e) => setdescrip(e.target.value)} placeholder="write about you.."></textarea>
+                            <textarea name="" id="" cols="30" rows="5" className="w-full rounded-md resiz-none p-2 focus:outline-none" onChange={(e) => setdescrip(e.target.value)} placeholder="write about you.."></textarea>
                         </div>
                     </div>
 

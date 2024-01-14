@@ -3,9 +3,10 @@ import { useAuthContext } from "@/context/authcontext"
 import { Icon } from "@iconify/react"
 import { logOut } from "@/functions/functions";
 import BackBtn from "@/components/backBtn";
-import { db, storage } from "@/firebase";
+import { db, storage, auth } from "@/firebase";
 import { deleteDoc, doc, onSnapshot, where, query, collection, getDocs, QuerySnapshot, } from "firebase/firestore";
 import { getStorage, ref, deleteObject } from "firebase/storage";
+import { deleteUser } from "firebase/auth";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -17,8 +18,10 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useEffect, useState } from "react";
 
 export default function Setting() {
+    const [loading, setLoading] = useState(true)
     const { user } = useAuthContext();
     async function deleteAccount() {
         const notificationref = collection(db, 'notifications')
@@ -94,8 +97,22 @@ export default function Setting() {
             console.log(error)
         });
 
-        await deleteDoc(doc(db, "user", user.uid)).then(()=> logOut())
+        await deleteDoc(doc(db, "user", user.uid))
+
+        deleteUser(auth)
+        .then(() => {
+            logOut()
+          console.log('User deleted successfully.');
+        })
     }
+
+    useEffect(()=>{
+        if(auth != null)
+        {
+            setLoading(false)
+        }
+    },[auth])
+    if(!loading)
     return (
         <div>
             <div className="flex justify-start gap-2 items-center p-2">

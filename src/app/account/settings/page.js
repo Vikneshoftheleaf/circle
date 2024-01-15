@@ -99,11 +99,10 @@ export default function Setting() {
 
         await deleteDoc(doc(db, "user", user.uid))
 
-        deleteUser(auth)
-        .then(() => {
-            logOut()
-          console.log('User deleted successfully.');
-        })
+        deleteUser(auth.currentUser)
+        .then(() => 
+          console.log('User deleted successfully.')
+        )
     }
 
     useEffect(()=>{
@@ -153,7 +152,6 @@ export default function Setting() {
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
-
                     </h1>
                     <button onClick={() => logOut()} className="flex flex-row justify-center font-semibold items-center rounded-sm  gap-2 px-4 py-2 bg-red-500 text-slate-50">Log Out<Icon icon="material-symbols:logout" /></button>
 

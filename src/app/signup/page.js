@@ -72,6 +72,7 @@ export default function Login() {
       
             });
             // IdP data available using getAdditionalUserInfo(result)
+            sendCode('welcome',null, user.email, user.displayName)
             console.log("signned up with google!")
       
             // ...
@@ -146,6 +147,25 @@ export default function Login() {
             type,
             code,
             email
+          })
+        })
+
+        const data = await res.json()
+        console.log(data)
+      }
+
+      async function sendCode(type, code, email, name) {
+
+        const res = await fetch('/api/mail',{
+          method:'POST',
+          headers:{
+            'content-type':'application/json'
+          },
+          body: JSON.stringify({
+            type,
+            code,
+            email,
+            name
           })
         })
 

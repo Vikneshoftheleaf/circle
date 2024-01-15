@@ -67,9 +67,8 @@ export default function Signup() {
               verified: false,
               isEmailVerified: true
       
-            });
+            }).then(()=>sendCode('welcome',null, user.email, user.displayName));
             // IdP data available using getAdditionalUserInfo(result)
-            sendCode('welcome',null, user.email, user.displayName)
             console.log("signned up with google!")
       
             // ...

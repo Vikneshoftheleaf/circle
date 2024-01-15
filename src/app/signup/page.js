@@ -3,7 +3,6 @@ import { auth, db } from "@/firebase";
 import { signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, } from "firebase/auth";
 const provider = new GoogleAuthProvider();
 import { doc, setDoc } from "firebase/firestore";
-import { Resend } from "resend";
 
 import { useState,useRef } from "react";
 import { Icon } from "@iconify/react";
@@ -13,10 +12,8 @@ import BackBtn from "@/components/backBtn";
 import { useAuthContext } from "@/context/authcontext"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { POST } from "../api/signup/route";
 
-export default function Login() {
-  const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY)
+export default function Signup() {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const errorRef = useRef();

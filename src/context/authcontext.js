@@ -24,24 +24,13 @@ export const AuthContextProvider = ({
                 setUser(user);
             } else {
                 setUser(null);
+                setLoading(false)
                 router.push('/')
             }
-            setLoading(false)
         });
         return () => unsubscribe();
-    }, [auth]);
+    },[auth]);
 
-    useEffect(() => {
-
-       if(auth != null)
-       {
-        const aUser = auth.currentUser;
-        if(aUser !=null && aUser.emailVerified == false)
-        {
-            router.push('/verify')
-        }
-       }
-    })
 
     useEffect(() => {
         if (user) {
@@ -54,8 +43,13 @@ export const AuthContextProvider = ({
     }, [user])
 
     useEffect(() => {
-        if (profile) {
-            if (profile.userName == null) {
+        if (profile != null) {
+            setLoading(false)
+            if(!profile.isEmailVerified)
+            {
+                router.push('/verify')
+            }
+            else if(profile.userName == null) {
                 router.push('/account/create')
             }
 

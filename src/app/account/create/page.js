@@ -121,22 +121,22 @@ export default function Create() {
                 <div className="flex flex-col justify-center items-center gap-4 p-4">
                     <h1 className="text-2xl font-bold">Create Your Profile</h1>
                     <input type="file" accept="image/*" ref={fileInputRef} className="hidden" onChange={(e) => handleImageChange(e)} />
-                    <button className="border-2 rounded-full h-[100px] w-[100px] object-cover" onClick={() => clickGetImg()}>
+                    <button className="border-2 rounded-full h-[100px] w-[100px] object-cover overflow-hidden" onClick={() => clickGetImg()}>
                         {(!image)
                             ? <Icon className="h-[100px] w-[100px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
-                            : <Image priority className="h-[100px] w-[100px] object-cover rounded-full" src={image} style={{ width: '100px', height: '100px' }} height={100} width={100} alt="User Profile" />
+                            : <Image priority className="h-[100px] w-[100px] object-cover overflow-hidden rounded-full" src={image} style={{ width: '100px', height: '100px' }} height={100} width={100} alt="User Profile" />
                         }
 
                     </button>
                     <div className="flex flex-col w-full gap-4">
-                        <div className="border-b-2">
+                        <div className="dark:border-0 border-b-2">
                             <p className="text-xs">Username</p>
                             <input type="text" placeholder="Username" className="rounded-md p-2 focus:outline-none w-full" onChange={(e) => setUsername(e.target.value)} />
                             <div className="text-sm flex justify-start">
                                 {(nameTaken == null) ? null : nameTaken ? <h1 className="text-red-500">Username is Taken!</h1> : <h1 className="text-green-500">Username is Avialable!</h1>}
                             </div>
                         </div>
-                        <div className="border-b-2">
+                        <div className="dark:border-0 border-b-2">
                             <p className="text-xs">Bio</p>
                             <textarea name="" id="" cols="30" rows="5" className="w-full rounded-md resiz-none p-2 focus:outline-none" onChange={(e) => setdescrip(e.target.value)} placeholder="write about you.."></textarea>
                         </div>

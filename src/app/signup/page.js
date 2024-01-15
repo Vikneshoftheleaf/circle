@@ -3,6 +3,7 @@ import { auth, db } from "@/firebase";
 import { signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, } from "firebase/auth";
 const provider = new GoogleAuthProvider();
 import { doc, setDoc } from "firebase/firestore";
+import { Resend } from "resend";
 
 import { useState,useRef } from "react";
 import { Icon } from "@iconify/react";
@@ -12,8 +13,10 @@ import BackBtn from "@/components/backBtn";
 import { useAuthContext } from "@/context/authcontext"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { POST } from "../api/signup/route";
 
 export default function Login() {
+  const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY)
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const errorRef = useRef();
@@ -21,6 +24,20 @@ export default function Login() {
 
     const {user} = useAuthContext()
   const router = useRouter()
+
+
+  function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomString = '';
+  
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomString += characters.charAt(randomIndex);
+    }
+  
+    return randomString;
+  }
+
   useEffect(()=>{
     if(user != null)
     {
@@ -50,7 +67,8 @@ export default function Login() {
               posts: 0,
               followedBy:[],
               followingBy:[],
-              verified: false
+              verified: false,
+              isEmailVerified: true
       
             });
             // IdP data available using getAdditionalUserInfo(result)
@@ -78,6 +96,7 @@ export default function Login() {
             // Signed up 
             const user = userCredential.user;
             const displayName = user.email.split('@')
+            const verifyCode = generateRandomString(6)
             setDoc(doc(db, "user", user.uid), {
               uid: user.uid,
               userName:null,
@@ -90,10 +109,15 @@ export default function Login() {
               posts: 0,
               followedBy:[],
               followingBy:[],
-              verified: false
+              verified: false,
+              isEmailVerified:false,
+              emailVerifyCode:verifyCode
+
       
-            });
+            })
             console.log('siggned in with email!')
+
+            getData(verifyCode, user.email)
             // ...
           })
           .catch((error) => {
@@ -105,8 +129,28 @@ export default function Login() {
       
             // ..
           });
-      
-      
+
+      }
+
+      async function getData(vcode, vemail) {
+
+        const type = "verify";
+        const code = vcode;
+        const email = vemail
+        const res = await fetch('/api/mail',{
+          method:'POST',
+          headers:{
+            'content-type':'application/json'
+          },
+          body: JSON.stringify({
+            type,
+            code,
+            email
+          })
+        })
+
+        const data = await res.json()
+        console.log(data)
       }
     return (
         <>
@@ -140,6 +184,7 @@ export default function Login() {
                         <Icon icon="devicon:google" />
                         <h1>Continue with Google</h1>
                     </button>
+
                 </div>
 
             </div>

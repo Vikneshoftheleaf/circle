@@ -4,7 +4,7 @@ import Link from "next/link";
 import BackBtn from "@/components/backBtn";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { addDoc,Timestamp, getDoc, collection, query, where, onSnapshot, QuerySnapshot, updateDoc, doc, arrayUnion, arrayRemove, increment } from "firebase/firestore";
+import { addDoc, Timestamp, getDocs, collection, query, where, onSnapshot, QuerySnapshot, updateDoc, doc, arrayUnion, arrayRemove, increment, setDoc } from "firebase/firestore";
 import { useAuthContext } from "@/context/authcontext";
 import UserPosts from "@/components/userPosts";
 import { db, auth } from "@/firebase";
@@ -109,7 +109,7 @@ export default function UserPage({ params }) {
         await updateDoc(doc(db, "user", profile.uid), {
             following: increment(1),
             followingBy: arrayUnion(searchId)
-        }).then(()=> setfloading(false))
+        }).then(() => setfloading(false))
         console.log("followed")
 
         await addDoc(collection(db, "notifications"), {
@@ -135,7 +135,7 @@ export default function UserPage({ params }) {
         await updateDoc(doc(db, "user", profile.uid), {
             following: increment(-1),
             followingBy: arrayRemove(searchId)
-        }).then(()=> setfloading(false));
+        }).then(() => setfloading(false));
         console.log("Unfollowed")
         await addDoc(collection(db, "notifications"), {
             notificationTo: searchId,
@@ -163,6 +163,43 @@ export default function UserPage({ params }) {
     }, [profile.following])
 
 
+    async function createMsg() {
+
+        const querySnapshot = await getDocs(collection(db, 'messageRooms'));
+
+        // Filter documents on the client side
+        const matchingDocuments = querySnapshot.docs.filter((doc) => {
+            const membersArray = doc.data().members || [];
+
+            // Check if both values exist in the members array
+            return membersArray.includes(uData.uid) && membersArray.includes(profile.uid);
+        });
+
+        // Now 'matchingDocuments' contains documents where both values are in the 'members' array
+
+        if (matchingDocuments.length == 1) {
+            matchingDocuments.forEach((doc) => {
+                const roomNo = doc.id
+                router.push(`/account/message/${roomNo}`)
+
+            });
+        }
+        else {
+
+            await setDoc(doc(db, 'messageRooms', uData.uid + profile.uid), {
+                members: [
+                    uData.uid,
+                    profile.uid,
+                ],
+                chats: []
+
+            }).then(() => {
+                router.push(`/account/message/${uData.uid}` + `${profile.uid}`)
+            })
+        }
+    }
+
+
     if (loading) {
         return (<><h1>Searching For User...</h1></>)
     }
@@ -171,12 +208,12 @@ export default function UserPage({ params }) {
 
         return (
             <>
-            
+
                 <div className="flex flex-col gap-2 w-full">
 
                     <div className="flex items-center m-4 justify-between">
                         <div className="flex gap-1 items-center" >
-                            <BackBtn/>
+                            <BackBtn />
                             <h1 className="font-bold text-xl">{uData.displayName}</h1>
                             <h1>{uData.verified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}</h1>
                         </div>
@@ -206,7 +243,7 @@ export default function UserPage({ params }) {
                                         <DialogDescription className="flex justify-center items-center">
 
                                             {
-                                                (uData.photoURL) ? <Image className="h-[200px] aspect-square" src={uData.photoURL} height={200} width={200} alt="user profile"></Image>
+                                                (uData.photoURL) ? <Image className="h-[200px] aspect-square object-cover" src={uData.photoURL} height={200} width={200} alt="user profile"></Image>
 
                                                     : <Icon className="h-[200px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={200} width={200} />
 
@@ -253,24 +290,28 @@ export default function UserPage({ params }) {
                         <p>{uData.descrip}</p>
                     </div>
 
-                    <div className="w-full px-4 text-center grid grid-cols-10">
-                        <div className="col-span-8">
+                    <div className="w-full px-4 text-center grid grid-cols-10 gap-2">
+                        <div className="col-span-4">
                             {
                                 (floading)
-                                ?<button className=" w-full rounded-md font-semibold text-base py-2 flex justify-center items-center "><SpinLoading h={6} w={6}/></button>
-                                :followed
-                                ? <button onClick={() => removeFollowing()} className=" w-full dark:bg-white/10 dark:backdrop-blur-sm bg-red-50 rounded-md font-semibold text-base py-2 ">Following</button>
-                              : <button onClick={() => addFollowing()} className="  w-full bg-red-500 rounded-md font-semibold text-base text-slate-100 py-2 ">Follow</button>
+                                    ? <button className=" w-full rounded-md font-semibold text-base py-2 flex justify-center items-center "><SpinLoading h={6} w={6} /></button>
+                                    : followed
+                                        ? <button onClick={() => removeFollowing()} className=" w-full dark:bg-white/10 dark:backdrop-blur-sm bg-red-50 rounded-md font-semibold text-base py-2 ">Following</button>
+                                        : <button onClick={() => addFollowing()} className="  w-full bg-red-500 rounded-md font-semibold text-base text-slate-100 py-2 ">Follow</button>
 
                             }
-                            
 
 
+
+                        </div>
+
+                        <div className="col-span-4">
+                            <button onClick={() => createMsg()} className=" w-full dark:bg-white/10 dark:backdrop-blur-sm bg-red-50 rounded-md font-semibold text-base py-2 ">Message</button>
                         </div>
                         <div className="col-span-2">
                             <Drawer >
                                 <DrawerTrigger className="rounded-md dark:bg-white/10 dark:backdrop-blur-sm bg-red-50 h-full px-2">
-                                <Icon icon="heroicons-outline:share" height={32} width={32} />
+                                    <Icon icon="heroicons-outline:share" height={32} width={32} />
                                 </DrawerTrigger>
                                 <DrawerContent>
                                     <DrawerHeader className={'flex justify-center items-center border-b-2'}>
@@ -279,7 +320,7 @@ export default function UserPage({ params }) {
                                     </DrawerHeader>
 
                                     <div className="h-full p-4 w-full flex justify-center items-start">
-                                        <SocialShareBtn url={`${process.env.NEXT_PUBLIC_URL}/user/${uData.uid}`}/>
+                                        <SocialShareBtn url={`${process.env.NEXT_PUBLIC_URL}/user/${uData.uid}`} />
 
                                     </div>
 

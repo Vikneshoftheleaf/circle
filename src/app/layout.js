@@ -20,39 +20,40 @@ const roboto = Roboto({
 
 const monte = Montserrat(
   {
-    weight:['100','200', '300', '400', '500','600', '700','800', '900'],
+    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
     style: ['normal', 'italic'],
-    subsets:['cyrillic','cyrillic-ext','latin','latin-ext','vietnamese']
-})
+    subsets: ['cyrillic', 'cyrillic-ext', 'latin', 'latin-ext', 'vietnamese']
+  })
 
 const lato = Lato(
   {
 
-    weight: ['100','300','400','700','900'],
+    weight: ['100', '300', '400', '700', '900'],
     style: ['normal', 'italic'],
-    subsets: ['latin','latin-ext'],
-  
+    subsets: ['latin', 'latin-ext'],
+
 
   }
 )
 
 const pop = Poppins(
   {
-    weight:['100','200', '300', '400', '500','600', '700','800', '900'],
+    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
     style: ['normal', 'italic'],
-    subsets:['devanagari','latin','latin-ext']
+    subsets: ['devanagari', 'latin', 'latin-ext']
 
   }
 )
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={lato.className}>
+      <body className={inter.className}>
         <SpeedInsights />
         <Analytics />
 
         <AuthContextProvider>
           <Provider>
+
             <div className='flex justify-between'>
               <div className='h-screen'>
                 <SideNav />
@@ -68,3 +69,8 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
+
+/*
+
+
+*/

@@ -15,10 +15,27 @@ const SideNav = () => {
     isExploreActive,
     isNotificationsActive,
     isProfileActive,
+    isMessageActive
   } = useNavigation();
 
   const { user } = useAuthContext();
   const [ncount, setncount] = useState(null)
+
+  const { profile } = useAuthContext();
+  const [loading, setloading] = useState(true);
+  const [totalUnreadMessage, settotalUnreadMessage] = useState()
+
+  useEffect(() => {
+      const cref = collection(db, 'chats')
+
+      const q = query(cref, where("read", '==', false), where('to', '==', profile.uid));
+      const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+          settotalUnreadMessage(QuerySnapshot.size)
+      })
+  
+        return unsubscribe;
+
+  }, [])
 
 
   useEffect(() => {
@@ -41,7 +58,7 @@ const SideNav = () => {
     return (
       <div className="lg:flex sm:hidden flex-col space-y-4 items-center py-8 hidden border-r border-zinc-700 h-full  w-[120px] md:w-[250px] md:items-start relative">
 
-        <div className='fixed h-full '>
+        <div className=' h-full '>
 
           <Link
             href="/account/vids"
@@ -139,6 +156,31 @@ const SideNav = () => {
                 }`}
             >
               Profile
+            </span>
+          </Link>
+
+          <Link
+            href="/account/message"
+            className="flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10"
+          >
+            <div className='relative'>
+              <div>{(totalUnreadMessage != null && totalUnreadMessage > 0)
+                ? <div className='absolute h-2 w-2 bg-red-500 rounded-full top-0 right-0 flex items-center justify-center text-xs p-[8px] text-slate-100'>{totalUnreadMessage}</div>
+                : null}
+              </div>
+              {isMessageActive ? (
+                <Icon icon="mingcute:message-3-fill" height={32} width={32} />) : (
+                <Icon icon="mingcute:message-3-line" height={32} width={32} />)
+              }
+
+            </div>
+
+
+            <span
+              className={`text-2xl pt-2 hidden md:flex ${isMessageActive ? 'font-bold' : ''
+                }`}
+            >
+              Messages
             </span>
           </Link>
         </div>

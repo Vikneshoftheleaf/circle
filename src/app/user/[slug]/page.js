@@ -186,12 +186,11 @@ export default function UserPage({ params }) {
         }
         else {
 
-            await setDoc(doc(db, 'messageRooms', uData.uid + profile.uid), {
+            await addDoc(collection(db, 'messageRooms'), {
                 members: [
                     uData.uid,
                     profile.uid,
-                ],
-                chats: []
+                ]
 
             }).then(() => {
                 router.push(`/account/message/${uData.uid}` + `${profile.uid}`)

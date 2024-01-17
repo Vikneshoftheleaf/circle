@@ -73,7 +73,10 @@ export default function Chat({ params }) {
     useEffect(() => {
         if (otherSide != null) {
             setloading(false)
-            setscroll(true)
+            setTimeout(() => {
+                setscroll(true)
+                
+            }, 500);
         }
     }, [otherSide])
 
@@ -86,7 +89,7 @@ export default function Chat({ params }) {
             }
         }
           
-    })
+    }, [scroll,allMsg])
 
    
     async function sendMsg() {
@@ -134,7 +137,7 @@ export default function Chat({ params }) {
                         </div>
                     </div>
                 </div>
-                <div id="msgContainer" className="h-[80%] overflow-y-scroll py-4">
+                <div id="msgContainer" className="h-[70%] overflow-y-scroll py-4">
                     {(allMsg == null)
                         ? null
                         : allMsg.map(m =>

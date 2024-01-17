@@ -76,7 +76,7 @@ export default function Chat({ params }) {
             setTimeout(() => {
                 setscroll(true)
                 
-            }, 500);
+            }, 100);
         }
     }, [otherSide])
 

@@ -186,15 +186,15 @@ export default function UserPage({ params }) {
         }
         else {
 
-            await addDoc(collection(db, 'messageRooms'), {
+            const docref = await addDoc(collection(db, 'messageRooms'), {
                 members: [
                     uData.uid,
                     profile.uid,
                 ]
 
-            }).then(() => {
-                router.push(`/account/message/${uData.uid}` + `${profile.uid}`)
             })
+            router.push(`/account/message/${docref.id}`)
+
         }
     }
 

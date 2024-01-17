@@ -118,7 +118,7 @@ export default function Chat({ params }) {
         return (
 
             <div className="h-screen dark:bg-zinc-900 bg-white z-20 relative w-full">
-                <div className="absolute bg-white w-full z-10 dark:bg-white/10 dark:backdrop-blur-lg top-0 flex items-center py-2">
+                <div className=" h-[10%] dark:border-zinc-500 border-b-2 bg-white w-full z-10 dark:bg-white/10 dark:backdrop-blur-lg top-0 flex items-center py-2">
                     <BackBtn />
                     <div className="flex gap-2 items-center">
                         {(otherSide.photoURL == null) ? null
@@ -133,21 +133,21 @@ export default function Chat({ params }) {
                         </div>
                     </div>
                 </div>
-                <div id="msgContainer" className="h-[85%] overflow-y-scroll pb-8">
+                <div id="msgContainer" className="h-[75%] overflow-y-scroll py-4">
                     {(allMsg == null)
                         ? null
                         : allMsg.map(m =>
                             <div key={m.id} className="w-full px-4 py-2">
                                 {(m.from == profile.uid)
                                     ? <div className="w-full flex justify-end">
-                                        <div className="flex flex-col items-end">
+                                        <div className="flex flex-col items-end gap-0">
                                             <p className="px-4 py-2 bg-red-50 dark:bg-white/20 dark:backdrop-blur-sm rounded-full">{m.chat}</p>
-                                            <p>{(m.from == profile.uid) ? (m.read) ? <Icon className="text-blue-500" icon="solar:check-read-outline" /> : <Icon className="text-gray-500" icon="solar:check-read-outline" /> : null}</p>
+                                            <p className="-mt-1">{(m.from == profile.uid) ? (m.read) ? <Icon height={20} width={20} className="text-blue-500" icon="solar:check-read-outline" /> : <Icon height={20} width={20} className="text-gray-500" icon="solar:check-read-outline" /> : null}</p>
                                         </div>
                                     </div>
                                     :
                                     <div className="w-full flex justify-start">
-                                        <p className="px-4 py-2 bg-red-50 dark:bg-white/20 dark:backdrop-blur-sm rounded-full">{m.chat}</p>
+                                        <p className="px-4 py-2 bg-red-50 dark:bg-white/20 dark:backdrop-blur-sm rounded-full" >{m.chat}</p>
                                     </div>
                                 }
                             </div>
@@ -155,7 +155,7 @@ export default function Chat({ params }) {
                     }
                 </div>
 
-                <div className="lg:absolute fixed dark:bg-zinc-900 bg-white bottom-0 right-0 w-full flex p-4">
+                <div className="h-[15%] dark:bg-zinc-900 bg-white bottom-0 right-0 w-full flex items-center p-4">
                     <textarea ref={msgInputRef} onBlur={() => stopTyping()} onFocus={() => startTyping()} onChange={(e) => setmsg(e.currentTarget.value)} name="" id="" cols="30" rows="1" className="px-4 py-2 w-[85%]  resize-none rounded-md focus:outline-none" placeholder="Write Something"></textarea>
                     <button className="w-[15%] flex justify-center items-center" onClick={() => sendMsg()}><Icon icon="ion:send" /></button>
                 </div>

@@ -33,7 +33,7 @@ export default function Message() {
         <div>
             <div className="flex items-center">
                 <BackBtn/>
-                <h1>Messages</h1>
+                <h1 className="text-xl font-medium">Messages</h1>
             </div>
 
             <div>

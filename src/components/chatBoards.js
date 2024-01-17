@@ -71,7 +71,7 @@ export default function ChatBoards({ data, profile }) {
                 <div>
                     {
                         (unreadMsg != null && unreadMsg > 0)
-                        ? <p className="px-[10px] py-[2px] bg-red-500 rounded-full">{unreadMsg}</p>
+                        ? <p className="px-[10px] py-[2px] text-slate-100 bg-red-500 rounded-full">{unreadMsg}</p>
                         :null
                     }
                 </div>

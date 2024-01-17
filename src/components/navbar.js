@@ -30,16 +30,16 @@ export default function NavBar() {
 
         <nav className="fixed top-0 border-b-1 w-full backdrop-blur-xl z-10 p-2 ">
             <div className="w-full flex justify-between items-center h-full">
-                <div className="flex gap-2">
-                    <h1>Circle</h1>
+                <div className="flex gap-2 items-center px-2">
+                    <h1 className="text-2xl font-bold">Circle</h1>
                     <ThemeSwitcher />
                 </div>
                 {(profile == null && profile == undefined)
                     ? null
                     : <Link href={'/account/message'} className="relative flex justify-end p-2">
-                        <Icon className="text-2xl" icon="mingcute:message-3-line" />
+                        <Icon height={24} width={24} icon="mingcute:message-3-line" />
                         {(totalUnreadMessage != null && totalUnreadMessage > 0)
-                            ? <span className="text-xs bg-red-500 rounded-full absolute top-0 right-0 px-[6px] py-[2px]">{totalUnreadMessage}</span>
+                            ? <span className="text-xs text-slate-100 bg-red-500 rounded-full absolute top-0 right-0 px-[6px] py-[2px]">{totalUnreadMessage}</span>
                             : null}
                     </Link>
                 }

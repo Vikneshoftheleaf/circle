@@ -26,6 +26,8 @@ const SideNav = () => {
   const [totalUnreadMessage, settotalUnreadMessage] = useState()
 
   useEffect(() => {
+    if(profile != null)
+    {
       const cref = collection(db, 'chats')
 
       const q = query(cref, where("read", '==', false), where('to', '==', profile.uid));
@@ -34,8 +36,9 @@ const SideNav = () => {
       })
   
         return unsubscribe;
+    }
 
-  }, [])
+  }, [profile])
 
 
   useEffect(() => {
@@ -54,11 +57,11 @@ const SideNav = () => {
 
 
   }, [user])
-  if (user)
+  if (user != null)
     return (
       <div className="lg:flex sm:hidden flex-col space-y-4 items-center py-8 hidden border-r border-zinc-700 h-full  w-[120px] md:w-[250px] md:items-start relative">
 
-        <div className=' h-full '>
+        <div className='fixed h-full '>
 
           <Link
             href="/account/vids"
@@ -166,7 +169,7 @@ const SideNav = () => {
             <div className='relative'>
               <div>{(totalUnreadMessage != null && totalUnreadMessage > 0)
                 ? <div className='absolute h-2 w-2 bg-red-500 rounded-full top-0 right-0 flex items-center justify-center text-xs p-[8px] text-slate-100'>{totalUnreadMessage}</div>
-                : null}
+                : null }
               </div>
               {isMessageActive ? (
                 <Icon icon="mingcute:message-3-fill" height={32} width={32} />) : (

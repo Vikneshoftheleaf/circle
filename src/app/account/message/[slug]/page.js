@@ -118,7 +118,7 @@ export default function Chat({ params }) {
         return (
 
             <div className="h-screen dark:bg-zinc-900 bg-white z-20 relative w-full">
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center py-2">
                     <BackBtn />
                     <div className="flex gap-2 items-center">
                         {(otherSide.photoURL == null) ? null
@@ -133,7 +133,7 @@ export default function Chat({ params }) {
                         </div>
                     </div>
                 </div>
-                <div id="msgContainer" className="h-[80%] overflow-y-scroll">
+                <div id="msgContainer" className="h-[80%] overflow-y-scroll pb-8">
                     {(allMsg == null)
                         ? null
                         : allMsg.map(m =>

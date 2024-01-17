@@ -53,7 +53,7 @@ export default function ChatBoards({ data, profile }) {
 
                     <div>
                         {(otherSide.photoURL != null)
-                            ? <Image src={otherSide.photoURL} height={60} width={60} className="h-[60px] w-[60px] object-cover rounded-full"></Image>
+                            ? <Image alt="user profile" src={otherSide.photoURL} height={60} width={60} className="h-[60px] w-[60px] object-cover rounded-full"></Image>
                             : <Icon className="h-[50px] w-[50px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
                         }
                     </div>

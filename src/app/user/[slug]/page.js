@@ -330,7 +330,6 @@ export default function UserPage({ params }) {
                         </div>
                     </div>
 
-                    <hr className="my-4" />
 
                     <div className="grid grid-cols-3 gap-1">
                         {userPosts.map(upost =>

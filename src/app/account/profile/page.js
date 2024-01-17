@@ -156,7 +156,6 @@ export default function Profile() {
                         <Link href={'/account/profile/edit'} className=" w-full dark:bg-red-500 bg-red-50 rounded-md font-semibold text-base py-2 ">Edit Profile</Link>
                     </div>
 
-                    <hr className="my-4" />
 
                     <div className="grid grid-cols-3 gap-1">
                         {userPosts.map(upost =>

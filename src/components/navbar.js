@@ -37,7 +37,7 @@ export default function NavBar() {
                 {(profile == null && profile == undefined)
                     ? null
                     : <Link href={'/account/message'} className="relative flex justify-end p-2">
-                        <Icon height={24} width={24} icon="mingcute:message-3-line" />
+                        <Icon height={28} width={28} icon="mingcute:message-3-line" />
                         {(totalUnreadMessage != null && totalUnreadMessage > 0)
                             ? <span className="text-xs text-slate-100 bg-red-500 rounded-full absolute top-0 right-0 px-[6px] py-[2px]">{totalUnreadMessage}</span>
                             : null}

@@ -118,10 +118,11 @@ export default function Chat({ params }) {
         return (
 
             <div className="h-screen dark:bg-zinc-900 bg-white z-20 relative w-full">
-                <div className=" h-[10%] dark:border-zinc-500 border-b-2 bg-white w-full z-10 dark:bg-white/10 dark:backdrop-blur-lg top-0 flex items-center py-2">
+                <div className=" h-[10%] bg-white w-full z-10 dark:bg-white/10 dark:backdrop-blur-lg top-0 flex items-center py-2">
                     <BackBtn />
                     <div className="flex gap-2 items-center">
-                        {(otherSide.photoURL == null) ? null
+                        {(otherSide.photoURL == null) 
+                        ? <Icon className="h-[40px] w-[40px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={40} width={40} />
                             : <Image src={otherSide.photoURL} priority height={40} width={40} alt="user Profile" className="h-[40px] w-[40px] object-cover rounded-full"></Image>
                         }
                         <div className="h-full flex flex-col justify-between">
@@ -133,7 +134,7 @@ export default function Chat({ params }) {
                         </div>
                     </div>
                 </div>
-                <div id="msgContainer" className="h-[75%] overflow-y-scroll py-4">
+                <div id="msgContainer" className="h-[70%] overflow-y-scroll py-4">
                     {(allMsg == null)
                         ? null
                         : allMsg.map(m =>
@@ -155,7 +156,7 @@ export default function Chat({ params }) {
                     }
                 </div>
 
-                <div className="h-[15%] dark:bg-zinc-900 bg-white bottom-0 right-0 w-full flex items-center p-4">
+                <div className="h-[10%] dark:bg-zinc-900 bg-white bottom-0 right-0 w-full flex items-center p-4">
                     <textarea ref={msgInputRef} onBlur={() => stopTyping()} onFocus={() => startTyping()} onChange={(e) => setmsg(e.currentTarget.value)} name="" id="" cols="30" rows="1" className="px-4 py-2 w-[85%]  resize-none rounded-md focus:outline-none" placeholder="Write Something"></textarea>
                     <button className="w-[15%] flex justify-center items-center" onClick={() => sendMsg()}><Icon icon="ion:send" /></button>
                 </div>

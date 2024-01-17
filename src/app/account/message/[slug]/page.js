@@ -86,7 +86,7 @@ export default function Chat({ params }) {
             }
         }
           
-    }, [scroll,allMsg])
+    })
 
    
     async function sendMsg() {
@@ -134,11 +134,11 @@ export default function Chat({ params }) {
                         </div>
                     </div>
                 </div>
-                <div id="msgContainer" className="h-[70%] overflow-y-scroll py-4">
+                <div id="msgContainer" className="h-[80%] overflow-y-scroll py-4">
                     {(allMsg == null)
                         ? null
                         : allMsg.map(m =>
-                            <div key={m.id} className="w-full px-4 py-2">
+                            <div key={m.id} className="w-full px-4 py-2 snap-end">
                                 {(m.from == profile.uid)
                                     ? <div className="w-full flex justify-end">
                                         <div className="flex flex-col items-end gap-0">

@@ -157,7 +157,7 @@ export default function Profile() {
                     </div>
 
 
-                    <div className="grid grid-cols-3 gap-1">
+                    <div className="grid grid-cols-3 gap-1 mt-4">
                         {userPosts.map(upost =>
                             <Link key={upost.id} href={`/account/profile/p?view=${upost.id}`}>
                                 <UserPosts data={upost} />

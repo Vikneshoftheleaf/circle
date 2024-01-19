@@ -6,6 +6,7 @@ import Provider from '@/components/themeProvider';
 export const metadata = {
   title: 'Circle',
   description: "The Friend's Network",
+  manifest: './manifest.json',
 }
 import SideNav from '@/components/sidnav'
 import BottomNav from '@/components/bottom-nav'

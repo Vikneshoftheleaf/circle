@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect, useContext, createContext } from 'react'
+import { useState, useEffect, useContext, createContext, use } from 'react'
 import { onAuthStateChanged } from "firebase/auth";
-import { auth,db } from '@/firebase';
+import { auth, db } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { doc, getDoc, collection, query, where, onSnapshot, QuerySnapshot, updateDoc } from "firebase/firestore";
 import SpinLoading from '@/components/spinLoading';
@@ -22,23 +22,75 @@ export const AuthContextProvider = ({
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
-                updateDoc(doc(db,'user', user.uid),
+                updateDoc(doc(db, 'user', user.uid),
                 {
                     isOnline: true
                 })
+
             } else {
-                updateDoc(doc(db,'user', user.uid),
-                {
-                    isOnline: false
-                })
+
                 setUser(null);
                 setLoading(false)
                 router.push('/')
             }
         });
         return () => unsubscribe();
-    },[auth]);
+    }, [auth]);
 
+    function handleBeforeUnload()
+    {
+        if(user != null)
+        {
+            updateDoc(doc(db, 'user', user.uid),
+            {
+                isOnline: false
+            })
+
+        }
+
+    }
+
+    useEffect(()=>{
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+    })
+
+
+
+    useEffect(() => {
+        const handleOnline = () => {
+            if(user != null)
+            {
+                updateDoc(doc(db, 'user', user.uid),
+                {
+                    isOnline: true
+                })
+
+            }
+        };
+
+        const handleOffline = () => {
+            if(user != null)
+
+            {
+                updateDoc(doc(db, 'user', user.uid),
+                {
+                    isOnline: false
+                })
+
+
+            }
+        };
+
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
 
     useEffect(() => {
         if (user) {
@@ -53,11 +105,10 @@ export const AuthContextProvider = ({
     useEffect(() => {
         if (profile != null) {
             setLoading(false)
-            if(!profile.isEmailVerified)
-            {
+            if (!profile.isEmailVerified) {
                 router.push('/verify')
             }
-            else if(profile.userName == null) {
+            else if (profile.userName == null) {
                 router.push('/account/create')
             }
 

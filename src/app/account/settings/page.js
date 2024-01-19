@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react"
 import { logOut } from "@/functions/functions";
 import BackBtn from "@/components/backBtn";
 import { db, storage, auth } from "@/firebase";
-import { deleteDoc, doc, onSnapshot, where, query, collection, getDocs, QuerySnapshot, } from "firebase/firestore";
+import { deleteDoc, doc, onSnapshot, where, query, collection, getDocs, QuerySnapshot, updateDoc } from "firebase/firestore";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { deleteUser } from "firebase/auth";
 import {
@@ -100,63 +100,72 @@ export default function Setting() {
         await deleteDoc(doc(db, "user", user.uid))
 
         deleteUser(auth.currentUser)
-        .then(() => 
-          console.log('User deleted successfully.')
-        )
+            .then(() =>
+                console.log('User deleted successfully.')
+            )
     }
 
-    useEffect(()=>{
-        if(auth != null)
-        {
+    useEffect(() => {
+        if (auth != null) {
             setLoading(false)
         }
-    },[auth])
-    if(!loading)
-    return (
-        <div>
-            <div className="flex justify-start gap-2 items-center p-2">
-                <BackBtn />
-            </div>
+    }, [auth])
+    if (!loading)
+        return (
+            <div>
+                <div className="flex justify-start gap-2 items-center p-2">
+                    <BackBtn />
+                </div>
 
-            <div className="flex flex-col gap-2">
-                <div className="flex flex-col gap-4 p-5 text-base">
-                    <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:share" />Invite Friends</h1>
-                    <h1 className="flex gap-2 items-center"><Icon icon="ph:user-bold" />Account</h1>
-                    <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:help-outline" />Help</h1>
-                    <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:info-outline" />About</h1>
-                    <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:privacy-tip-outline" />Privacy & Policy </h1>
-                    <h1 className="flex gap-2 items-center"><Icon icon="pajamas:remove" />
-                        <AlertDialog>
-                            <AlertDialogTrigger>Delete My Account</AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        This action cannot be undone. This will permanently delete your account
-                                        and remove your data from our servers.
-                                        <br />
-                                        This Action deletes:
+                <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-4 p-5 text-base">
+                        <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:share" />Invite Friends</h1>
+                        <h1 className="flex gap-2 items-center"><Icon icon="ph:user-bold" />Account</h1>
+                        <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:help-outline" />Help</h1>
+                        <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:info-outline" />About</h1>
+                        <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:privacy-tip-outline" />Privacy & Policy </h1>
+                        <h1 className="flex gap-2 items-center"><Icon icon="pajamas:remove" />
+                            <AlertDialog>
+                                <AlertDialogTrigger>Delete My Account</AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete your account
+                                            and remove your data from our servers.
+                                            <br />
+                                            This Action deletes:
 
-                                    </AlertDialogDescription>
-                                    <ol className="text-sm flex flex-col  items-start">
-                                        <li>Your Profile Data Including(followers,followings)</li>
-                                        <li>Your Posts and Comments</li>
-                                        <li>Your media Including(Posts and Profile pictures)</li>
-                                        <li>Your Notification</li>
-                                    </ol>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <button onClick={() => deleteAccount()} className="w-full py-2 bg-red-500 text-slate-100 font-semibold rounded-md">Continue</button>
+                                        </AlertDialogDescription>
+                                        <ol className="text-sm flex flex-col  items-start">
+                                            <li>Your Profile Data Including(followers,followings)</li>
+                                            <li>Your Posts and Comments</li>
+                                            <li>Your media Including(Posts and Profile pictures)</li>
+                                            <li>Your Notification</li>
+                                        </ol>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <button onClick={() => deleteAccount()} className="w-full py-2 bg-red-500 text-slate-100 font-semibold rounded-md">Continue</button>
 
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
-                    </h1>
-                    <button onClick={() => logOut()} className="flex flex-row justify-center font-semibold items-center rounded-sm  gap-2 px-4 py-2 bg-red-500 text-slate-50">Log Out<Icon icon="material-symbols:logout" /></button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </h1>
+                        <button onClick={() => {
+                            if (user != null) {
+                                updateDoc(doc(db, 'user', user.uid),
+                                    {
+                                        isOnline: false
+                                    })
 
+                                    logOut();
+
+                            }
+                        }} className="flex flex-row justify-center font-semibold items-center rounded-sm  gap-2 px-4 py-2 bg-red-500 text-slate-50">Log Out<Icon icon="material-symbols:logout" /></button>
+
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        )
 }

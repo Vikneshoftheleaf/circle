@@ -107,8 +107,8 @@ const SideNav = () => {
           >
 
             {isNotificationsActive ? (
-              <Icon icon="ph:plus-fill" width={32} height={32} />) : (
-              <Icon icon="ph:plus-fill" width={32} height={32} />)
+              <Icon icon="basil:add-outline" width={32} height={32} />) : (
+              <Icon icon="basil:add-outline" width={32} height={32} />)
             }
 
             <span

@@ -35,7 +35,7 @@ export default function NavBar() {
                     <h1 className="text-2xl font-bold">Circle</h1>
                     <ThemeSwitcher />
                 </div>
-                {(user == null && user == undefined)
+                {(user == null)
                     ? null
                     : <Link href={'/account/message'} className="relative flex justify-end p-2">
                         <Icon height={28} width={28} icon="mingcute:message-3-line" />

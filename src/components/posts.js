@@ -99,8 +99,6 @@ export default function Posts({ data, profile, view }) {
 
 
 
-
-
     async function putLike() {
         await updateDoc(doc(db, "posts", data.id), {
             likes: increment(1),
@@ -117,6 +115,9 @@ export default function Posts({ data, profile, view }) {
             message: 'Liked your Post.',
             nat: Timestamp.fromDate(new Date())
         });
+
+        new Notification('circle',{body:'hello its circle', icon:'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fletter-t&psig=AOvVaw1PSVeEhU6b60pOyoMB_FkI&ust=1705774032142000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJD3qM6F6oMDFQAAAAAdAAAAABAD', image:'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fletter-t&psig=AOvVaw1PSVeEhU6b60pOyoMB_FkI&ust=1705774032142000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJD3qM6F6oMDFQAAAAAdAAAAABAD' });
+
     }
 
     async function removeLike() {

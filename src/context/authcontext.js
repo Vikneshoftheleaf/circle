@@ -30,13 +30,10 @@ export const AuthContextProvider = ({
                 updateDoc(doc(db,'user', user.uid),
                 {
                     isOnline: false
-                }).then(()=>{
-                    setUser(null);
-                    setLoading(false)
-                    router.push('/')
-    
-
                 })
+                setUser(null);
+                setLoading(false)
+                router.push('/')
             }
         });
         return () => unsubscribe();

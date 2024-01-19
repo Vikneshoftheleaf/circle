@@ -58,7 +58,7 @@ export default function ChatBoards({ data, profile }) {
                         }
                     </div>
                     <div>
-                        <h1>{otherSide.userName}</h1>
+                        <h1 className="flex gap-1 items-center">{otherSide.userName} <span>{otherSide.isOnline?<Icon height={22} width={22} className="text-green-500"  icon="carbon:dot-mark" />:<Icon height={22} width={22} className="text-gray-300" icon="carbon:dot-mark" />}</span></h1>
                         <p className="text-gray-500 text-sm">{
                             (data.typing) ? 'Typing...'
                                 : (lastMsg != null)

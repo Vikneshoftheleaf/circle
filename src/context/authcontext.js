@@ -3,7 +3,7 @@ import { useState, useEffect, useContext, createContext } from 'react'
 import { onAuthStateChanged } from "firebase/auth";
 import { auth,db } from '@/firebase';
 import { useRouter } from 'next/navigation';
-import { doc, getDoc, collection, query, where, onSnapshot, QuerySnapshot } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, onSnapshot, QuerySnapshot, updateDoc } from "firebase/firestore";
 import SpinLoading from '@/components/spinLoading';
 export const AuthContext = createContext({});
 
@@ -22,10 +22,21 @@ export const AuthContextProvider = ({
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
+                updateDoc(doc(db,'user', user.uid),
+                {
+                    isOnline: true
+                })
             } else {
-                setUser(null);
-                setLoading(false)
-                router.push('/')
+                updateDoc(doc(db,'user', user.uid),
+                {
+                    isOnline: false
+                }).then(()=>{
+                    setUser(null);
+                    setLoading(false)
+                    router.push('/')
+    
+
+                })
             }
         });
         return () => unsubscribe();

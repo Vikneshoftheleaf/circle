@@ -8,6 +8,7 @@ import { Icon } from "@iconify/react";
 import { collection, query, where, getDocs, QuerySnapshot, doc, onSnapshot } from "firebase/firestore";
 export default function NavBar() {
     const { profile } = useAuthContext();
+    const { user } = useAuthContext()
     const [loading, setloading] = useState(true);
     const [totalUnreadMessage, settotalUnreadMessage] = useState()
 
@@ -34,7 +35,7 @@ export default function NavBar() {
                     <h1 className="text-2xl font-bold">Circle</h1>
                     <ThemeSwitcher />
                 </div>
-                {(profile == null && profile == undefined)
+                {(user == null && user == undefined)
                     ? null
                     : <Link href={'/account/message'} className="relative flex justify-end p-2">
                         <Icon height={28} width={28} icon="mingcute:message-3-line" />

@@ -1,11 +1,11 @@
 {
-    "theme_color": "#ef4444",
+    "theme_color": "#fef2f2",
     "background_color": "#fef2f2",
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "circle",
-    "short_name": "circle",
+    "name": "Circle",
+    "short_name": "Circle",
     "description": "A Social Networking Platform",
     "icons": [
         {

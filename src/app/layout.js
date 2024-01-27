@@ -3,10 +3,14 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from '@vercel/analytics/react';
 import { Inter, Roboto, Poppins, Lato, Montserrat } from 'next/font/google';
 import Provider from '@/components/themeProvider';
+import Head from 'next/head';
 export const metadata = {
   title: 'Circle',
   description: "The Friend's Network",
   manifest: './manifest.json',
+  icons:{
+    icon: '/icon-512x512.png'
+  }
 }
 import SideNav from '@/components/sidnav'
 import BottomNav from '@/components/bottom-nav'
@@ -48,6 +52,9 @@ const pop = Poppins(
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+      <link rel="icon" href="/favicon.png" sizes="any" />
+      </head>
       <body className={inter.className}>
         <SpeedInsights />
         <Analytics />

@@ -7,31 +7,38 @@ import { MoonIcon } from '@heroicons/react/24/solid';
 
 
 const ThemeSwitcher = () => {
- 
-  const {systemTheme, theme, setTheme } = useTheme();
 
-  const renderThemeChanger= () => {
- 
-    const currentTheme = theme === "system" ? systemTheme : theme ;
+  const { systemTheme, theme, setTheme } = useTheme();
 
-    if(currentTheme ==="dark"){
+  const renderThemeChanger = () => {
+
+    const currentTheme = theme === "system" ? systemTheme : theme;
+
+    if (currentTheme === "dark") {
       return (
-        <SunIcon className="w-6 h-6 text-yellow-500 " role="button" onClick={() => 
-          setTheme('light')} />
+
+        <div className="bg-neutral-800 p-2 rounded-full">
+          <SunIcon className="w-6 h-6 text-yellow-500 " role="button" onClick={() =>
+            setTheme('light')} />
+
+        </div>
       )
     }
 
     else {
       return (
-        <MoonIcon className="w-6 h-6 text-gray-900 " role="button" onClick={() => 
-          setTheme('dark')} />
+        <div className="bg-neutral-200 rounded-full p-2">
+          <MoonIcon className="w-6 h-6 text-gray-900 " role="button" onClick={() =>
+            setTheme('dark')} />
+
+        </div>
       )
     }
- };
+  };
 
   return (
     <>
-    {renderThemeChanger()}
+      {renderThemeChanger()}
     </>
   );
 };

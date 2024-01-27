@@ -46,7 +46,7 @@ const BottomNav = () => {
     }
   }, [ncount])
 
-  if (profile != null && profile.userName != null) {
+  if (user!=null && profile != null && profile.userName != null) {
     return (
       <div className={`fixed bottom-0 w-full py-4 z-10 bg-white dark:bg-zinc-950 border-t dark:border-zinc-800 border-zinc-200 shadow-lg sm:hidden ${navClass}`}>
         <div className="flex flex-row justify-around items-center w-full">

@@ -3,6 +3,7 @@ import { AuthContextProvider } from "@/context/authcontext";
 function MyApp({ Component, pageProps }) {
   return (
     <AuthContextProvider>
+      
         <Component {...pageProps} />
       </AuthContextProvider>
   );

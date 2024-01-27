@@ -3,7 +3,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from '@vercel/analytics/react';
 import { Inter, Roboto, Poppins, Lato, Montserrat } from 'next/font/google';
 import Provider from '@/components/themeProvider';
-import Head from 'next/head';
 export const metadata = {
   title: 'Circle',
   description: "The Friend's Network",
@@ -48,8 +47,11 @@ const pop = Poppins(
     subsets: ['devanagari', 'latin', 'latin-ext']
 
   }
+ 
 )
 export default function RootLayout({ children }) {
+
+  
   return (
     <html lang="en">
       <head>

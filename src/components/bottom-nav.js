@@ -11,7 +11,7 @@ import { Icon } from '@iconify/react';
 import { useAuthContext } from '@/context/authcontext';
 const BottomNav = () => {
   const scrollDirection = useScrollingEffect(); // Use the custom hook
-  const navClass = scrollDirection === 'up' ? 'opacity-100 duration-500' : 'opacity-25 duration-500';
+  const navClass = null;//scrollDirection === 'up' ? 'opacity-100 duration-500' : 'opacity-25 duration-500';
   const { user } = useAuthContext();
   const { profile } = useAuthContext();
 

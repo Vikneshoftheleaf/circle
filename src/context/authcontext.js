@@ -37,60 +37,35 @@ export const AuthContextProvider = ({
         return () => unsubscribe();
     }, [auth]);
 
-    function handleBeforeUnload()
-    {
-        if(user != null)
-        {
-            updateDoc(doc(db, 'user', user.uid),
-            {
-                isOnline: false
-            })
-
-        }
-
-    }
-
-    useEffect(()=>{
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-    })
-
-
 
     useEffect(() => {
-        const handleOnline = () => {
-            if(user != null)
-            {
-                updateDoc(doc(db, 'user', user.uid),
+
+        if(user != null)
+        {
+            const handleOffline = (e) => {
+
+                e.preventDefault();
+                if(user != null)
+    
                 {
-                    isOnline: true
-                })
+                    updateDoc(doc(db, 'user', user.uid),
+                    {
+                        isOnline: false
+                    })
+    
+    
+                }
+            };
+    
+            window.addEventListener('beforeunload', (e)=>handleOffline(e));
+    
+            return () => {
+                window.removeEventListener('beforeunload', (e)=>handleOffline(e));
+            };
 
-            }
-        };
-
-        const handleOffline = () => {
-            if(user != null)
-
-            {
-                updateDoc(doc(db, 'user', user.uid),
-                {
-                    isOnline: false
-                })
-
-
-            }
-        };
-
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
-
-        return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
-        };
-    }, []);
+        }
+        
+    }, [user]);
 
     useEffect(() => {
         if (user) {

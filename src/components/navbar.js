@@ -31,47 +31,96 @@ export default function NavBar() {
     return (
 
         <>
+            {
+                (user == null)
+                    ?
+                    <div >
+                        <nav className="fixed hidden lg:flex top-0 border-b-1 w-full dark:bg-neutral-900 bg-white z-10 p-2 ">
+                            <div className="flex justify-between w-[80%] mx-auto items-center h-full">
 
-        <nav className=" fixed top-0 border-b-1 w-full dark:bg-zinc-900 bg-white z-10 p-2 ">
-            <div className="w-full flex justify-between items-center h-full">
-                <div className="flex gap-2 items-center px-2">
-                    <ThemeSwitcher />
-                </div>
+                                <div>
+                                    <Link href={'/'}>
+                                        <Image src={'/favicon.png'} height={60} width={60} alt="logo" priority></Image>
+                                    </Link>
+                                </div>
 
-                <div>
-                    <Link href={'/'}>
-                        <Image src={'/favicon.png'} height={50} width={50} alt="logo" priority></Image>
-                    </Link>
-                </div>
-                {(user == null)
-                    ? null
-                    : <Link href={'/account/message'} className="relative flex justify-end p-2">
-                        <Icon height={28} width={28} icon="mingcute:message-3-line" />
-                        {(totalUnreadMessage != null && totalUnreadMessage > 0)
-                            ? <span className="text-xs text-slate-100 bg-red-500 rounded-full absolute top-0 right-0 px-[6px] py-[2px]">{totalUnreadMessage}</span>
-                            : null}
-                    </Link>
-                }
+                                <div className="flex gap-2 items-center px-2">
+                                    <ThemeSwitcher />
+                                </div>
 
-            </div>
-        </nav>
 
-        <nav className="fixed hidden lg:block top-0 border-b-1 w-full  dark:bg-neutral-900 bg-white z-10 p-2 ">
-            <div className="flex justify-between w-[80%] items-center h-full">
-                
-                <div>
-                    <Link href={'/'}>
-                        <Image src={'/favicon.png'} height={60} width={60} alt="logo" priority></Image>
-                    </Link>
-                </div>
+                            </div>
+                        </nav>
 
-                <div className="flex gap-2 items-center px-2">
-                    <ThemeSwitcher />
-                </div>
-               
+                        <nav className="lg:hidden fixed top-0 border-b-1 w-full dark:bg-neutral-900 bg-white z-10 p-2 ">
+                            <div className="w-full flex justify-between items-center h-full">
 
-            </div>
-        </nav>
+
+                                <div>
+                                    <Image src={'/favicon.png'} height={50} width={50} alt="logo" priority></Image>
+                                </div>
+
+                                <div className="flex gap-2 items-center px-2">
+                                    <ThemeSwitcher />
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+
+
+                    :
+                    <div>
+
+                        <nav className="fixed hidden lg:block top-0 border-b-1 w-full  dark:bg-neutral-900 bg-white z-10 p-2 ">
+                            <div className="flex justify-between w-[80%] items-center h-full">
+
+                                <div>
+                                    <Link href={'/'}>
+                                        <Image src={'/favicon.png'} height={60} width={60} alt="logo" priority></Image>
+                                    </Link>
+                                </div>
+
+                                <div className="flex gap-2 items-center px-2">
+                                    <ThemeSwitcher />
+                                </div>
+
+
+                            </div>
+                        </nav>
+
+                        <nav className="lg:hidden fixed top-0 border-b-1 w-full dark:bg-neutral-900 bg-white z-10 p-2 ">
+                            <div className="w-full flex justify-between items-center h-full">
+                                <div className="flex gap-2 items-center px-2">
+                                    <ThemeSwitcher />
+                                </div>
+
+                                <div>
+                                    <Link href={'/'}>
+                                        <Image src={'/favicon.png'} height={50} width={50} alt="logo" priority></Image>
+                                    </Link>
+                                </div>
+                                {(user == null)
+                                    ? <div></div>
+                                    : <Link href={'/account/message'} className="relative flex justify-end p-2">
+                                        <Icon height={28} width={28} icon="mingcute:message-3-line" />
+                                        {(totalUnreadMessage != null && totalUnreadMessage > 0)
+                                            ? <span className="text-xs text-slate-100 bg-red-500 rounded-full absolute top-0 right-0 px-[6px] py-[2px]">{totalUnreadMessage}</span>
+                                            : null}
+                                    </Link>
+                                }
+
+                            </div>
+                        </nav>
+
+                    </div>
+
+
+
+
+
+            }
+
+
 
         </>
     )

@@ -157,9 +157,9 @@ export default function Setting() {
                                 updateDoc(doc(db, 'user', user.uid),
                                     {
                                         isOnline: false
-                                    })
+                                    }).then(()=>logOut())
 
-                                    logOut();
+                                    
 
                             }
                         }} className="flex flex-row justify-center font-semibold items-center rounded-sm  gap-2 px-4 py-2 bg-red-500 text-slate-50">Log Out<Icon icon="material-symbols:logout" /></button>

@@ -99,13 +99,13 @@ export default function Profile() {
 
                                     </div>
                                 </DialogTrigger>
-                                <DialogContent className="backdrop-blur-sm border-none bg-white/90">
+                                <DialogContent className="border-none">
                                     <DialogHeader>
                                         <DialogTitle></DialogTitle>
                                         <DialogDescription className="flex justify-center items-center">
 
                                             {
-                                                (profile.photoURL)?<Image priority className="h-[200px] aspect-square" src={profile.photoURL} height={200} width={200} alt="user profile"></Image>
+                                                (profile.photoURL)?<Image priority className="h-[200px] aspect-square object-cover rounded-full" src={profile.photoURL} height={200} width={200} alt="user profile"></Image>
 
                                                 :<Icon className="h-[200px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={200} width={200} />
 
@@ -152,7 +152,7 @@ export default function Profile() {
                         <p>{profile.descrip}</p>
                     </div>
 
-                    <div className="w-full px-4 text-center flex">
+                    <div className="w-full px-4 py-2 text-center flex">
                         <Link href={'/account/profile/edit'} className=" w-full dark:bg-red-500 bg-red-50 rounded-md font-semibold text-base py-2 ">Edit Profile</Link>
                     </div>
 

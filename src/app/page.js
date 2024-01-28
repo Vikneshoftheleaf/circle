@@ -2,18 +2,24 @@
 import Link from "next/link"
 import NavBar from "@/components/navbar"
 import { useAuthContext } from "@/context/authcontext"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 export default function Home()
 {
   const {user} = useAuthContext()
-  const router = useRouter()
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
   useEffect(()=>{
     if(user != null)
     {
       router.push('/account/vids')
     }
+    else{
+      setLoading(false)
+    }
   },[user])
+
+  if(!loading)
   return(
     <>
     <NavBar/>

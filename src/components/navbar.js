@@ -39,9 +39,8 @@ export default function NavBar() {
                             <div className="flex justify-between w-[80%] mx-auto items-center h-full">
 
                                 <div>
-                                    <Link href={'/'}>
                                         <Image src={'/favicon.png'} height={60} width={60} alt="logo" priority></Image>
-                                    </Link>
+                                    
                                 </div>
 
                                 <div className="flex gap-2 items-center px-2">
@@ -75,9 +74,7 @@ export default function NavBar() {
                             <div className="flex justify-between w-[80%] items-center h-full">
 
                                 <div>
-                                    <Link href={'/'}>
                                         <Image src={'/favicon.png'} height={60} width={60} alt="logo" priority></Image>
-                                    </Link>
                                 </div>
 
                                 <div className="flex gap-2 items-center px-2">
@@ -95,9 +92,7 @@ export default function NavBar() {
                                 </div>
 
                                 <div>
-                                    <Link href={'/'}>
                                         <Image src={'/favicon.png'} height={50} width={50} alt="logo" priority></Image>
-                                    </Link>
                                 </div>
                                 {(user == null)
                                     ? <div></div>

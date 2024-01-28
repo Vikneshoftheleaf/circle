@@ -242,7 +242,7 @@ export default function UserPage({ params }) {
                                         <DialogDescription className="flex justify-center items-center">
 
                                             {
-                                                (uData.photoURL) ? <Image className="h-[200px] aspect-square object-cover" src={uData.photoURL} height={200} width={200} alt="user profile"></Image>
+                                                (uData.photoURL) ? <Image className="h-[200px] aspect-square object-cover rounded-full" src={uData.photoURL} height={200} width={200} alt="user profile"></Image>
 
                                                     : <Icon className="h-[200px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={200} width={200} />
 

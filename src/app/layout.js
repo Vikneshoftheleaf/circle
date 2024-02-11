@@ -56,6 +56,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
       <link rel="icon" href="/favicon.png" sizes="any" />
+    <meta name="google-site-verification" content="RXkMLZBltf927couFnzEL_NxoPBX9kijnawiTeoLh6A" />
       </head>
       <body className={inter.className}>
         <SpeedInsights />

@@ -4,8 +4,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { doc, getDoc, collection, query, where, onSnapshot, QuerySnapshot, updateDoc } from "firebase/firestore";
-import SpinLoading from '@/components/spinLoading';
+import Screen from '@/components/screen';
 export const AuthContext = createContext({});
+
 
 export const useAuthContext = () => useContext(AuthContext);
 
@@ -36,6 +37,13 @@ export const AuthContextProvider = ({
         });
         return () => unsubscribe();
     }, [auth]);
+
+    useEffect(()=>{
+        if(user != null)
+        {
+          router.push('/')
+        }
+      },[user])
 
 
     useEffect(() => {
@@ -91,7 +99,7 @@ export const AuthContextProvider = ({
     }, [profile])
     return (
         <AuthContext.Provider value={{ user, profile }}>
-            {loading ? <div className='h-screen w-full flex justify-center items-center'><SpinLoading h={8} w={8} /></div> : children}
+            {loading?<Screen/>:children}
         </AuthContext.Provider>
     );
 };

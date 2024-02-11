@@ -8,6 +8,8 @@ import { db } from '@/firebase';
 import { doc, query, collection, onSnapshot, where, QuerySnapshot } from 'firebase/firestore';
 import useNavigation from '@/hooks/use-navigation';
 import { Icon } from '@iconify/react';
+import ThemeSwitcher from './themeSwitcher';
+import Image from 'next/image';
 
 const SideNav = () => {
   const {
@@ -26,16 +28,15 @@ const SideNav = () => {
   const [totalUnreadMessage, settotalUnreadMessage] = useState()
 
   useEffect(() => {
-    if(profile != null)
-    {
+    if (profile != null) {
       const cref = collection(db, 'chats')
 
       const q = query(cref, where("read", '==', false), where('to', '==', profile.uid));
       const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
-          settotalUnreadMessage(QuerySnapshot.size)
+        settotalUnreadMessage(QuerySnapshot.size)
       })
-  
-        return unsubscribe;
+
+      return unsubscribe;
     }
 
   }, [profile])
@@ -59,9 +60,24 @@ const SideNav = () => {
   }, [user])
   if (user != null)
     return (
-      <div className="lg:flex sm:hidden flex-col space-y-4 items-center py-8 hidden border-r border-zinc-700 h-full  w-[120px] md:w-[250px] md:items-start relative">
+      <div className="lg:flex sm:hidden flex-col space-y-4 items-center py-8 hidden  h-full  w-[120px] md:w-[250px] md:items-start relative">
+
+        
 
         <div className='fixed h-full '>
+
+        <div className="w-full flex justify-between items-center px-4 pb-2">
+          
+
+          <div>
+            <Image src={'/favicon.png'} height={50} width={50} alt="logo" priority></Image>
+          </div>
+
+          <div className="flex gap-2 items-center ">
+            <ThemeSwitcher />
+          </div>
+
+        </div>
 
           <Link
             href="/account/vids"
@@ -112,7 +128,7 @@ const SideNav = () => {
             }
 
             <span
-              className={`text-2xl pt-2 hidden md:flex ${isNotificationsActive ? 'font-bold' : ''
+              className={`text-2xl pt-2 hidden md:flex
                 }`}
             >
               Upload
@@ -169,7 +185,7 @@ const SideNav = () => {
             <div className='relative'>
               <div>{(totalUnreadMessage != null && totalUnreadMessage > 0)
                 ? <div className='absolute h-2 w-2 bg-red-500 rounded-full top-0 right-0 flex items-center justify-center text-xs p-[8px] text-slate-100'>{totalUnreadMessage}</div>
-                : null }
+                : null}
               </div>
               {isMessageActive ? (
                 <Icon icon="mingcute:message-3-fill" height={32} width={32} />) : (

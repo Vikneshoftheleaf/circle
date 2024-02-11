@@ -31,9 +31,8 @@ export default function Message() {
     return (
 
         <div>
-            <div className="flex items-center">
-                <BackBtn/>
-                <h1 className="text-xl font-medium">Messages</h1>
+            <div className="sticky top-0 right-0 z-10 py-2 dark:bg-neutral-900 bg-white w-full my-4 px-4 flex items-center">
+                <h1 className="text-xl font-bold">Messages</h1>
             </div>
 
             <div>

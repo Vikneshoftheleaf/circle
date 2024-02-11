@@ -81,11 +81,11 @@ export default function Notification() {
     return (
 
             <div className="">
-                <div className="flex justify-between items-center m-4">
+                <div className="sticky top-0 right-0 z-10 py-2 dark:bg-neutral-900 bg-white flex justify-between items-center my-4 px-4 w-full">
                     <h1 className="text-xl font-bold">Notifications</h1>
                     <DropdownMenu>
                         <DropdownMenuTrigger>
-                            <Icon icon="zondicons:dots-horizontal-triple" />
+                            <Icon icon="zondicons:dots-horizontal-triple" height={20} width={20}/>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuItem><button onClick={() => deleteNotification()}>Clear All</button></DropdownMenuItem>

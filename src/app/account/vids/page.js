@@ -1,5 +1,4 @@
 "use client";
-import Vids from "@/components/vids";
 import NavBar from "@/components/navbar";
 import { collection, query, where, getDocs, getDoc, onSnapshot, orderBy, QuerySnapshot, doc } from "firebase/firestore";
 import { db } from "@/firebase";
@@ -36,7 +35,7 @@ export default function Videos() {
         return (
             <div>
                 <NavBar />
-                <div className="mt-16 mb-24 w-full ">
+                <div className="mt-16 mb-24 w-full mx-auto">
                     {(posts == null) ? null
                         : posts.map(post => <Posts key={post.id} data={post} profile={profile} />)
                     }

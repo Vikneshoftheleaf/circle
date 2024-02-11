@@ -64,10 +64,13 @@ export default function ViewSearchUserPosts() {
     else {
         return (
             <div>
-                <BackBtn />
+                <div className="sticky top-0 z-10 dark:bg-neutral-900 bg-white">
+                    <BackBtn />
+
+                </div>
                 <div className="mt-5 mb-20">
-                    <button ref={scrollpatcher} onClick={()=>console.log('scrollpathced')} className="hidden">scollpather</button>
-                    {posts.map(post => <Posts key={post.id} data={post} profile={profile} view={view} /> )}
+                    <button ref={scrollpatcher} onClick={() => console.log('scrollpathced')} className="hidden">scollpather</button>
+                    {posts.map(post => <Posts key={post.id} data={post} profile={profile} view={view} />)}
                 </div>
             </div>
 

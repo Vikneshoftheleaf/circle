@@ -46,7 +46,7 @@ export default function ChatBoards({ data, profile }) {
 
     if (otherSide != null)
         return (
-            <Link className="px-4 py-2 flex justify-between gap-4 items-center" href={`/account/message/${data.id}`}>
+            <Link className="w-full px-4 py-2 flex justify-between gap-4 items-center" href={`/account/message/${data.id}`}>
 
                 <div className="flex gap-4">
 
@@ -57,12 +57,12 @@ export default function ChatBoards({ data, profile }) {
                             : <Icon className="h-[50px] w-[50px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={50} width={50} />
                         }
                     </div>
-                    <div>
-                        <h1 className="flex gap-1 items-center">{otherSide.userName} <span>{otherSide.isOnline?<Icon height={22} width={22} className="text-green-500"  icon="carbon:dot-mark" />:<Icon height={22} width={22} className="text-gray-300" icon="carbon:dot-mark" />}</span></h1>
-                        <p className="text-gray-500 text-sm">{
+                    <div className="">
+                        <h1 className="flex gap-1 items-center">{otherSide.userName} </h1>
+                        <p className="text-gray-500 text-sm max-h-[40px] max-w-[200px] truncate ">{
                             (data.typing) ? 'Typing...'
                                 : (lastMsg != null)
-                                    ? lastMsg.map(m => <span key={m.id}>{m.chat}</span>)
+                                    ? lastMsg.map(m => <span className="" key={m.id}>{m.chat}</span>)
                                     : null}</p>
                     </div>
 

@@ -75,7 +75,7 @@ export default function Chat({ params }) {
             setloading(false)
             setTimeout(() => {
                 setscroll(true)
-                
+
             }, 100);
         }
     }, [otherSide])
@@ -83,15 +83,14 @@ export default function Chat({ params }) {
     useEffect(() => {
         if (allMsg != null) {
             var dummy = document.getElementById('msgContainer')
-            if(dummy != null )
-            {
+            if (dummy != null) {
                 dummy.scrollTop = dummy.scrollHeight
             }
         }
-          
-    }, [scroll,allMsg])
 
-   
+    }, [scroll, allMsg])
+
+
     async function sendMsg() {
         await addDoc(collection(db, 'chats'), {
             roomId: roomName,
@@ -124,8 +123,8 @@ export default function Chat({ params }) {
                 <div className="flex bg-white w-full z-10 dark:bg-white/10 dark:backdrop-blur-lg top-0  items-center py-2">
                     <BackBtn />
                     <div className="flex gap-2 items-center">
-                        {(otherSide.photoURL == null) 
-                        ? <Icon className="h-[40px] w-[40px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={40} width={40} />
+                        {(otherSide.photoURL == null)
+                            ? <Icon className="h-[40px] w-[40px] text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={40} width={40} />
                             : <Image src={otherSide.photoURL} priority height={40} width={40} alt="user Profile" className="h-[40px] w-[40px] object-cover rounded-full"></Image>
                         }
                         <div className="h-full flex flex-col justify-between">
@@ -144,14 +143,16 @@ export default function Chat({ params }) {
                             <div key={m.id} className="w-full px-4 py-2 snap-end">
                                 {(m.from == profile.uid)
                                     ? <div className="w-full flex justify-end">
-                                        <div className="flex flex-col items-end gap-0">
-                                            <p className="px-4 py-2 bg-red-50 dark:bg-white/20 dark:backdrop-blur-sm rounded-full">{m.chat}</p>
+                                        <div className="max-w-[300px] flex flex-col items-end gap-0 text-wrap break-words">
+                                            <p className="px-4 break-words w-full py-2 bg-red-50 dark:bg-white/20 dark:backdrop-blur-sm rounded-md">{m.chat}</p>
                                             <p className="-mt-1">{(m.from == profile.uid) ? (m.read) ? <Icon height={20} width={20} className="text-blue-500" icon="solar:check-read-outline" /> : <Icon height={20} width={20} className="text-gray-500" icon="solar:check-read-outline" /> : null}</p>
                                         </div>
                                     </div>
                                     :
-                                    <div className="w-full flex justify-start">
-                                        <p className="px-4 py-2 bg-red-50 dark:bg-white/20 dark:backdrop-blur-sm rounded-full" >{m.chat}</p>
+                                    <div className="w-full flex justify-start flex-wrap break-words">
+                                        <div className="max-w-[300px]">
+                                            <p className="break-words px-4 text-wrap py-2 bg-red-50 dark:bg-white/20 dark:backdrop-blur-sm rounded-md" >{m.chat}</p>
+                                        </div>
                                     </div>
                                 }
                             </div>

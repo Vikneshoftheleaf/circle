@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react"
 import { updateDoc, doc, getDoc, arrayUnion, arrayRemove, increment, onSnapshot, where, collection, query, QuerySnapshot, getDocs, addDoc, deleteDoc, orderBy, serverTimestamp } from "firebase/firestore";
 import { db, auth, storage } from "@/firebase";
-import { useAuthContext } from "@/context/authcontext";
 import { Icon } from "@iconify/react";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import SocialShareBtn from "./socialshareBtn";
@@ -33,7 +32,7 @@ import MemberList from "./memberList";
 import SpinLoading from "./spinLoading";
 
 
-export default function Posts({ data, profile, view }) {
+export default function Posts({ data,view,profile }) {
 
     const [liked, setLiked] = useState(false);
     const [followed, setFollowed] = useState(false);
@@ -297,7 +296,7 @@ export default function Posts({ data, profile, view }) {
 
     if (!loading)
         return (
-            <div id={data.id} className="flex flex-col gap-2 lg:w-[500px] py-6 ">
+            <div id={data.id} className="flex mx-auto flex-col gap-2 lg:w-[500px] py-6 ">
                 <div className="flex items-center justify-between px-4">
                     <div className="flex items-center gap-2 ">
                         <Link href={`/user/${data.author}`} >

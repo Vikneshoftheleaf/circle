@@ -32,7 +32,7 @@ export default function Search() {
                 const slower = searchQuery.toLowerCase();
                 const searchArray = slower.split('');
 
-                const q = query(collection(db, "user"), where('userNameArray', 'array-contains-any', searchArray), limit(30));
+                const q = query(collection(db, "user"), where('userName','==', searchQuery), limit(30));
                 const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
                     //const cities = [];
                     setSearchResult(QuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -51,7 +51,7 @@ export default function Search() {
 
     return (
         <div>
-            <div className="flex gap-2 items-center  dark:bg-white/10 dark:backdrop-blur-md bg-red-50 justify-start m-4 px-2 relative rounded-md">
+            <div className="top-0 flex gap-2 items-center  dark:bg-white/10 dark:backdrop-blur-md bg-red-50 justify-start m-4 px-2 relative rounded-md">
             <Icon
                 icon="uil:search"
                 className="p-2 rounded-md "
@@ -83,7 +83,7 @@ export default function Search() {
 
             </div>
             
-            <div className="grid grid-cols-3 gap-1">
+            <div className="grid lg:grid-cols-4 grid-cols-3 gap-1">
                 {userPosts.map(upost =>
                     <Link key={upost.id} href={`/user/p?user=${upost.author}&view=${upost.id}`}>
                         <SearchPosts data={upost} />

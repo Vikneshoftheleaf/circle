@@ -1,25 +1,21 @@
-"use client"
+"use client";
+import { useAuthContext } from "@/context/authcontext";
 import Link from "next/link"
 import NavBar from "@/components/navbar"
-import { useAuthContext } from "@/context/authcontext"
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 export default function Home()
 {
-  const {user} = useAuthContext()
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
+
+  const {user} = useAuthContext();
+  const router  = useRouter()
   useEffect(()=>{
     if(user != null)
     {
       router.push('/account/vids')
     }
-    else{
-      setLoading(false)
-    }
   },[user])
 
-  if(!loading)
   return(
     <>
     <NavBar/>

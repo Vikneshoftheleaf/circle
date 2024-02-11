@@ -7,6 +7,19 @@ import { db, storage, auth } from "@/firebase";
 import { deleteDoc, doc, onSnapshot, where, query, collection, getDocs, QuerySnapshot, updateDoc } from "firebase/firestore";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { deleteUser } from "firebase/auth";
+import SocialShareBtn from "@/components/socialshareBtn";
+
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -23,6 +36,8 @@ import { useEffect, useState } from "react";
 export default function Setting() {
     const [loading, setLoading] = useState(true)
     const { user } = useAuthContext();
+
+
     async function deleteAccount() {
         const notificationref = collection(db, 'notifications')
         const postPicRef = collection(db, 'posts')
@@ -119,7 +134,24 @@ export default function Setting() {
 
                 <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-4 p-5 text-base">
-                        <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:share" />Invite Friends</h1>
+                    <Drawer >
+                            <DrawerTrigger>
+                            <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:share" />Invite Friends</h1>
+                            </DrawerTrigger>
+                            <DrawerContent>
+                                <DrawerHeader className={'flex justify-center items-center border-b-2'}>
+                                    <DrawerTitle><h1 className="text-xl font-semibold">Share</h1></DrawerTitle>
+
+                                </DrawerHeader>
+
+                                <div className="h-full p-4 w-full flex justify-center items-start">
+                                    <SocialShareBtn url={`${process.env.NEXT_PUBLIC_URL}`} />
+
+                                </div>
+
+                                
+                            </DrawerContent>
+                        </Drawer>
                         <h1 className="flex gap-2 items-center"><Icon icon="ph:user-bold" />Account</h1>
                         <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:help-outline" />Help</h1>
                         <h1 className="flex gap-2 items-center"><Icon icon="material-symbols:info-outline" />About</h1>

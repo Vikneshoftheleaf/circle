@@ -57,7 +57,7 @@ export default function Search() {
                 className="p-2 rounded-md "
                 height={42} width={42}
               />
-                <input type="search" onFocus={() => setSearchPanel('flex')} name="search" id="search" className=" focus:outline-none p-2 rounded-md w-full bg-transparent" placeholder="Search Videos" onChange={(e) => setSearchQuery(e.target.value)} />
+                <input type="search" onFocus={() => setSearchPanel('flex')} name="search" id="search" className=" focus:outline-none p-2 rounded-md w-full bg-transparent" placeholder="Search" onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
 
             <div className={`${searchPanel} absolute w-full h-full dark:bg-slate-900  bg-white justify-center`}>

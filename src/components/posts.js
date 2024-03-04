@@ -32,7 +32,7 @@ import MemberList from "./memberList";
 import SpinLoading from "./spinLoading";
 
 
-export default function Posts({ data,view,profile }) {
+export default function Posts({ data, view, profile }) {
 
     const [liked, setLiked] = useState(false);
     const [followed, setFollowed] = useState(false);
@@ -53,24 +53,24 @@ export default function Posts({ data,view,profile }) {
     useEffect(() => {
 
 
-        if(viewto != null && scrolled == false){
+        if (viewto != null && scrolled == false) {
             viewto.scrollIntoView({ behavior: 'auto' });
             setScrolled(true)
             console.log("scrolled")
         }
 
-        
-
-},[doit])
 
 
+    }, [doit])
 
 
-    useEffect(()=>{
-        setTimeout(()=>{
+
+
+    useEffect(() => {
+        setTimeout(() => {
             setLikeAnimation('scale-0')
-        },500)
-    },[likeAnimation])
+        }, 500)
+    }, [likeAnimation])
 
 
 
@@ -115,7 +115,7 @@ export default function Posts({ data,view,profile }) {
             nat: Timestamp.fromDate(new Date())
         });
 
-        new Notification('circle',{body:'hello its circle', icon:'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fletter-t&psig=AOvVaw1PSVeEhU6b60pOyoMB_FkI&ust=1705774032142000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJD3qM6F6oMDFQAAAAAdAAAAABAD', image:'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fletter-t&psig=AOvVaw1PSVeEhU6b60pOyoMB_FkI&ust=1705774032142000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJD3qM6F6oMDFQAAAAAdAAAAABAD' });
+        new Notification('circle', { body: 'hello its circle', icon: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fletter-t&psig=AOvVaw1PSVeEhU6b60pOyoMB_FkI&ust=1705774032142000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJD3qM6F6oMDFQAAAAAdAAAAABAD', image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fletter-t&psig=AOvVaw1PSVeEhU6b60pOyoMB_FkI&ust=1705774032142000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJD3qM6F6oMDFQAAAAAdAAAAABAD' });
 
     }
 
@@ -284,10 +284,10 @@ export default function Posts({ data,view,profile }) {
             const newData = doc.data();
             setPostUserProfile(newData);
             setLoading(false)
-            setTimeout(()=>{
+            setTimeout(() => {
                 setdoit(true)
-        
-            },100)
+
+            }, 100)
         });
         return unsub;
 
@@ -364,33 +364,35 @@ export default function Posts({ data,view,profile }) {
 
                                                     <div key={com.id} className="w-full px-4  ">
 
-                                                        <div className="grid grid-cols-10  ">
-                                                            <div className="col-span-2">
+                                                        <div className="flex  justify-between gap-2 ">
+                                                            <div className="flex gap-4">
                                                                 {com.cUserImg
                                                                     ? <Image priority src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
                                                                     : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
                                                                 }
+                                                                <div>
+                                                                    <h1 className="flex gap-2 items-center justify-between font-semibold">
+                                                                        <div className="flex gap-2 items-center text-sm font-semibold">
+                                                                            {com.cUserName}
+                                                                            {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
+                                                                        </div>
+                                                                    </h1>
+                                                                    <p className="text-base">{com.commentText}</p>
+
+                                                                </div>
                                                             </div>
 
                                                             <div className="col-span-8 flex flex-col">
-                                                                <h1 className="flex gap-2 items-center justify-between font-semibold">
-                                                                    <div className="flex gap-2 items-center text-sm font-semibold">
-                                                                        {com.cUserName}
-                                                                        {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
-                                                                    </div>
-                                                                    {(com.cUserId != profile.uid) ? null
-                                                                        : <DropdownMenu>
-                                                                            <DropdownMenuTrigger>
-                                                                                <Icon icon="zondicons:dots-horizontal-triple" />
-                                                                            </DropdownMenuTrigger>
-                                                                            <DropdownMenuContent>
-                                                                                <DropdownMenuItem><button onClick={() => deleteComment(com.id)}>Remove</button></DropdownMenuItem>
-                                                                            </DropdownMenuContent>
-                                                                        </DropdownMenu>
-                                                                    }
-                                                                </h1>
-                                                                <p className="text-base">{com.commentText}</p>
-
+                                                                {(com.cUserId != profile.uid) ? null
+                                                                    : <DropdownMenu>
+                                                                        <DropdownMenuTrigger>
+                                                                            <Icon icon="zondicons:dots-horizontal-triple" />
+                                                                        </DropdownMenuTrigger>
+                                                                        <DropdownMenuContent>
+                                                                            <DropdownMenuItem><button onClick={() => deleteComment(com.id)}>Remove</button></DropdownMenuItem>
+                                                                        </DropdownMenuContent>
+                                                                    </DropdownMenu>
+                                                                }
 
                                                             </div>
 
@@ -415,7 +417,7 @@ export default function Posts({ data,view,profile }) {
                                             <textarea ref={commentInputRef} type="text" className="dark:bg-transparent focus:outline-none resize-none p-1 " rows={1} name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
 
                                         </div>
-                                        <button className=" px-4 py-2 rounded-md" onClick={() => addComment()}><Icon icon="ic:round-send" height={22} width={22}/></button>
+                                        <button className=" px-4 py-2 rounded-md" onClick={() => addComment()}><Icon icon="ic:round-send" height={22} width={22} /></button>
                                     </div>
                                 </DrawerFooter>
                             </DrawerContent>
@@ -437,7 +439,7 @@ export default function Posts({ data,view,profile }) {
 
                                 </div>
 
-                                
+
                             </DrawerContent>
                         </Drawer>
 
@@ -494,33 +496,35 @@ export default function Posts({ data,view,profile }) {
 
                                                     <div key={com.id} className="w-full px-4  ">
 
-                                                        <div className="grid grid-cols-10  ">
-                                                            <div className="col-span-2">
+                                                        <div className="flex  justify-between gap-2 ">
+                                                            <div className="flex gap-4">
                                                                 {com.cUserImg
                                                                     ? <Image priority src={com.cUserImg} height={42} width={42} className="h-[42px] aspect-square object-cover rounded-full" alt="user Image"></Image>
                                                                     : <Icon className="h-[42px] aspect-square text-slate-500  object-cover rounded-full" icon="ph:user-bold" height={42} width={42} />
                                                                 }
+                                                                <div>
+                                                                    <h1 className="flex gap-2 items-center justify-between font-semibold">
+                                                                        <div className="flex gap-2 items-center text-sm font-semibold">
+                                                                            {com.cUserName}
+                                                                            {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
+                                                                        </div>
+                                                                    </h1>
+                                                                    <p className="text-base">{com.commentText}</p>
+
+                                                                </div>
                                                             </div>
 
                                                             <div className="col-span-8 flex flex-col">
-                                                                <h1 className="flex gap-2 items-center justify-between font-semibold">
-                                                                    <div className="flex gap-2 items-center text-sm font-semibold">
-                                                                        {com.cUserName}
-                                                                        {com.cVerified ? <Icon className="text-blue-500" icon="material-symbols:verified" /> : null}
-                                                                    </div>
-                                                                    {(com.cUserId != profile.uid) ? null
-                                                                        : <DropdownMenu>
-                                                                            <DropdownMenuTrigger>
-                                                                                <Icon icon="zondicons:dots-horizontal-triple" />
-                                                                            </DropdownMenuTrigger>
-                                                                            <DropdownMenuContent>
-                                                                                <DropdownMenuItem><button onClick={() => deleteComment(com.id)}>Remove</button></DropdownMenuItem>
-                                                                            </DropdownMenuContent>
-                                                                        </DropdownMenu>
-                                                                    }
-                                                                </h1>
-                                                                <p className="text-base">{com.commentText}</p>
-
+                                                                {(com.cUserId != profile.uid) ? null
+                                                                    : <DropdownMenu>
+                                                                        <DropdownMenuTrigger>
+                                                                            <Icon icon="zondicons:dots-horizontal-triple" />
+                                                                        </DropdownMenuTrigger>
+                                                                        <DropdownMenuContent>
+                                                                            <DropdownMenuItem><button onClick={() => deleteComment(com.id)}>Remove</button></DropdownMenuItem>
+                                                                        </DropdownMenuContent>
+                                                                    </DropdownMenu>
+                                                                }
 
                                                             </div>
 
@@ -545,7 +549,7 @@ export default function Posts({ data,view,profile }) {
                                             <textarea ref={commentInputRef} type="text" className="dark:bg-transparent focus:outline-none resize-none p-1 " rows={1} name="" id="" placeholder="Write a comment.." onChange={(e) => setCommentText(e.target.value)} ></textarea>
 
                                         </div>
-                                        <button className=" px-4 py-2 rounded-md" onClick={() => addComment()}><Icon icon="ic:round-send" height={22} width={22}/></button>
+                                        <button className=" px-4 py-2 rounded-md" onClick={() => addComment()}><Icon icon="ic:round-send" height={22} width={22} /></button>
                                     </div>
                                 </DrawerFooter>
                             </DrawerContent>

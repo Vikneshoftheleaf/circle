@@ -4,7 +4,7 @@ import BackBtn from "@/components/backBtn";
 import { db } from "@/firebase";
 import { Icon } from "@iconify/react";
 
-import { updateDoc, arrayUnion, doc, onSnapshot, getDoc, getDocs, docs, addDoc, collection, query, where, orderBy } from "firebase/firestore";
+import { updateDoc, arrayUnion, doc, onSnapshot, getDoc, getDocs, docs, addDoc, collection, query, where, orderBy, deleteDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { useAuthContext } from "@/context/authcontext";
 import Image from "next/image";
@@ -116,6 +116,10 @@ export default function Chat({ params }) {
 
     }
 
+    async function deleteMsg(id) {
+        await deleteDoc(doc(db, "chats", id ));
+    }
+
     if (!loading)
         return (
 
@@ -144,7 +148,15 @@ export default function Chat({ params }) {
                                 {(m.from == profile.uid)
                                     ? <div className="w-full flex justify-end">
                                         <div className="max-w-[300px] flex flex-col items-end gap-0 text-wrap break-words">
-                                            <p className="px-4 break-words w-full py-2 bg-red-50 dark:bg-white/20 dark:backdrop-blur-sm rounded-md">{m.chat}</p>
+                                            <div>
+                                                <p className="px-4 break-words w-full py-4 bg-red-50 dark:bg-white/20 dark:backdrop-blur-sm rounded-md relative">{m.chat} </p>
+
+                                                <button onClick={()=> deleteMsg(m.id)}>
+                                                    <Icon icon="tabler:trash-filled" height={14} width={14} />
+                                                </button>
+
+                                            </div>
+
                                             <p className="-mt-1">{(m.from == profile.uid) ? (m.read) ? <Icon height={20} width={20} className="text-blue-500" icon="solar:check-read-outline" /> : <Icon height={20} width={20} className="text-gray-500" icon="solar:check-read-outline" /> : null}</p>
                                         </div>
                                     </div>

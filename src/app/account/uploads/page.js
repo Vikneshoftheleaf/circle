@@ -54,13 +54,13 @@ export default function Upload() {
             getDownloadURL(ref(storage, `posts/${image.name}`))
                 .then(async (url) => {
 
-                    const matches = tags.match(/#([^#]+)/g);
-                    const filteredTags = matches.map(match => match.slice(1))
+                    //const matches = tags.match(/#([^#]+)/g);
+                    //const filteredTags = matches.map(match => match.slice(1))
 
-                    const docRef = await addDoc(collection(db, "posts"), {
+                    await addDoc(collection(db, "posts"), {
                         postPicURL: url,
                         title: title,
-                        tags: filteredTags,
+                        tags: tags,
                         author: uid,
                         likes: 0,
                         authoruserName: profile.userName,

@@ -18,6 +18,7 @@ export default function Create() {
     const [descrip, setdescrip] = useState(null);
     const [loading, setLoading] = useState(false)
     const fileInputRef = useRef();
+    const [place, setplace] = useState()
     const metadata = {
         contentType: 'image/jpeg',
     };
@@ -62,15 +63,16 @@ export default function Create() {
         else {
 
 
-                await updateDoc(doc(db, "user", user.uid), {
-                    userName: username.toLowerCase() ,
-                    descrip: descrip,
-                    userNameArray: [...username]
-                });
-                router.push('/account/profile')
-                console.log("updated with image")
+            await updateDoc(doc(db, "user", user.uid), {
+                userName: username.toLowerCase(),
+                descrip: descrip,
+                userNameArray: [...username],
+                place: place
+            });
+            router.push('/account/profile')
+            console.log("updated with image")
 
- 
+
         }
 
     }
@@ -135,6 +137,48 @@ export default function Create() {
                             <div className="text-sm flex justify-start">
                                 {(nameTaken == null) ? null : nameTaken ? <h1 className="text-red-500">Username is Taken!</h1> : <h1 className="text-green-500">Username is Avialable!</h1>}
                             </div>
+                        </div>
+                        <div className="dark:border-0 border-b-2">
+                            <p className="text-xs">Place</p>
+                                <select className="p-2 rounded-md" id="tamilnadu-districts" onChange={(e)=>setplace(e.target.value)}>
+                                    <option value="">Select District</option>
+                                    <option value="chennai">Chennai</option>
+                                    <option value="coimbatore">Coimbatore</option>
+                                    <option value="madurai">Madurai</option>
+                                    <option value="salem">Salem</option>
+                                    <option value="Tiruchirappalli">Tiruchirappalli</option>
+                                    <option value="Nellai">Nellai</option>
+                                    <option value="Kanchipuram">Kanchipuram</option>
+                                    <option value="Tiruvannamalai">Tiruvannamalai</option>
+                                    <option value="Vellore">Vellore</option>
+                                    <option value="Tiruppur">Tiruppur</option>
+                                    <option value="Erode">Erode</option>
+                                    <option value="Dindigul">Dindigul</option>
+                                    <option value="Thanjavur">Thanjavur</option>
+                                    <option value="Cuddalore">Cuddalore</option>
+                                    <option value="Trichy">Trichy (Tiruchirappalli)</option>
+                                    <option value="Namakkal">Namakkal</option>
+                                    <option value="Dharmapuri">Dharmapuri</option>
+                                    <option value="Kanyakumari">Kanyakumari</option>
+                                    <option value="Ariyalur">Ariyalur</option>
+                                    <option value="Perambalur">Perambalur</option>
+                                    <option value="Villupuram">Villupuram</option>
+                                    <option value="Kallakurichi">Kallakurichi</option>
+                                    <option value="Ranipet">Ranipet</option>
+                                    <option value="Tirunelveli">Tirunelveli</option>
+                                    <option value="Tenkasi">Tenkasi</option>
+                                    <option value="Pudukkottai">Pudukkottai</option>
+                                    <option value="Sivagangai">Sivagangai</option>
+                                    <option value="Theni">Theni</option>
+                                    <option value="Ramanathapuram">Ramanathapuram</option>
+                                    <option value="Virudhunagar">Virudhunagar</option>
+                                    <option value="Thoothukudi">Thoothukudi</option>
+                                    <option value="Chengalpattu">Chengalpattu</option>
+                                    <option value="Krishnagiri">Krishnagiri</option>
+                                    <option value="Nilgiris">Nilgiris</option>
+                                </select>
+
+                           
                         </div>
                         <div className="dark:border-0 border-b-2">
                             <p className="text-xs">Bio</p>
